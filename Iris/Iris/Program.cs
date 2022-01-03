@@ -1,10 +1,34 @@
+using Serilog;
+using Serilog.Events;
+
+// Logger Configuration
+Serilog.Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Information)
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .CreateBootstrapLogger();
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add serilog logger
+builder.Host.UseSerilog((context, services, configuration) => configuration
+                    .ReadFrom.Configuration(context.Configuration)
+                    .ReadFrom.Services(services)
+                    .Enrich.FromLogContext()
+                    .WriteTo.Console()
+                    .WriteTo.File(
+                        path: "Iris.log",
+                        shared: true,
+                        rollingInterval: RollingInterval.Day
+                        )
+                    );
 
+// Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -16,7 +40,6 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
 
 app.MapControllerRoute(
     name: "default",
