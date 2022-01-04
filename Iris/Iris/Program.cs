@@ -1,3 +1,4 @@
+using Iris.Configuration;
 using Serilog;
 using Serilog.Events;
 
@@ -7,6 +8,8 @@ Serilog.Log.Logger = new LoggerConfiguration()
             .Enrich.FromLogContext()
             .WriteTo.Console()
             .CreateBootstrapLogger();
+
+var config = Config.BuildConfig();
 
 var builder = WebApplication.CreateBuilder(args);
 
