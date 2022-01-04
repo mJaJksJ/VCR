@@ -1,18 +1,34 @@
-﻿using Iris.ReflectionExtensions;
-using Iris.ReflectionExtensions.NotBasicTypeJoin;
+﻿using Iris.Configuration.NotBasicTypeJoin;
 using Newtonsoft.Json.Linq;
 using System.Text.Json;
 
 namespace Iris.Configuration
 {
+    /// <summary>
+    /// Конфигурация
+    /// </summary>
     public class Config: ConfigExtension, IJoinableConfig
     {
+        /// <summary>
+        /// Конфигурация базы данных
+        /// </summary>
         public DatabaseConfig Database { get; set; }
+
+        /// <summary>
+        /// Конфигурация логгера
+        /// </summary>
         public LoggerConfig Logger { get; set; }
+
+        /// <summary>
+        /// конфигурация почтовых серверов
+        /// </summary>
         public IEnumerable<MailServerConfig> MailServers { get; set; }
 
         private static readonly Serilog.ILogger Log = Serilog.Log.ForContext<Config>();
 
+        /// <summary>
+        /// .ctor
+        /// </summary>
         public static Config BuildConfig()
         {
             var config = DefaultConfig()
@@ -23,6 +39,10 @@ namespace Iris.Configuration
             return config;
         }
 
+        /// <summary>
+        /// Дефолтная конфигурация
+        /// </summary>
+        /// <returns></returns>
         public static Config DefaultConfig()
         {
             return new Config

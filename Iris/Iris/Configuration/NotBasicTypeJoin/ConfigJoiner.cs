@@ -1,9 +1,9 @@
-﻿using Iris.Configuration;
-
-namespace Iris.ReflectionExtensions.NotBasicTypeJoin
+﻿namespace Iris.Configuration.NotBasicTypeJoin
 {
+    /// <inheritdoc cref="INotBasicTypesJoiner"/>
     public class ConfigJoiner : INotBasicTypesJoiner
     {
+        /// <inheritdoc/>
         public IJoinableConfig Join(IJoinableConfig config, IJoinableConfig joiningConfig)
         {
             var rightConfig = config as Config;
