@@ -11,8 +11,7 @@
             rightConfig.JoinWith(rightConfig.Database, leftConfig.Database, new DatabaseConfigJoiner());
             rightConfig.JoinWith(rightConfig.Logger, leftConfig.Logger, new LoggerConfigJoiner());
 
-            // TODO: доработать
-            // проработать варианты дозаписи существующих, добавления новых, пропуска тех что не обновляются
+            // TODO: проработать варианты дозаписи существующих, добавления новых, пропуска тех что не обновляются
             //rightConfig.JoinWith(rightConfig.MailServers, leftConfig.MailServers, new MailServerConfigJoiner());
 
             return rightConfig;
