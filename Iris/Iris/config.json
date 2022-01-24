@@ -1,0 +1,14 @@
+{
+  "Database": {
+    "Server": null,
+    "Port": 0,
+    "DbName": null,
+    "User": null,
+    "Password": null
+  },
+  "Logger": {
+    "FileName": "Iris",
+    "LimitFileSize": 33554432
+  },
+  "MailServers": []
+}

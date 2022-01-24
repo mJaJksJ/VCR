@@ -1,3 +1,4 @@
+using Iris.Configuration;
 using Serilog;
 using Serilog.Events;
 
@@ -8,6 +9,8 @@ Serilog.Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()
             .CreateBootstrapLogger();
 
+var config = Config.BuildConfig();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add serilog logger
@@ -17,14 +20,18 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
                     .Enrich.FromLogContext()
                     .WriteTo.Console()
                     .WriteTo.File(
-                        path: "Iris.log",
+                        path: config.Logger.FileName,
                         shared: true,
-                        rollingInterval: RollingInterval.Day
+                        rollingInterval: RollingInterval.Day,
+                        fileSizeLimitBytes: config.Logger.LimitFileSize
                         )
                     );
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Add custom services
+builder.Services.AddSingleton(config);
 
 var app = builder.Build();
 
