@@ -1,6 +1,8 @@
 using Iris.Configuration;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
+using System.Reflection;
 
 // Logger Configuration
 Serilog.Log.Logger = new LoggerConfiguration()
@@ -28,9 +30,22 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
                     );
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 
-// Add custom services
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Iris-Api",
+        Version = "v1"
+    });
+
+    var executingLocation = Assembly.GetExecutingAssembly().Location;
+    var xmlName = $"{Path.GetFileNameWithoutExtension(executingLocation)}.xml";
+    var xmlPath = Path.Combine(Path.GetDirectoryName(executingLocation), xmlName);
+    c.IncludeXmlComments(xmlPath);
+});
+
 builder.Services.AddSingleton(config);
 
 var app = builder.Build();
@@ -44,14 +59,40 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Iris-Api");
+});
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.MapControllerRoute(
+/*app.MapControllerRoute(
     name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
+    pattern: "{controller}/{action=Index}/{id?}");*/
+app.Use(async (context, next) =>
+{
+    Endpoint endpoint = context.GetEndpoint();
 
-app.MapFallbackToFile("index.html"); ;
+    if (endpoint != null)
+    {
+        await next();
+    }
+    else
+    {
+        context.Response.Redirect("/swagger");
+        await context.Response.WriteAsync("redirect to swagger");
+    }
+});
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
+
+//app.MapFallbackToFile("index.html"); ;
 
 app.Run();
