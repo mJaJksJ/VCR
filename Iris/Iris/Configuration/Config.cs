@@ -50,7 +50,7 @@ namespace Iris.Configuration
                 Database = new DatabaseConfig(),
                 Logger = new LoggerConfig
                 {
-                    FileName = "Iris",
+                    FileName = "Iris.log",
                     LimitFileSize = 1024*1024*32
                 },
                 MailServers = Array.Empty<MailServerConfig>()
