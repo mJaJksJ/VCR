@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Iris.ReflectionExtensions
+namespace Iris.Helpers.ReflectionExtensions
 {
     /// <summary>
     /// Базовые типы данных

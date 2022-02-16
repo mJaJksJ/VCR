@@ -15,6 +15,9 @@ namespace Iris.Database
         public int UserId { get; set; }
         public User User { get; set; }
 
+        public string ConnectionProtocol { get; set; }
+        public bool UseSsl { get; set; }
+
         public int MailServerId { get; set; }
         public MailServer MailServer { get; set; }
     }

@@ -1,4 +1,6 @@
 using Iris.Configuration;
+using Iris.Database;
+using Iris.Services.ServerConnection;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
@@ -46,7 +48,11 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
+
 builder.Services.AddSingleton(config);
+builder.Services.AddDbContext<DatabaseContext>();
+
+builder.Services.AddSingleton<IServerConnectionStorage, ServerConnectionStorage>();
 
 var app = builder.Build();
 

@@ -7,7 +7,7 @@ namespace Iris.Database
         public int Id { get; set; }
         
         [Required]
-        public string Ip { get; set; }
+        public string Host { get; set; }
 
         [Required]
         public int Port { get; set; }

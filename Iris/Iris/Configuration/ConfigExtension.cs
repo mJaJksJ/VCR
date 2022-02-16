@@ -1,5 +1,5 @@
-﻿using Iris.ReflectionExtensions;
-using Iris.Configuration.NotBasicTypeJoin;
+﻿using Iris.Configuration.NotBasicTypeJoin;
+using Iris.Helpers.ReflectionExtensions;
 
 namespace Iris.Configuration
 {
