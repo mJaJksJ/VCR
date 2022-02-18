@@ -1,0 +1,15 @@
+.irisButton {
+    border: 3px solid var(--color-bordo-shadow);
+    border-radius: 5px;
+    color: var(--color-brown-shadow);
+    outline: none;
+    margin: 5px;
+    width: 100px;
+    background-color: var(--color-purple-dark-shadow);
+}
+
+.irisButton:hover {
+    border: 3px solid var(--color-bordo);
+    background-color: var(--color-purple-dark);
+    color: var(--color-brown);
+}

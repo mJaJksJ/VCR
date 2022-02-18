@@ -1,0 +1,14 @@
+.signInForm {
+    width: 250px;
+    border-radius: 5px;
+    border: 3px solid var(--color-bordo-shadow);
+    margin: 5px;
+}
+
+.input {
+    width: 90%;
+}
+
+.central {
+    text-align: center;
+}

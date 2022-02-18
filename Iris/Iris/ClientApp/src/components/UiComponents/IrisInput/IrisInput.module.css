@@ -12,4 +12,9 @@
 
 .irisInput:hover {
     border: 3px solid var(--color-bordo);
+    color: var(--color-purple-pink);
+}
+
+.irisInput:hover::placeholder {
+    color: var(--color-purple-grey);
 }
