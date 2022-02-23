@@ -1,4 +1,7 @@
 using Iris.Configuration;
+using Iris.Services.AuthService;
+using Iris.Stores;
+using Iris.Stores.AuthRequestStore;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
@@ -47,6 +50,9 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddSingleton(config);
+builder.Services.AddSingleton<IAuthRequestsStore, AuthRequestsStore>();
+builder.Services.AddSingleton<TokensStore>();
+builder.Services.AddSingleton<IAuthService, AuthService>();
 
 var app = builder.Build();
 

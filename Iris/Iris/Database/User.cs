@@ -11,6 +11,8 @@ namespace Iris.Database
 
         public string Password { get; set; }
 
+        public bool IsAdmin { get; set; }
+
         public List<Account> Accounts { get; set; }
     }
 }

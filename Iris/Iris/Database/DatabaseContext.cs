@@ -8,6 +8,8 @@ namespace Iris.Database
         public DbSet<Account> Accounts { get; set; }
         public DbSet<MailServer> MailServers { get; set; }
 
+        public DbSet<AuthRequestOperation> AuthRequests { get; set; }
+
         public DatabaseContext()
         {
 
