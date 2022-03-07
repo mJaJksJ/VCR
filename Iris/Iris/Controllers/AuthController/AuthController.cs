@@ -11,27 +11,29 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Iris.Stores;
+using Iris.Configuration;
 
 namespace Iris.Controllers.AuthController
 {
-    [Authorize]
     public class AuthController: Controller
     {
         private readonly IAuthRequestsStore _authRequestsStore;
         private readonly IAuthService _authService;
         private readonly TokensStore _tokensStore;
+        private readonly Config _config;
 
         private static readonly Serilog.ILogger Log = Serilog.Log.ForContext<AuthController>();
 
-        public AuthController(IAuthRequestsStore authRequestsStore, IAuthService authService, TokensStore tokensStore)
+        public AuthController(IAuthRequestsStore authRequestsStore, IAuthService authService, TokensStore tokensStore, Config config)
         {
             _authRequestsStore = authRequestsStore;
             _authService = authService;
             _tokensStore = tokensStore;
+            _config = config;
         }
 
 
-        [HttpPost("~/api/authorize"), AllowAnonymous]
+        [HttpPost("~/api/authorize")]
         [ProducesResponseType(typeof(int), 201)]
         public IActionResult InitAuth()
         {
@@ -42,7 +44,7 @@ namespace Iris.Controllers.AuthController
             );
         }
 
-        [HttpPut("~/api/authorize/{id}"), AllowAnonymous]
+        [HttpPut("~/api/authorize/{id}")]
         [ProducesResponseType(typeof(AuthResponse), 200)]
         public IActionResult ExecuteAuthorization(string id, [FromBody] AuthRequest authRequest)
         {
@@ -106,7 +108,7 @@ namespace Iris.Controllers.AuthController
                 issueTime,
                 expires,
                 new SigningCredentials(
-                    new SymmetricSecurityKey(null),
+                    new SymmetricSecurityKey(_config.AuthConfig.SymmetricSecurityKey),
                     "HS256"
                 )
             );

@@ -4,7 +4,7 @@ import HeaderButton from "./HeaderButton/HeaderButton";
 import {AuthContext} from "../../context/AuthContext";
 
 const Header = React.forwardRef((props, ref) => {
-    const {isAuth, setIsAuth} = useContext(AuthContext);
+    const {isAuth} = useContext(AuthContext);
 
     let buttonPanel = !isAuth
         ? <HeaderButton>Войти</HeaderButton>

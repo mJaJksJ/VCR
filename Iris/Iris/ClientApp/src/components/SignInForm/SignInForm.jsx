@@ -4,14 +4,44 @@ import IrisButton from "../UiComponents/IrisButton/IrisButton";
 import styleClasses from './SignInForm.module.css';
 import irisInputStyles from "../UiComponents/IrisInput/IrisInput.module.css"
 import {AuthContext} from "../../context/AuthContext";
+import Paths from "../../Paths";
 
 const SignInForm = React.forwardRef((props, ref) => {
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
-    const {isAuth, setIsAuth} = useContext(AuthContext);
+    const {setIsAuth} = useContext(AuthContext);
 
-    const SignIn = () => {
-        setIsAuth(true);
+    const SignInRequest = async () => {
+        const response = await fetch(Paths.signIn, {
+            method: 'POST',
+        });
+
+        if (response.ok) {
+            const requestId = await response.text();
+            debugger
+            const redirectUrl = Paths.signIn+"/"+requestId;
+
+            await SignInResult(redirectUrl);
+        }
+    }
+
+    const SignInResult = async (redirectUrl) => {
+        const user = {
+            login: login,
+            password: password
+        };
+
+        const response = await fetch(redirectUrl, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(user)
+        });
+
+        if (response.ok) {
+            setIsAuth(true);
+        }
     }
 
     return (<div className={styleClasses.signInForm}>
@@ -34,7 +64,7 @@ const SignInForm = React.forwardRef((props, ref) => {
             />
         </div>
         <div className={styleClasses.central}>
-            <IrisButton onClick={SignIn}>
+            <IrisButton onClick={SignInRequest}>
                 Войти
             </IrisButton>
         </div>

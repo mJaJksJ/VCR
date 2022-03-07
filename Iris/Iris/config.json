@@ -10,5 +10,8 @@
     "FileName": "Iris.log",
     "LimitFileSize": 33554432
   },
-  "MailServers": []
+  "MailServers": [],
+  "AuthConfig": {
+    "SymmetricSecurityKey": "UFBQUFBQUFBQUFBQUFBQUA=="
+  }
 }

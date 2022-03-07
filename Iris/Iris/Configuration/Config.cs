@@ -24,6 +24,8 @@ namespace Iris.Configuration
         /// </summary>
         public IEnumerable<MailServerConfig> MailServers { get; set; }
 
+        public AuthConfig AuthConfig { get; set; }
+
         private static readonly Serilog.ILogger Log = Serilog.Log.ForContext<Config>();
 
         /// <summary>
@@ -51,9 +53,13 @@ namespace Iris.Configuration
                 Logger = new LoggerConfig
                 {
                     FileName = "Iris.log",
-                    LimitFileSize = 1024*1024*32
+                    LimitFileSize = 1024 * 1024 * 32
                 },
-                MailServers = Array.Empty<MailServerConfig>()
+                MailServers = Array.Empty<MailServerConfig>(),
+                AuthConfig = new AuthConfig
+                {
+                    SymmetricSecurityKey = new byte[] { 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80 }
+                }
             };
         }
 

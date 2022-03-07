@@ -1,4 +1,5 @@
 using Iris.Configuration;
+using Iris.Database;
 using Iris.Services.AuthService;
 using Iris.Stores;
 using Iris.Stores.AuthRequestStore;
@@ -49,7 +50,11 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
+var dbContext = new DatabaseContext();
+
 builder.Services.AddSingleton(config);
+builder.Services.AddSingleton(dbContext);
+
 builder.Services.AddSingleton<IAuthRequestsStore, AuthRequestsStore>();
 builder.Services.AddSingleton<TokensStore>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
@@ -76,29 +81,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-/*app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");*/
-app.Use(async (context, next) =>
-{
-    Endpoint endpoint = context.GetEndpoint();
-
-    if (endpoint != null)
-    {
-        await next();
-    }
-    else
-    {
-        context.Response.Redirect("/swagger");
-        await context.Response.WriteAsync("redirect to swagger");
-    }
-});
-
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
 });
-
-//app.MapFallbackToFile("index.html"); ;
 
 app.Run();
