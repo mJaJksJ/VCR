@@ -4,13 +4,20 @@ import HeaderButton from "./HeaderButton/HeaderButton";
 import {AuthContext} from "../../context/AuthContext";
 
 const Header = React.forwardRef((props, ref) => {
-    const {isAuth, setIsClickLogin, user} = useContext(AuthContext);
+    const {isAuth, setIsAuth, setIsClickLogin, user} = useContext(AuthContext);
+
+    const exit = () => {
+        setIsAuth(false);
+    }
 
     let buttonPanel = !isAuth
-        ? <HeaderButton>Войти</HeaderButton>
-        : <HeaderButton>{user.Login}</HeaderButton>
+        ? <HeaderButton onClick={() => {setIsClickLogin(true)}}>Войти</HeaderButton>
+        : <>
+            <HeaderButton onClick={exit}>Выход</HeaderButton>
+            <HeaderButton>{user.Login}</HeaderButton>
+        </>
     return (
-        <div className={styleClasses.header} onClick={() => {setIsClickLogin(true)}} {...props}>
+        <div className={styleClasses.header} {...props}>
             {buttonPanel}
         </div>
     );

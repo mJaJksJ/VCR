@@ -9,7 +9,7 @@ import Paths from "../../Paths";
 const SignInForm = React.forwardRef((props, ref) => {
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
-    const {setIsAuth, user, setUser} = useContext(AuthContext);
+    const {setIsAuth, user, setUser, setIsClickLogin} = useContext(AuthContext);
 
     const SignInRequest = async () => {
         const response = await fetch(Paths.signIn, {
@@ -25,7 +25,7 @@ const SignInForm = React.forwardRef((props, ref) => {
     }
 
     const SignInResult = async (redirectUrl) => {
-        const user = {
+        const userData = {
             login: login,
             password: password
         };
@@ -35,11 +35,12 @@ const SignInForm = React.forwardRef((props, ref) => {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify(user)
+            body: JSON.stringify(userData)
         });
 
         if (response.ok) {
             setIsAuth(true);
+            setIsClickLogin(false);
             const result = await response.json()
             setUser({...user, Login: result.login})
         }
