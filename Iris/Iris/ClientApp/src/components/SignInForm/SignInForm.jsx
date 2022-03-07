@@ -9,7 +9,7 @@ import Paths from "../../Paths";
 const SignInForm = React.forwardRef((props, ref) => {
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
-    const {setIsAuth} = useContext(AuthContext);
+    const {setIsAuth, user, setUser} = useContext(AuthContext);
 
     const SignInRequest = async () => {
         const response = await fetch(Paths.signIn, {
@@ -18,7 +18,6 @@ const SignInForm = React.forwardRef((props, ref) => {
 
         if (response.ok) {
             const requestId = await response.text();
-            debugger
             const redirectUrl = Paths.signIn+"/"+requestId;
 
             await SignInResult(redirectUrl);
@@ -41,6 +40,8 @@ const SignInForm = React.forwardRef((props, ref) => {
 
         if (response.ok) {
             setIsAuth(true);
+            const result = await response.json()
+            setUser({...user, Login: result.login})
         }
     }
 
