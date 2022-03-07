@@ -18,5 +18,7 @@ namespace Iris.Services.AuthService
             AuthRequestOperation operation,
             string login,
             string password);
+
+        (string token, DateTime expires) GenerateToken(IEnumerable<Claim> claims, User user);
     }
 }

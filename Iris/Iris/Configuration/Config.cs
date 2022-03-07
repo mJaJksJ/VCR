@@ -1,5 +1,6 @@
 ﻿using Iris.Configuration.NotBasicTypeJoin;
 using Newtonsoft.Json.Linq;
+using System.Text;
 using System.Text.Json;
 
 namespace Iris.Configuration
@@ -58,7 +59,10 @@ namespace Iris.Configuration
                 MailServers = Array.Empty<MailServerConfig>(),
                 AuthConfig = new AuthConfig
                 {
-                    SymmetricSecurityKey = new byte[] { 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80 }
+                    JwtSecurityKey = Encoding.ASCII.GetBytes("8u5j4WXfR74kDGE38k32zIBrLuDELjSTGzTx97OWwVY01-0uaayMdBlBWfZ55Fy8"),
+                    JwtLifetime = 24*3600,
+                    JwtAudience = "iris",
+                    JwtIssuer = "iris"
                 }
             };
         }

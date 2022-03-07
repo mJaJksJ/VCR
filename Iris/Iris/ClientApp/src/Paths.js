@@ -1,6 +1,8 @@
 
 const paths = {
-    signIn: "api/authorize"
+    auth: "api/authorize",
+    checkIsAuth: "api/authorize/isauth",
+    deauth: "api/authorize/deauth"
 }
 
 export default paths

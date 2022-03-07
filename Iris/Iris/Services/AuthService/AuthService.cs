@@ -1,6 +1,7 @@
 ﻿using Iris.Configuration;
 using Iris.Database;
 using Iris.Exceptions;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -32,6 +33,27 @@ namespace Iris.Services.AuthService
             }
 
             return (GenerateIdentity(user), user);
+        }
+
+        public (string token, DateTime expires) GenerateToken(IEnumerable<Claim> claims, User user)
+        {
+            var dtNow = DateTime.Now;
+            var issueTime = new DateTime(dtNow.Year, dtNow.Month, dtNow.Day, dtNow.Hour, dtNow.Minute, dtNow.Second);
+            var expires = user.IsAdmin ? issueTime.AddDays(7) : issueTime.AddSeconds(_config.AuthConfig.JwtLifetime);
+            var jwt = new JwtSecurityToken(
+                _config.AuthConfig.JwtIssuer,
+                _config.AuthConfig.JwtAudience,
+                claims,
+                issueTime,
+                expires,
+                new SigningCredentials(
+                    new SymmetricSecurityKey(_config.AuthConfig.JwtSecurityKey),
+                    "HS256"
+                )
+            );
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            return (encodedJwt, expires);
         }
 
         private static ClaimsIdentity GenerateIdentity(User user)

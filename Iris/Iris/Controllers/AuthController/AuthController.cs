@@ -12,9 +12,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Iris.Stores;
 using Iris.Configuration;
+using Iris.Helpers;
 
 namespace Iris.Controllers.AuthController
 {
+    [Authorize]
     public class AuthController: Controller
     {
         private readonly IAuthRequestsStore _authRequestsStore;
@@ -33,7 +35,7 @@ namespace Iris.Controllers.AuthController
         }
 
 
-        [HttpPost("~/api/authorize")]
+        [HttpPost("~/api/authorize"), AllowAnonymous]
         [ProducesResponseType(typeof(int), 201)]
         public IActionResult InitAuth()
         {
@@ -44,7 +46,7 @@ namespace Iris.Controllers.AuthController
             );
         }
 
-        [HttpPut("~/api/authorize/{id}")]
+        [HttpPut("~/api/authorize/{id}"), AllowAnonymous]
         [ProducesResponseType(typeof(AuthResponse), 200)]
         public IActionResult ExecuteAuthorization(string id, [FromBody] AuthRequest authRequest)
         {
@@ -74,7 +76,7 @@ namespace Iris.Controllers.AuthController
                 return new AuthErrorResult();
             }
 
-            var (token, expires) = GenerateToken(identity.Claims, user);
+            var (token, expires) = _authService.GenerateToken(identity.Claims, user);
 
             var roles = identity.Claims.Where(_ => _.Type == identity.RoleClaimType)
                 .Select(_ => _.Value).ToList();
@@ -96,25 +98,25 @@ namespace Iris.Controllers.AuthController
             });
         }
 
-        private (string token, DateTime expires) GenerateToken(IEnumerable<Claim> claims, User user)
+        [HttpPost("~/api/authorize/deauth")]
+        [ProducesResponseType(typeof(OkResult), 200)]
+        public IActionResult DeAuth()
         {
-            var dtNow = DateTime.Now;
-            var issueTime = new DateTime(dtNow.Year, dtNow.Month, dtNow.Day, dtNow.Hour, dtNow.Minute, dtNow.Second);
-            var expires = user.IsAdmin ? issueTime.AddDays(7) : issueTime.AddSeconds(600000);
-            var jwt = new JwtSecurityToken(
-                null,
-                null,
-                claims,
-                issueTime,
-                expires,
-                new SigningCredentials(
-                    new SymmetricSecurityKey(_config.AuthConfig.SymmetricSecurityKey),
-                    "HS256"
-                )
-            );
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+            var userId = User.GetUserId();
 
-            return (encodedJwt, expires);
+            _tokensStore.Remove(userId.ToString());
+            Log.Information($"User {userId} is de-auth");
+
+            Response.Headers.Add("Clear-Site-Data", "\"cache\", \"cookies\", \"storage\"");
+
+            return Ok();
+        }
+
+        [HttpGet("~/api/authorize/isauth"), AllowAnonymous]
+        [ProducesResponseType(typeof(bool), 200)]
+        public IActionResult IsAuth()
+        {
+            return Ok(User.Identity.IsAuthenticated);
         }
     }
 }

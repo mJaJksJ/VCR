@@ -1,6 +1,4 @@
-import React, {useContext} from 'react';
-import {AuthContext} from "../../../context/AuthContext";
-import SignInForm from "../../SignInForm/SignInForm";
+import React from 'react';
 
 const AuthBody = React.forwardRef(() => {
     return (

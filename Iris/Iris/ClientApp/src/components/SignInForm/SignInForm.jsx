@@ -12,13 +12,13 @@ const SignInForm = React.forwardRef((props, ref) => {
     const {setIsAuth, user, setUser, setIsClickLogin} = useContext(AuthContext);
 
     const SignInRequest = async () => {
-        const response = await fetch(Paths.signIn, {
+        const response = await fetch(Paths.auth, {
             method: 'POST',
         });
 
         if (response.ok) {
             const requestId = await response.text();
-            const redirectUrl = Paths.signIn+"/"+requestId;
+            const redirectUrl = Paths.auth+"/"+requestId;
 
             await SignInResult(redirectUrl);
         }
@@ -41,7 +41,9 @@ const SignInForm = React.forwardRef((props, ref) => {
         if (response.ok) {
             setIsAuth(true);
             setIsClickLogin(false);
-            const result = await response.json()
+            const result = await response.json();
+            localStorage.setItem('token', result.token);
+            localStorage.setItem('login', result.login);
             setUser({...user, Login: result.login})
         }
     }

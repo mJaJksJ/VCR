@@ -3,6 +3,9 @@ using Iris.Database;
 using Iris.Services.AuthService;
 using Iris.Stores;
 using Iris.Stores.AuthRequestStore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
@@ -35,6 +38,59 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(config.AuthConfig.JwtSecurityKey),
+
+            ValidateIssuer = true,
+            ValidIssuer = config.AuthConfig.JwtIssuer,
+
+            ValidateAudience = true,
+            ValidAudience = config.AuthConfig.JwtAudience,
+
+            RequireExpirationTime = true,
+            ValidateLifetime = true,
+
+            ClockSkew = TimeSpan.FromMinutes(1)
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = _ =>
+            {
+                if (string.IsNullOrEmpty(_.Token))
+                {
+                    var fromAuth = _.Request.Query["auth"];
+                    if (!string.IsNullOrEmpty(fromAuth))
+                    {
+                        _.Token = fromAuth;
+                    }
+
+                    var fromAccessToken = _.Request.Query["access_token"];
+                    if (!string.IsNullOrEmpty(fromAccessToken))
+                    {
+                        _.Token = fromAccessToken;
+                    }
+                }
+
+                return Task.CompletedTask;
+            }
+        };
+    });
+
+builder.Services.AddAuthorization(
+    options =>
+    {
+        options.DefaultPolicy = new AuthorizationPolicyBuilder()
+            .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+            .RequireAuthenticatedUser()
+            .Build();
+    });
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -76,10 +132,30 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Iris-Api");
 });
 
+app.Use(async (context, next) =>
+{
+    try
+    {
+        if (context.Response.HasStarted)
+        {
+            Log.Information(
+                "Current user identity: {Name} AuthenticationType: {AuthenticationType}",
+                context.User.Identity.Name, context.User.Identity.AuthenticationType);
+        }
+    }
+    catch (Exception exc)
+    {
+        Log.Error("{Message}", exc.Message);
+    }
+
+    await next();
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
