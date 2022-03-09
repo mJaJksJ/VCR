@@ -8,8 +8,10 @@ namespace Iris.Helpers.ReflectionExtensions
     /// </summary>
     public enum BasicTypes
     {
+#pragma warning disable 1591
         String,
         Int32
+#pragma warning restore 1591
     }
 
     /// <summary>
@@ -27,10 +29,10 @@ namespace Iris.Helpers.ReflectionExtensions
         /// <exception cref="Exception"></exception>
         public static bool IsNotEmpty(this PropertyInfo propertyInfo, object checkingObj, out object value)
         {
-            var type = propertyInfo.PropertyType.Name;           
+            var type = propertyInfo.PropertyType.Name;
             value = propertyInfo.GetValue(checkingObj);
 
-            if(BasicTypes.String.ToString() == type)
+            if (BasicTypes.String.ToString() == type)
             {
                 return !string.IsNullOrWhiteSpace(value as string);
             }

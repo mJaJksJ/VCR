@@ -1,6 +1,4 @@
-﻿using Iris.Configuration;
-
-namespace Iris.Configuration.NotBasicTypeJoin
+﻿namespace Iris.Configuration.NotBasicTypeJoin
 {
     /// <inheritdoc cref="INotBasicTypesJoiner"/>
     public class MailServerConfigJoiner : INotBasicTypesJoiner

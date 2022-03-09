@@ -3,7 +3,7 @@
     /// <summary>
     /// Конфиг почтового сервера
     /// </summary>
-    public class MailServerConfig: ConfigExtension, IJoinableConfig
+    public class MailServerConfig : ConfigExtension, IJoinableConfig
     {
         /// <summary>
         /// Имя для сервера

@@ -1,0 +1,15 @@
+.headerButton {
+    display: flex;
+    width: 100px;
+    height: inherit;
+    float: right;
+}
+
+.headerButton:hover {
+    background-color: var(--color-yellow-shadow);
+    cursor: pointer;
+}
+
+.headerButton p {
+    margin: auto;
+}

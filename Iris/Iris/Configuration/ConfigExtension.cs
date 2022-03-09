@@ -35,7 +35,7 @@ namespace Iris.Configuration
                 else
                 {
                     //TODO: времменное решение, если так ине получится полностью автоматизировать
-                    notBasicTypesJoiner.Join(config, joiningConfig);                
+                    notBasicTypesJoiner.Join(config, joiningConfig);
                 }
 
             }

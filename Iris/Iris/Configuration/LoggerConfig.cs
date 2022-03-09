@@ -3,15 +3,15 @@
     /// <summary>
     /// Конфиг логгера
     /// </summary>
-    public class LoggerConfig: ConfigExtension, IJoinableConfig
+    public class LoggerConfig : ConfigExtension, IJoinableConfig
     {
         /// <summary>
         /// Имя файла логгера
         /// </summary>
-        public string FileName { get; set; } 
+        public string FileName { get; set; }
         /// <summary>
         /// Лимит на размер файла
         /// </summary>
-        public int LimitFileSize { get; set; } 
+        public int LimitFileSize { get; set; }
     }
 }

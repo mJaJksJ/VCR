@@ -2,11 +2,14 @@
 
 namespace Iris.Database
 {
-    public class DatabaseContext: DbContext
+#pragma warning disable 1591
+    public class DatabaseContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<MailServer> MailServers { get; set; }
+
+        public DbSet<AuthRequestOperation> AuthRequests { get; set; }
 
         public DatabaseContext()
         {

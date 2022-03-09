@@ -2,7 +2,6 @@
 using Iris.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
@@ -45,6 +44,19 @@ namespace Iris.Migrations
                     b.ToTable("Accounts");
                 });
 
+            modelBuilder.Entity("Iris.Database.AuthRequestOperation", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("IssuedDateTime")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AuthRequests");
+                });
+
             modelBuilder.Entity("Iris.Database.MailServer", b =>
                 {
                     b.Property<int>("Id")
@@ -70,6 +82,9 @@ namespace Iris.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsAdmin")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")

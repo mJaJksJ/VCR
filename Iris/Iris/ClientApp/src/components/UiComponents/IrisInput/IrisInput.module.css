@@ -1,0 +1,20 @@
+.irisInput {
+    border: 3px solid var(--color-bordo-shadow);
+    margin: 5px;
+    border-radius: 5px;
+    color: var(--color-purple-grey);
+    outline: none;
+}
+
+.irisInput::placeholder {
+    color: var(--color-purple-ligth);
+}
+
+.irisInput:hover {
+    border: 3px solid var(--color-bordo);
+    color: var(--color-purple-pink);
+}
+
+.irisInput:hover::placeholder {
+    color: var(--color-purple-grey);
+}

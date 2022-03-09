@@ -5,7 +5,7 @@ namespace Iris.Api.Controllers.BaseControllers
     /// <summary>
     /// Пользовательские почтовые сервера
     /// </summary>
-    public class ServersController: Controller
+    public class ServersController : Controller
     {
         /// <summary>
         /// Добавить пользовательский сервис
