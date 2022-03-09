@@ -1,9 +1,9 @@
 using Iris.Configuration;
 using Iris.Database;
 using Iris.Services.AuthService;
-using Iris.Services.ServerConnection;
 using Iris.Stores;
 using Iris.Stores.AuthRequestStore;
+using Iris.Stores.ServiceConnectionStore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
@@ -111,7 +111,7 @@ var dbContext = new DatabaseContext();
 
 builder.Services.AddSingleton(config);
 builder.Services.AddSingleton(dbContext);
-builder.Services.AddSingleton<IServerConnectionStorage, ServerConnectionStorage>();
+builder.Services.AddSingleton<IServerConnectionStore, ServerConnectionStore>();
 builder.Services.AddSingleton<IAuthRequestsStore, AuthRequestsStore>();
 builder.Services.AddSingleton<TokensStore>();
 builder.Services.AddSingleton<IAuthService, AuthService>();

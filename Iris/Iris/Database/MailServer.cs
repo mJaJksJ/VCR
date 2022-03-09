@@ -32,6 +32,6 @@ namespace Iris.Database
         /// <summary>
         /// Аккаунты
         /// </summary>
-        public List<Account> Accounts { get; set; }
+        public IEnumerable<Account> Accounts { get; set; }
     }
 }

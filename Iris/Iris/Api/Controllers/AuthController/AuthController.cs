@@ -1,5 +1,4 @@
 ﻿using Iris.Api.Results;
-using Iris.Configuration;
 using Iris.Database;
 using Iris.Helpers;
 using Iris.Services.AuthService;
@@ -11,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace Iris.Controllers.AuthController
+namespace Iris.Api.Controllers.AuthController
 {
     /// <summary>
     /// Контроллер авторизации
@@ -22,19 +21,17 @@ namespace Iris.Controllers.AuthController
         private readonly IAuthRequestsStore _authRequestsStore;
         private readonly IAuthService _authService;
         private readonly TokensStore _tokensStore;
-        private readonly Config _config;
 
         private static readonly Serilog.ILogger Log = Serilog.Log.ForContext<AuthController>();
 
         /// <summary>
         /// .ctor
         /// </summary>
-        public AuthController(IAuthRequestsStore authRequestsStore, IAuthService authService, TokensStore tokensStore, Config config)
+        public AuthController(IAuthRequestsStore authRequestsStore, IAuthService authService, TokensStore tokensStore)
         {
             _authRequestsStore = authRequestsStore;
             _authService = authService;
             _tokensStore = tokensStore;
-            _config = config;
         }
 
         /// <summary>

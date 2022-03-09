@@ -5,7 +5,7 @@ namespace Iris.Helpers
     /// <summary>
     /// Расширение для ClaimsPrincipal
     /// </summary>
-    public static class ClaimsPrincipalExtensios
+    public static class ClaimsPrincipalHelper
     {
         /// <summary>
         /// Получить Id пользователя

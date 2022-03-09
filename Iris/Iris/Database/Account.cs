@@ -34,7 +34,14 @@ namespace Iris.Database
         /// </summary>
         public User User { get; set; }
 
+        /// <summary>
+        /// Протокол подключения
+        /// </summary>
         public string ConnectionProtocol { get; set; }
+
+        /// <summary>
+        /// Надо ли использовать SSL
+        /// </summary>
         public bool UseSsl { get; set; }
 
         /// <summary>

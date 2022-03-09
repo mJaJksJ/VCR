@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Iris.Controllers.AuthController
+namespace Iris.Api.Controllers.AuthController
 {
     /// <summary>
     /// Контракт ответа авторизации
@@ -23,7 +23,7 @@ namespace Iris.Controllers.AuthController
         /// Роль
         /// </summary>
         [JsonProperty("roles")]
-        public List<string> Roles { get; set; }
+        public IEnumerable<string> Roles { get; set; }
 
         /// <summary>
         /// Токен

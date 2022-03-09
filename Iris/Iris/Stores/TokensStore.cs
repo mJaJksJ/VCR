@@ -10,7 +10,7 @@ namespace Iris.Stores
         /// <summary>
         /// Словарь с сопоставлением пользователя и последнего выданного токена для этого пользователя
         /// </summary>
-        private readonly ConcurrentDictionary<string, string> _tokens = new ConcurrentDictionary<string, string>();
+        private readonly ConcurrentDictionary<string, string> _tokens = new();
 
         /// <summary>
         /// Добавить или обновить токен
