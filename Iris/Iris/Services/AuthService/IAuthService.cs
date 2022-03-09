@@ -19,6 +19,11 @@ namespace Iris.Services.AuthService
             string login,
             string password);
 
+        /// <summary>
+        /// Создать токен
+        /// </summary>
+        /// <param name="claims">Клеймсы</param>
+        /// <param name="user">Пользователь</param>
         (string token, DateTime expires) GenerateToken(IEnumerable<Claim> claims, User user);
     }
 }

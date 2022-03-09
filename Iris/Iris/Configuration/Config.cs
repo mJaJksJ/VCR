@@ -21,10 +21,13 @@ namespace Iris.Configuration
         public LoggerConfig Logger { get; set; }
 
         /// <summary>
-        /// конфигурация почтовых серверов
+        /// Конфигурация почтовых серверов
         /// </summary>
         public IEnumerable<MailServerConfig> MailServers { get; set; }
 
+        /// <summary>
+        /// Конфигурация авторизации
+        /// </summary>
         public AuthConfig AuthConfig { get; set; }
 
         private static readonly Serilog.ILogger Log = Serilog.Log.ForContext<Config>();

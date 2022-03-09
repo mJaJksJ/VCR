@@ -3,9 +3,9 @@
 namespace Iris.Controllers.AuthController
 {
     /// <summary>
-    /// Ответ авторизации
+    /// Контракт ответа авторизации
     /// </summary>
-    public class AuthResponse
+    public class AuthResponseContract
     {
         /// <summary>
         /// Id пользователя

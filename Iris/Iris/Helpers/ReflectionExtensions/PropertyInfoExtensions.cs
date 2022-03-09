@@ -8,8 +8,10 @@ namespace Iris.ReflectionExtensions
     /// </summary>
     public enum BasicTypes
     {
+#pragma warning disable 1591
         String,
         Int32
+#pragma warning restore 1591
     }
 
     /// <summary>

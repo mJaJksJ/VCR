@@ -1,21 +1,21 @@
-﻿using Iris.Api;
-using Iris.Database;
+﻿using Iris.Database;
 using Iris.Services.AuthService;
 using Iris.Stores.AuthRequestStore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Serilog;
 using Iris.Api.Results;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Iris.Stores;
 using Iris.Configuration;
 using Iris.Helpers;
 
 namespace Iris.Controllers.AuthController
 {
+    /// <summary>
+    /// Контроллер авторизации
+    /// </summary>
     [Authorize]
     public class AuthController: Controller
     {
@@ -26,6 +26,9 @@ namespace Iris.Controllers.AuthController
 
         private static readonly Serilog.ILogger Log = Serilog.Log.ForContext<AuthController>();
 
+        /// <summary>
+        /// .ctor
+        /// </summary>
         public AuthController(IAuthRequestsStore authRequestsStore, IAuthService authService, TokensStore tokensStore, Config config)
         {
             _authRequestsStore = authRequestsStore;
@@ -34,7 +37,10 @@ namespace Iris.Controllers.AuthController
             _config = config;
         }
 
-
+        /// <summary>
+        /// Инициализировать авторизацию
+        /// </summary>
+        /// <returns>Id запроса авторизации</returns>
         [HttpPost("~/api/authorize"), AllowAnonymous]
         [ProducesResponseType(typeof(int), 201)]
         public IActionResult InitAuth()
@@ -46,9 +52,15 @@ namespace Iris.Controllers.AuthController
             );
         }
 
+        /// <summary>
+        /// Выполнить авторизацию
+        /// </summary>
+        /// <param name="id">Id запроса авторизации</param>
+        /// <param name="authRequest">Контракт запроса авторизации</param>
+        /// <returns>Контракт ответа авторизации</returns>
         [HttpPut("~/api/authorize/{id}"), AllowAnonymous]
-        [ProducesResponseType(typeof(AuthResponse), 200)]
-        public IActionResult ExecuteAuthorization(string id, [FromBody] AuthRequest authRequest)
+        [ProducesResponseType(typeof(AuthResponseContract), 200)]
+        public IActionResult ExecuteAuthorization(string id, [FromBody] AuthRequestContract authRequest)
         {
             var operationRequest = _authRequestsStore.FindRequest(id);
 
@@ -88,7 +100,7 @@ namespace Iris.Controllers.AuthController
 
             Log.Information($"Пользователь {user.Name} авторизован");
 
-            return Ok(new AuthResponse
+            return Ok(new AuthResponseContract
             {
                 UserId = userIdVal,
                 Login = identity.Name,
@@ -98,6 +110,9 @@ namespace Iris.Controllers.AuthController
             });
         }
 
+        /// <summary>
+        /// Де-авторизация
+        /// </summary>
         [HttpPost("~/api/authorize/deauth")]
         [ProducesResponseType(typeof(OkResult), 200)]
         public IActionResult DeAuth()
@@ -112,6 +127,10 @@ namespace Iris.Controllers.AuthController
             return Ok();
         }
 
+        /// <summary>
+        /// Проверка авторизированности
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("~/api/authorize/isauth"), AllowAnonymous]
         [ProducesResponseType(typeof(bool), 200)]
         public IActionResult IsAuth()

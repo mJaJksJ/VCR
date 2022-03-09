@@ -35,6 +35,7 @@ namespace Iris.Services.AuthService
             return (GenerateIdentity(user), user);
         }
 
+        /// <inheritdoc/>
         public (string token, DateTime expires) GenerateToken(IEnumerable<Claim> claims, User user)
         {
             var dtNow = DateTime.Now;

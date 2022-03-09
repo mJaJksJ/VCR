@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 namespace Iris.Controllers.AuthController
 {
     /// <summary>
-    /// Запрос авторизации
+    /// Контракт запроса авторизации
     /// </summary>
-    public class AuthRequest
+    public class AuthRequestContract
     {
         /// <summary>
         /// Логин
