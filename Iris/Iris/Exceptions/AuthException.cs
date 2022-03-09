@@ -3,7 +3,7 @@
     /// <summary>
     /// Ошибка авторизации
     /// </summary>
-    public class AuthException: IrisException
+    public class AuthException : IrisException
     {
         /// <summary>
         /// .ctor

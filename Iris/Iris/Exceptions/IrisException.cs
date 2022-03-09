@@ -1,12 +1,11 @@
-﻿using Iris.Api;
-using Iris.Api.Results;
+﻿using Iris.Api.Results;
 
 namespace Iris.Exceptions
 {
     /// <summary>
     /// Класс Iris ошибок
     /// </summary>
-    public abstract class IrisException: Exception
+    public abstract class IrisException : Exception
     {
         /// <summary>
         /// Сообщение ошибки (рус)

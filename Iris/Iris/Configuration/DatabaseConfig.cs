@@ -3,7 +3,7 @@
     /// <summary>
     /// Конфигурации базы данных
     /// </summary>
-    public class DatabaseConfig: ConfigExtension, IJoinableConfig
+    public class DatabaseConfig : ConfigExtension, IJoinableConfig
     {
         /// <summary>
         /// Сервер расположения бд

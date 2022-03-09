@@ -3,7 +3,7 @@
 namespace Iris.Database
 {
 #pragma warning disable 1591
-    public class DatabaseContext: DbContext
+    public class DatabaseContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Account> Accounts { get; set; }

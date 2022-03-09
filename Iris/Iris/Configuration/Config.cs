@@ -8,7 +8,7 @@ namespace Iris.Configuration
     /// <summary>
     /// Конфигурация
     /// </summary>
-    public class Config: ConfigExtension, IJoinableConfig
+    public class Config : ConfigExtension, IJoinableConfig
     {
         /// <summary>
         /// Конфигурация базы данных
@@ -63,7 +63,7 @@ namespace Iris.Configuration
                 AuthConfig = new AuthConfig
                 {
                     JwtSecurityKey = Encoding.ASCII.GetBytes("8u5j4WXfR74kDGE38k32zIBrLuDELjSTGzTx97OWwVY01-0uaayMdBlBWfZ55Fy8"),
-                    JwtLifetime = 24*3600,
+                    JwtLifetime = 24 * 3600,
                     JwtAudience = "iris",
                     JwtIssuer = "iris"
                 }
@@ -95,7 +95,7 @@ namespace Iris.Configuration
 
             var config = JsonSerializer.Deserialize<Config>(File.ReadAllText(path));
 
-            if(config == null)
+            if (config == null)
             {
                 Log.Warning($"Config {path} load badly");
                 return this;

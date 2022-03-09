@@ -11,7 +11,7 @@ namespace Iris.Database
         /// Id
         /// </summary>
         public int Id { get; set; }
-        
+
         /// <summary>
         /// Ip
         /// </summary>

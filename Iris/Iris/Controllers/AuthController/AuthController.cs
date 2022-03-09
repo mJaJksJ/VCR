@@ -1,15 +1,15 @@
-﻿using Iris.Database;
+﻿using Iris.Api.Results;
+using Iris.Configuration;
+using Iris.Database;
+using Iris.Helpers;
 using Iris.Services.AuthService;
+using Iris.Stores;
 using Iris.Stores.AuthRequestStore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using Iris.Api.Results;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Iris.Stores;
-using Iris.Configuration;
-using Iris.Helpers;
+using System.Security.Claims;
 
 namespace Iris.Controllers.AuthController
 {
@@ -17,7 +17,7 @@ namespace Iris.Controllers.AuthController
     /// Контроллер авторизации
     /// </summary>
     [Authorize]
-    public class AuthController: Controller
+    public class AuthController : Controller
     {
         private readonly IAuthRequestsStore _authRequestsStore;
         private readonly IAuthService _authService;
