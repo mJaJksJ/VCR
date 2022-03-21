@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Iris.Api.Controllers.AuthController
+namespace Iris.Api.Controllers.AuthControllers
 {
     /// <summary>
     /// Контракт ответа авторизации

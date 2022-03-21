@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace Iris.Api.Controllers.AuthController
+namespace Iris.Api.Controllers.AuthControllers
 {
     /// <summary>
     /// Контроллер авторизации

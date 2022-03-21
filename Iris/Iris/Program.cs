@@ -1,6 +1,7 @@
 using Iris.Configuration;
 using Iris.Database;
 using Iris.Services.AuthService;
+using Iris.Services.MailServersService;
 using Iris.Stores;
 using Iris.Stores.AuthRequestStore;
 using Iris.Stores.ServiceConnectionStore;
@@ -11,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 using System.Reflection;
+
 
 // Logger Configuration
 Serilog.Log.Logger = new LoggerConfiguration()
@@ -24,12 +26,16 @@ var config = Config.BuildConfig();
 var builder = WebApplication.CreateBuilder(args);
 
 // Add serilog logger
+var logTemplateConsole = "[{Level:u3}] <{ThreadId}> :: {Message:lj}{NewLine}{Exception}";
+var logTemplateFile = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] <{ThreadId}> :: {Message:lj}{NewLine}{Exception}";
 builder.Host.UseSerilog((context, services, configuration) => configuration
                     .ReadFrom.Configuration(context.Configuration)
                     .ReadFrom.Services(services)
                     .Enrich.FromLogContext()
-                    .WriteTo.Console()
+                    .Enrich.WithThreadId()
+                    .WriteTo.Console(outputTemplate: logTemplateConsole)
                     .WriteTo.File(
+                        outputTemplate: logTemplateFile,
                         path: config.Logger.FileName,
                         shared: true,
                         rollingInterval: RollingInterval.Day,
@@ -115,6 +121,7 @@ builder.Services.AddSingleton<IServerConnectionStore, ServerConnectionStore>();
 builder.Services.AddSingleton<IAuthRequestsStore, AuthRequestsStore>();
 builder.Services.AddSingleton<TokensStore>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
+builder.Services.AddScoped<IMailServersService, MailServersService>();
 
 var app = builder.Build();
 

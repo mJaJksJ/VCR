@@ -3,7 +3,7 @@
 namespace Iris.Database
 {
     /// <summary>
-    /// Аккаунт пользователя
+    /// Учетная запись пользователя
     /// </summary>
     public class Account
     {

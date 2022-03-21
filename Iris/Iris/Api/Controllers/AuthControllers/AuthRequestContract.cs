@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
-namespace Iris.Api.Controllers.AuthController
+namespace Iris.Api.Controllers.AuthControllers
 {
     /// <summary>
     /// Контракт запроса авторизации

@@ -9,6 +9,7 @@ import Paths from "../../Paths";
 const SignInForm = React.forwardRef((props, ref) => {
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
+    const [key, setKey] = useState("");
     const {setIsAuth, user, setUser, setIsClickLogin} = useContext(AuthContext);
 
     const SignInRequest = async () => {
@@ -18,7 +19,7 @@ const SignInForm = React.forwardRef((props, ref) => {
 
         if (response.ok) {
             const requestId = await response.text();
-            const redirectUrl = Paths.auth+"/"+requestId;
+            const redirectUrl = Paths.auth + "/" + requestId;
 
             await SignInResult(redirectUrl);
         }
@@ -49,12 +50,22 @@ const SignInForm = React.forwardRef((props, ref) => {
     }
 
     return (<div className={styleClasses.signInForm}>
+        <div className={styleClasses.title}>Вход</div>
         <div className={styleClasses.central}>
             <IrisInput
                 value={login}
                 onChange={e => setLogin(e.target.value)}
                 type="text"
                 placeholder="Логин"
+                className={`${irisInputStyles.irisInput} ${styleClasses.input}`}
+            />
+        </div>
+        <div className={styleClasses.central}>
+            <IrisInput
+                value={key}
+                onChange={e => setKey(e.target.value)}
+                type="password"
+                placeholder="Ключ"
                 className={`${irisInputStyles.irisInput} ${styleClasses.input}`}
             />
         </div>
@@ -67,6 +78,7 @@ const SignInForm = React.forwardRef((props, ref) => {
                 className={`${irisInputStyles.irisInput} ${styleClasses.input}`}
             />
         </div>
+
         <div className={styleClasses.central}>
             <IrisButton onClick={SignInRequest}>
                 Войти

@@ -11,6 +11,10 @@ namespace Iris.Database
 
         public DbSet<AuthRequestOperation> AuthRequests { get; set; }
 
+        public DbSet<Letter> Letters { get; set; }
+        public DbSet<Attachment> Attachments { get; set; }
+        public DbSet<Person> Persons { get; set; }
+
         public DatabaseContext()
         {
 
@@ -19,6 +23,16 @@ namespace Iris.Database
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=Database\\Database.db");
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Letter>()
+                    .HasMany(c => c.Receivers)
+                    .WithMany(s => s.ReceivedLetters);
+
+            modelBuilder.Entity<Person>()
+                .HasMany(c => c.SentLetters)
+                .WithOne(s => s.Sender);
         }
     }
 }
