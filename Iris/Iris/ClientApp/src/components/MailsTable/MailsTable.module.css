@@ -1,0 +1,21 @@
+.mailsTable {
+    width: 93vw;
+    border-radius: 5px;
+    border: 3px solid var(--color-bordo-shadow);
+    margin: 5px;
+    text-align: center;
+}
+
+.title {
+    background-color: var(--color-bordo-shadow);
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    color: var(--color-brown);
+    font-weight: bold;
+}
+
+.footer {
+    text-align: center;
+    background-color: var(--color-purple-ligth);
+}

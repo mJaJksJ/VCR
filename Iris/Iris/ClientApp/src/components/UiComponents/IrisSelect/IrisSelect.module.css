@@ -1,4 +1,4 @@
-.irisButton {
+.irisSelect {
     border: 3px solid var(--color-bordo-shadow);
     border-radius: 5px;
     color: var(--color-brown-shadow);
@@ -8,8 +8,12 @@
     background-color: var(--color-purple-dark-shadow);
 }
 
-.irisButton:enabled:hover {
+.irisSelect:hover {
     border: 3px solid var(--color-bordo);
     background-color: var(--color-purple-dark);
     color: var(--color-brown);
+}
+
+.irisOption{
+    background-color: var(--color-purple-shadow);
 }
