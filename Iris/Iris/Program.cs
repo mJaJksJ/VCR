@@ -120,7 +120,7 @@ builder.Services.AddSingleton(dbContext);
 builder.Services.AddSingleton<IServerConnectionStore, ServerConnectionStore>();
 builder.Services.AddSingleton<IAuthRequestsStore, AuthRequestsStore>();
 builder.Services.AddSingleton<TokensStore>();
-builder.Services.AddSingleton<IAuthService, AuthService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IMailServersService, MailServersService>();
 
 var app = builder.Build();

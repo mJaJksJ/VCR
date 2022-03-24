@@ -1,0 +1,29 @@
+.letter {
+    width: 750px;
+    border-radius: 5px;
+    border: 3px solid var(--color-bordo-shadow);
+    margin: 5px;
+}
+
+.input {
+    border: none;
+    margin-left: 15px;
+}
+
+.central {
+    text-align: center;
+}
+
+.right {
+    display: flex;
+    float: right;
+}
+
+.title {
+    background-color: var(--color-bordo-shadow);
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    color: var(--color-brown);
+    font-weight: bold;
+}

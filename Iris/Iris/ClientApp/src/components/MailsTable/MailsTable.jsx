@@ -1,7 +1,6 @@
-import React, {useContext, useState} from 'react';
+import React from 'react';
 import styleClasses from './MailsTable.module.css';
 import IrisButton from "../UiComponents/IrisButton/IrisButton";
-import IrisInput from "../UiComponents/IrisInput/IrisInput";
 import IrisSelect from "../UiComponents/IrisSelect/IrisSelect";
 
 const MailsTable = React.forwardRef((props, ref) => {

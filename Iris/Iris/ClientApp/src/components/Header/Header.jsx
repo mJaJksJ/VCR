@@ -5,7 +5,7 @@ import {AuthContext} from "../../context/AuthContext";
 import Paths from "../../Paths";
 
 const Header = React.forwardRef((props, ref) => {
-    const {isAuth, setIsAuth, setIsClickLogin, user} = useContext(AuthContext);
+    const {isAuth, setIsAuth, setIsClickLogin} = useContext(AuthContext);
 
     const exit = async () => {
         const response = await fetch(Paths.deauth, {
