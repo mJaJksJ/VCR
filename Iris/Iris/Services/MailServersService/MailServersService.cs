@@ -3,6 +3,7 @@ using Iris.Database;
 
 namespace Iris.Services.MailServersService
 {
+    /// <inheritdoc cref="IMailServersService"/>
     public class MailServersService : IMailServersService
     {
         private readonly DatabaseContext _databaseContext;
@@ -15,6 +16,7 @@ namespace Iris.Services.MailServersService
             _databaseContext = context;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<MailServerAccountContract> GetMailServerAccounts(int userId)
         {
             var serverAccounts = _databaseContext.Accounts
@@ -31,12 +33,14 @@ namespace Iris.Services.MailServersService
             return serverAccounts;
         }
 
-        public void NewMailServer(MailServerContract mailServerContract)
+        /// <inheritdoc/>
+        public MailServerAccountContract NewMailServer(MailServerContract mailServerContract)
         {
-            if(_databaseContext.MailServers.Any(_ => _.Host == mailServerContract.Host && _.Port == mailServerContract.Port))
+            if (_databaseContext.MailServers.Any(_ => _.Host == mailServerContract.Host && _.Port == mailServerContract.Port))
             {
                 throw new Exception();
             }
+            throw new Exception();
         }
     }
 }

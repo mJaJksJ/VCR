@@ -33,14 +33,18 @@ var logTemplateFile = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] <{Th
 
 if (!Directory.Exists(config.Logger.FilePath))
 {
-    Directory.CreateDirectory(config.Logger.FilePath);
-    log.Information($"create directory {config.Logger.FilePath} for logs");
+    try
+    {
+        Directory.CreateDirectory(config.Logger.FilePath);
+        log.Information($"create directory {config.Logger.FilePath} for logs");
+    }
+    catch
+    {
+        log.Error("Can't find and create directory for logs");
+        return;
+    }
 }
-else
-{
-    log.Error("Can't find and create directory for logs");
-    return;
-}
+
 
 builder.Host.UseSerilog((context, services, configuration) => configuration
                     .ReadFrom.Configuration(context.Configuration)

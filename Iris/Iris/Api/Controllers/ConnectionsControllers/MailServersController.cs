@@ -13,11 +13,18 @@ namespace Iris.Api.Controllers.ConnectionsControllers
     {
         private readonly IMailServersService _mailServersService;
 
+        /// <summary>
+        /// .ctor
+        /// </summary>
         public MailServersController(IMailServersService mailServersService)
         {
             _mailServersService = mailServersService;
         }
 
+        /// <summary>
+        /// Получить список аккаунтов к почтовым серверам пользователя
+        /// </summary>
+        /// <param name="userId">Id пользователя</param>
         [HttpGet("~/api/connections/mailservers/accounts/{userId}"), AllowAnonymous]
         [ProducesResponseType(typeof(IEnumerable<MailServerAccountContract>), 200)]
         public IActionResult GetMailServersAccounts(int userId)
@@ -26,11 +33,15 @@ namespace Iris.Api.Controllers.ConnectionsControllers
             return Ok(serverAccounts);
         }
 
+        /// <summary>
+        /// Добавить новый почтовый сервер
+        /// </summary>
+        /// <param name="mailServerContract">Контракт добавления сервера</param>
         [HttpPost("~/api/connections/mailservers"), AllowAnonymous]
         [ProducesResponseType(typeof(IEnumerable<MailServerAccountContract>), 200)]
-        public IActionResult AddUserMailService(int userId)
+        public IActionResult AddUserMailService([FromBody] MailServerContract mailServerContract)
         {
-            var serverAccounts = _mailServersService.GetMailServerAccounts(userId);
+            var serverAccounts = _mailServersService.NewMailServer(mailServerContract);
             return Ok(serverAccounts);
         }
     }

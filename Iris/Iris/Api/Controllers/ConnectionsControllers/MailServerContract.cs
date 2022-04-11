@@ -1,5 +1,8 @@
 ﻿namespace Iris.Api.Controllers.ConnectionsControllers
 {
+    /// <summary>
+    /// Контракт добавления сервера
+    /// </summary>
     public class MailServerContract
     {
         /// <summary>

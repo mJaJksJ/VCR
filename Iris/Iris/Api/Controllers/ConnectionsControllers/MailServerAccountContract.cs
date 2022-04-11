@@ -9,7 +9,7 @@
         /// Id сервера
         /// </summary>
         public int Id { get; set; }
-        
+
         /// <summary>
         /// Имя сервера
         /// </summary>
