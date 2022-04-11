@@ -1,4 +1,4 @@
-﻿namespace Iris.Exceptions
+﻿namespace Iris.Exceptions.UserExceptions
 {
     /// <summary>
     /// Ошибка отсутствияподключения к почтовому серверу
