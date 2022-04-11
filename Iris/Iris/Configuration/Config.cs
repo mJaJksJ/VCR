@@ -57,7 +57,8 @@ namespace Iris.Configuration
                 Logger = new LoggerConfig
                 {
                     FileName = "Iris.log",
-                    LimitFileSize = 1024 * 1024 * 32
+                    LimitFileSize = 1024 * 1024 * 32,
+                    FilePath = "../logs"
                 },
                 MailServers = Array.Empty<MailServerConfig>(),
                 AuthConfig = new AuthConfig

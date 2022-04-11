@@ -21,13 +21,27 @@ Serilog.Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()
             .CreateBootstrapLogger();
 
+var log = Serilog.Log.ForContext<Program>();
+
 var config = Config.BuildConfig();
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add serilog logger
+#region serilog configuration
 var logTemplateConsole = "[{Level:u3}] <{ThreadId}> :: {Message:lj}{NewLine}{Exception}";
 var logTemplateFile = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] <{ThreadId}> :: {Message:lj}{NewLine}{Exception}";
+
+if (!Directory.Exists(config.Logger.FilePath))
+{
+    Directory.CreateDirectory(config.Logger.FilePath);
+    log.Information($"create directory {config.Logger.FilePath} for logs");
+}
+else
+{
+    log.Error("Can't find and create directory for logs");
+    return;
+}
+
 builder.Host.UseSerilog((context, services, configuration) => configuration
                     .ReadFrom.Configuration(context.Configuration)
                     .ReadFrom.Services(services)
@@ -36,12 +50,14 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
                     .WriteTo.Console(outputTemplate: logTemplateConsole)
                     .WriteTo.File(
                         outputTemplate: logTemplateFile,
-                        path: config.Logger.FileName,
+                        path: Path.Combine(config.Logger.FilePath, config.Logger.FileName),
                         shared: true,
                         rollingInterval: RollingInterval.Day,
                         fileSizeLimitBytes: config.Logger.LimitFileSize
                         )
                     );
+
+#endregion
 
 // Add services to the container.
 builder.Services.AddControllers();

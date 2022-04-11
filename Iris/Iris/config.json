@@ -8,7 +8,8 @@
   },
   "Logger": {
     "FileName": "Iris.log",
-    "LimitFileSize": 33554432
+    "LimitFileSize": 33554432,
+    "FilePath": "../logs"
   },
   "MailServers": [],
   "AuthConfig": {

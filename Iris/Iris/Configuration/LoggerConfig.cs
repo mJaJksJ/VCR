@@ -9,9 +9,15 @@
         /// Имя файла логгера
         /// </summary>
         public string FileName { get; set; }
+
         /// <summary>
         /// Лимит на размер файла
         /// </summary>
         public int LimitFileSize { get; set; }
+
+        /// <summary>
+        /// Папка сохранения файлов лога
+        /// </summary>
+        public string FilePath { get; set; }
     }
 }
