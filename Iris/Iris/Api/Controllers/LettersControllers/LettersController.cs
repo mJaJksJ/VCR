@@ -1,5 +1,6 @@
-﻿using Iris.Database;
-using Iris.Stores.ServiceConnectionStore;
+﻿using Iris.Helpers;
+using Iris.Services.LettersService;
+using Iris.Services.LettersService.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,28 +9,30 @@ namespace Iris.Api.Controllers.LettersControllers
     /// <summary>
     /// Контроллер получения писем
     /// </summary>
+    [Authorize]
     public class LettersController : Controller
     {
-        private readonly DatabaseContext _databaseContext;
-
-        private readonly IServerConnectionStore _serverCollectionStore;
+        private readonly ILetterService _letterService;
 
         /// <summary>
         /// .ctor
         /// </summary>
-        public LettersController(DatabaseContext databaseContext, IServerConnectionStore serverConnectionStore)
+        public LettersController(ILetterService letterService)
         {
-            _databaseContext = databaseContext;
-            _serverCollectionStore = serverConnectionStore;
+            _letterService = letterService;
         }
 
-        [HttpGet("~/api/letters/all/{userId}"), AllowAnonymous]
-        [ProducesResponseType(typeof(int), 200)]
-        public IActionResult GetAllLeters(int userId)
+        /// <summary>
+        /// Получить все письма
+        /// </summary>
+        [HttpGet("~/api/letters/all")]
+        [ProducesResponseType(typeof(IEnumerable<LetterContract>), 200)]
+        public IActionResult GetAllLeters()
         {
-            
+            var userId = User.GetUserId();
+            var letters = _letterService.GetAllLetters(userId);
 
-            return Ok();
+            return Ok(letters);
         }
     }
 }

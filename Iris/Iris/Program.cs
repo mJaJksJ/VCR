@@ -1,6 +1,7 @@
 using Iris.Configuration;
 using Iris.Database;
 using Iris.Services.AuthService;
+using Iris.Services.LettersService;
 using Iris.Services.MailServersService;
 using Iris.Stores;
 using Iris.Stores.AuthRequestStore;
@@ -142,6 +143,7 @@ builder.Services.AddSingleton<IAuthRequestsStore, AuthRequestsStore>();
 builder.Services.AddSingleton<TokensStore>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddScoped<IMailServersService, MailServersService>();
+builder.Services.AddScoped<ILetterService, LetterService>();
 
 var app = builder.Build();
 

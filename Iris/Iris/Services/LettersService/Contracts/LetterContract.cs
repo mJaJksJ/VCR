@@ -1,9 +1,9 @@
-﻿namespace Iris.Database
+﻿namespace Iris.Services.LettersService.Contracts
 {
     /// <summary>
-    /// Письмо
+    /// Котракт письма
     /// </summary>
-    public class Letter
+    public class LetterContract
     {
         /// <summary>
         /// Id письма
@@ -13,17 +13,12 @@
         /// <summary>
         /// Отправитель
         /// </summary>
-        public Person Sender { get; set; }
-
-        /// <summary>
-        /// Id отправителя
-        /// </summary>
-        public int SenderId { get; set; }
+        public PersonContract Sender { get; set; }
 
         /// <summary>
         /// Получатели
         /// </summary>
-        public IEnumerable<Person> Receivers { get; set; }
+        public IEnumerable<PersonContract> Receivers { get; set; }
 
         /// <summary>
         /// Тема
@@ -43,18 +38,6 @@
         /// <summary>
         /// Вложения
         /// </summary>
-
-        public IEnumerable<Attachment> Attacments { get; set; }
-
-        /// <summary>
-        /// Id учетной записи
-        /// </summary>
-        public int AccoundId { get; set; }
-
-        /// <summary>
-        /// Учетная запись
-        /// </summary>
-        public Account Account { get; set; }
-
+        public IEnumerable<AttachmentContract> Attacments { get; set; }
     }
 }

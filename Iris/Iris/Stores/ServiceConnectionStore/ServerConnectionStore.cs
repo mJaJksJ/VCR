@@ -1,6 +1,6 @@
 ﻿using Iris.Database;
 using Iris.Helpers;
-using MailKit;
+using Microsoft.EntityFrameworkCore;
 
 namespace Iris.Stores.ServiceConnectionStore
 {
@@ -16,10 +16,16 @@ namespace Iris.Stores.ServiceConnectionStore
         /// </summary>
         public ServerConnectionStore(DatabaseContext databaseContext)
         {
+            _databaseContext = databaseContext;
             _connectionsStorage = new Dictionary<int, List<ServerConnection>>();
             FillStorageFromDb();
+        }
 
-            _databaseContext = databaseContext;
+        /// <inheritdoc/>
+        public void AddUserConnection(int userId, ServerConnection serverConnection)
+        {
+            _connectionsStorage.EnsureUserHaveConnections(userId);
+            _connectionsStorage[userId].Add(serverConnection);
         }
 
         /// <inheritdoc/>
@@ -39,16 +45,14 @@ namespace Iris.Stores.ServiceConnectionStore
         {
             lock (_locker)
             {
-                var connections = GetUserConnections(account.UserId).ToList();
-
                 var connectionProtocol = ConnectionProtocolHelper.ByString(account.ConnectionProtocol);
-                using IMailService connection = connectionProtocol.GetConnection();
+                var connection = connectionProtocol.GetConnection();
 
                 connection.Connect(account.MailServer.Host, account.MailServer.Port, account.UseSsl);
                 connection.Authenticate(account.Name, account.Password);
 
                 var serverConnection = new ServerConnection(connection);
-                connections.Add(serverConnection);
+                AddUserConnection(account.UserId, serverConnection);
 
                 return serverConnection.Id;
             }
@@ -56,7 +60,9 @@ namespace Iris.Stores.ServiceConnectionStore
 
         private void FillStorageFromDb()
         {
-            var users = _databaseContext.Users;
+            var users = _databaseContext.Users
+                .Include(_ => _.Accounts)
+                .ThenInclude(_ => _.MailServer);
 
             foreach (var user in users)
             {

@@ -3,7 +3,7 @@
     /// <summary>
     /// Ошибка несуществующего пользователя
     /// </summary>
-    public class UserNotExistException: IrisException
+    public class UserNotExistException : IrisException
     {
         /// <summary>
         /// .ctor

@@ -3,7 +3,7 @@
     /// <summary>
     /// Ошибка: пользователь не авторизован
     /// </summary>
-    public class UserNotAuthorizedException: IrisException
+    public class UserNotAuthorizedException : IrisException
     {
         /// <summary>
         /// .ctor

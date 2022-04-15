@@ -1,4 +1,4 @@
-﻿using Iris.Exceptions;
+﻿using Iris.Exceptions.UserExceptions;
 using Iris.Stores.ServiceConnectionStore;
 
 namespace Iris.Helpers
