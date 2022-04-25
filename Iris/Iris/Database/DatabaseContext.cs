@@ -24,6 +24,7 @@ namespace Iris.Database
         {
             optionsBuilder.UseSqlite("Data Source=Database\\Database.db");
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Letter>()

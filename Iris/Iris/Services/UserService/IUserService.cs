@@ -1,4 +1,6 @@
-﻿namespace Iris.Services.UserService
+﻿using Iris.Database;
+
+namespace Iris.Services.UserService
 {
     /// <summary>
     /// Сервис работы с пользователем
@@ -10,5 +12,11 @@
         /// </summary>
         /// <param name="userId">Id пользователя</param>
         void EnsureUserExist(int userId);
+
+        /// <summary>
+        /// Получить юзера по его логину
+        /// </summary>
+        /// <param name="login">Логин пользователя</param>
+        User GetUserByLogin(string login);
     }
 }

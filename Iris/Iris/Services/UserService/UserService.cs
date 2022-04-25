@@ -25,5 +25,11 @@ namespace Iris.Services.UserService
                 throw new UserNotExistException(userId);
             }
         }
+
+        /// <inheritdoc/>
+        public User GetUserByLogin(string login)
+        {
+            return _databaseContext.Users.SingleOrDefault(_ => _.Name == login);
+        }
     }
 }

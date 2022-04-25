@@ -4,6 +4,7 @@ using Iris.Services.AuthService;
 using Iris.Services.FormatLettersService;
 using Iris.Services.LettersService;
 using Iris.Services.MailServersService;
+using Iris.Services.UserService;
 using Iris.Stores;
 using Iris.Stores.AuthRequestStore;
 using Iris.Stores.ServiceConnectionStore;
@@ -142,10 +143,12 @@ builder.Services.AddSingleton(dbContext);
 builder.Services.AddSingleton<IServerConnectionStore, ServerConnectionStore>();
 builder.Services.AddSingleton<IAuthRequestsStore, AuthRequestsStore>();
 builder.Services.AddSingleton<TokensStore>();
+builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddScoped<IMailServersService, MailServersService>();
 builder.Services.AddScoped<ILetterService, LetterService>();
 builder.Services.AddScoped<IFormatLettersSevice, FormatLettersSevice>();
+
 
 var app = builder.Build();
 

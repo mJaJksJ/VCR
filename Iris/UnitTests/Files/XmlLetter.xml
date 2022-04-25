@@ -1,0 +1,19 @@
+﻿<Letter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Subject="TestFormatting" Date="2022-04-17T17:05:30">
+  <Id>1</Id>
+  <Sender Name="testSender" Email="testSender@iris.ru">
+    <Id>1</Id>
+  </Sender>
+  <Receiver Name="testReceiver1" Email="testReceiver1@iris.ru">
+    <Id>2</Id>
+  </Receiver>
+  <Receiver Name="testReceiver2" Email="testReceiver2@iris.ru">
+    <Id>3</Id>
+  </Receiver>
+  <Text>Test letter for FormatLettersServiceTests</Text>
+  <Attachmetns Name="attach_1.txt">
+    <Id>1</Id>
+  </Attachmetns>
+  <Attachmetns Name="attach_2.7z">
+    <Id>2</Id>
+  </Attachmetns>
+</Letter>
