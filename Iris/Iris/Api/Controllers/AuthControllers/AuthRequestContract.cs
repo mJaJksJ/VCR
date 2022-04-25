@@ -21,5 +21,12 @@ namespace Iris.Api.Controllers.AuthControllers
         [Required]
         [JsonProperty("password")]
         public string Password { get; set; }
+
+        /// <summary>
+        /// Ключ-пароль
+        /// </summary>
+        [Required]
+        [JsonProperty("key_password")]
+        public string KeyPassword { get; set; }
     }
 }

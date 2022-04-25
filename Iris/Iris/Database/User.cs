@@ -29,6 +29,11 @@ namespace Iris.Database
         public bool IsAdmin { get; set; }
 
         /// <summary>
+        /// Токен
+        /// </summary>
+        public string Token { get; set; }
+
+        /// <summary>
         /// Аккаунты
         /// </summary>
         public IEnumerable<Account> Accounts { get; set; }

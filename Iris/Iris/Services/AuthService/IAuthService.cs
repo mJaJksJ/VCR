@@ -1,4 +1,5 @@
-﻿using Iris.Database;
+﻿using Iris.Api.Controllers.AuthControllers;
+using Iris.Database;
 using System.Security.Claims;
 
 namespace Iris.Services.AuthService
@@ -12,12 +13,8 @@ namespace Iris.Services.AuthService
         /// Авторизоваться
         /// </summary>
         /// <param name="operation">Операция запроса авторизации</param>
-        /// <param name="login">Логин</param>
-        /// <param name="password">Пароль</param>
-        (ClaimsIdentity, User) Authorize(
-            AuthRequestOperation operation,
-            string login,
-            string password);
+        /// <param name="authRequest">Контракт запроса авторизации</param>
+        (ClaimsIdentity, User) Authorize(AuthRequestOperation operation, AuthRequestContract authRequest);
 
         /// <summary>
         /// Создать токен
