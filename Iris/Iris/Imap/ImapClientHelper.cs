@@ -1,4 +1,5 @@
-﻿using Iris.Services.LettersService.Contracts;
+﻿using Iris.Api.Controllers.LettersControllers;
+using Iris.Services.LettersService.Contracts;
 using MailKit;
 using MailKit.Net.Imap;
 
@@ -26,11 +27,65 @@ namespace Iris.Imap
                 letters.Add(new LetterContract
                 {
                     Sender = new PersonContract(letter.From[0]),
-                    Receivers = letter.To.Select(_ => new PersonContract(_)),
+                    Receivers = letter.To.Select(_ => new PersonContract(_)).ToList(),
                     Subject = letter.Subject,
                     Date = letter.Date.UtcDateTime,
                     Text = letter.HtmlBody
                 }); ;
+            }
+
+            return letters;
+        }
+
+        /// <summary>
+        /// Получить письма
+        /// </summary>
+        /// <param name="imapClient"></param>
+        /// <param name="needAttachments">Получать ли вложения</param>
+        /// <exception cref="Exception"></exception>
+        public static IEnumerable<LetterContract> GetLetters(this ImapClient imapClient, NeedAttachments needAttachments)
+        {
+            var inboxFolder = imapClient.Inbox;
+            inboxFolder.Open(FolderAccess.ReadOnly);
+
+            var letters = new List<LetterContract>();
+
+            foreach (var letter in inboxFolder)
+            {
+                var letterContract = new LetterContract
+                {
+                    Sender = new PersonContract(letter.From[0]),
+                    Receivers = letter.To.Select(_ => new PersonContract(_)).ToList(),
+                    Subject = letter.Subject,
+                    Date = letter.Date.UtcDateTime,
+                    Text = letter.HtmlBody
+                };
+
+                switch (needAttachments)
+                {
+                    case NeedAttachments.OnlyName:
+                        letterContract.Attacments.AddRange(letter.Attachments.Select(_ => new AttachmentContract
+                        {
+                            Name = _.ToString()
+                        }));
+                        break;
+
+                    case NeedAttachments.WithoutAttachments:
+                        // nothing
+                        break;
+
+                    case NeedAttachments.WithAttachmentsBlob:
+                        letterContract.Attacments.AddRange(letter.Attachments.Select(_ => new AttachmentContract
+                        {
+                            Name = _.ToString()
+                        }));
+                        break;
+
+                    default:
+                        throw new Exception();
+                }
+
+                letters.Add(letterContract);
             }
 
             return letters;

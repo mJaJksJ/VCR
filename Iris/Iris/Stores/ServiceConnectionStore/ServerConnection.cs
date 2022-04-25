@@ -1,4 +1,5 @@
-﻿using MailKit;
+﻿using Iris.Database;
+using MailKit;
 
 namespace Iris.Stores.ServiceConnectionStore
 {
@@ -16,6 +17,8 @@ namespace Iris.Stores.ServiceConnectionStore
         /// Почтовый сервис
         /// </summary>
         public IMailService MailService { get; set; }
+
+        public Account Account { get; set; }
 
         /// <summary>
         /// .ctor

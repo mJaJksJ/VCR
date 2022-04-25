@@ -48,7 +48,7 @@ namespace Iris.Api.Controllers.LettersControllers
         public IActionResult GetAllLetters(string format)
         {
             var userId = User.GetUserId();
-            var needFormat = _formatLettersSevice.GetFormat(format); 
+            var needFormat = _formatLettersSevice.GetFormat(format);
             var letters = _letterService.GetAllLetters(userId);
             var formattedLetters = _formatLettersSevice.FormatLetters(letters, needFormat);
 
@@ -56,5 +56,15 @@ namespace Iris.Api.Controllers.LettersControllers
         }
 
         #endregion
+
+        [HttpGet("~/api/letters")]
+        [ProducesResponseType(typeof(IEnumerable<LetterContract>), 200)]
+        public IActionResult GetLetters()
+        {
+            var userId = User.GetUserId();
+            var letters = _letterService.GetAllLetters(userId);
+
+            return Ok(letters);
+        }
     }
 }
