@@ -18,6 +18,9 @@ namespace Iris.Stores.ServiceConnectionStore
         /// </summary>
         public IMailService MailService { get; set; }
 
+        /// <summary>
+        /// Учетная запись
+        /// </summary>
         public Account Account { get; set; }
 
         /// <summary>

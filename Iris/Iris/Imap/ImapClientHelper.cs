@@ -2,6 +2,7 @@
 using Iris.Services.LettersService.Contracts;
 using MailKit;
 using MailKit.Net.Imap;
+using MimeKit;
 
 namespace Iris.Imap
 {
@@ -58,16 +59,21 @@ namespace Iris.Imap
                     Receivers = letter.To.Select(_ => new PersonContract(_)).ToList(),
                     Subject = letter.Subject,
                     Date = letter.Date.UtcDateTime,
-                    Text = letter.HtmlBody
+                    Text = letter.HtmlBody,
+                    Attacments = new List<AttachmentContract>()
                 };
 
                 switch (needAttachments)
                 {
                     case NeedAttachments.OnlyName:
-                        letterContract.Attacments.AddRange(letter.Attachments.Select(_ => new AttachmentContract
+                        if (letter.Attachments.Any())
                         {
-                            Name = _.ToString()
-                        }));
+                            var attachs = letter.Attachments.ToArray();
+                            letterContract.Attacments.AddRange(attachs.Select(_ => new AttachmentContract
+                            {
+                                Name = (_ as MimePart).FileName
+                            }));
+                        }
                         break;
 
                     case NeedAttachments.WithoutAttachments:
@@ -75,10 +81,15 @@ namespace Iris.Imap
                         break;
 
                     case NeedAttachments.WithAttachmentsBlob:
-                        letterContract.Attacments.AddRange(letter.Attachments.Select(_ => new AttachmentContract
+                        if (letter.Attachments.Any())
                         {
-                            Name = _.ToString()
-                        }));
+                            var attachs = letter.Attachments.ToArray();
+                            letterContract.Attacments.AddRange(attachs.Select(_ => new AttachmentContract
+                            {
+                                Name = (_ as MimePart).FileName,
+                                Blob = new BinaryReader((_ as MimePart).Content.Stream).ReadBytes((int)(_ as MimePart).Content.Stream.Length)
+                            })) ;
+                        }
                         break;
 
                     default:

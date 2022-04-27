@@ -82,7 +82,7 @@ namespace Iris.Services.LettersService
                 else
                 {
                     letterFrom = lettersRequest.GlobalSettings.LettersStorage;
-                    needAttachments = lettersRequest.AccountsSettings[accId].NeedAttachments;
+                    needAttachments = lettersRequest.GlobalSettings.NeedAttachments;
                 }
 
                 switch (letterFrom)

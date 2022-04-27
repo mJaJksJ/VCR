@@ -2,16 +2,14 @@
 using Iris.Services.FormatLettersService;
 using Iris.Services.LettersService;
 using Iris.Services.LettersService.Contracts;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Iris.Api.Controllers.LettersControllers
+namespace Iris.Api.Controllers.LettersControllers.Specifics
 {
     /// <summary>
-    /// Контроллер получения писем
+    /// Специфичные методы получния писем
     /// </summary>
-    [Authorize]
-    public class LettersController : Controller
+    public class LettersSpecificController : Controller
     {
         private readonly ILetterService _letterService;
         private readonly IFormatLettersSevice _formatLettersSevice;
@@ -19,43 +17,42 @@ namespace Iris.Api.Controllers.LettersControllers
         /// <summary>
         /// .ctor
         /// </summary>
-        public LettersController(ILetterService letterService, IFormatLettersSevice formatLettersSevice)
+        public LettersSpecificController(ILetterService letterService, IFormatLettersSevice formatLettersSevice)
         {
             _letterService = letterService;
             _formatLettersSevice = formatLettersSevice;
         }
 
+        #region GetAllLetters
         /// <summary>
-        /// Получить письма по запросу
+        /// Получить все письма
         /// </summary>
-        /// <param name="lettersRequest"></param>
-        /// <returns></returns>
-        [HttpGet("~/api/letters")]
+        [HttpGet("~/api/letters/all")]
         [ProducesResponseType(typeof(IEnumerable<LetterContract>), 200)]
-        public IActionResult GetLetters([FromQuery] LettersRequest lettersRequest)
+        public IActionResult GetAllLetters()
         {
             var userId = User.GetUserId();
-            var letters = _letterService.GetLetters(userId, lettersRequest);
+            var letters = _letterService.GetAllLetters(userId);
 
             return Ok(letters);
         }
 
         /// <summary>
-        /// Получить письма по запросу
+        /// Получить все письма
+        /// <paramref name="format">Формат</paramref>
         /// </summary>
-        /// <param name="lettersRequest">Запрос писем</param>
-        /// <param name="format">Формат</param>
-        /// <returns></returns>
-        [HttpGet("~/api/{format}/letters")]
+        [HttpGet("~/api/{format}/letters/all")]
         [ProducesResponseType(typeof(IEnumerable<LetterContract>), 200)]
-        public IActionResult GetLetters(string format, [FromQuery] LettersRequest lettersRequest)
+        public IActionResult GetAllLetters(string format)
         {
             var userId = User.GetUserId();
             var needFormat = _formatLettersSevice.GetFormat(format);
-            var letters = _letterService.GetLetters(userId, lettersRequest);
+            var letters = _letterService.GetAllLetters(userId);
             var formattedLetters = _formatLettersSevice.FormatLetters(letters, needFormat);
 
             return Ok(formattedLetters);
         }
+
+        #endregion
     }
 }
