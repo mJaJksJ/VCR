@@ -53,5 +53,10 @@ namespace Iris.Database
         /// Почтовый сервер
         /// </summary>
         public MailServer MailServer { get; set; }
+
+        /// <summary>
+        /// Письма
+        /// </summary>
+        public IEnumerable<Letter> Letters { get; set; }
     }
 }

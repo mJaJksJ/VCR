@@ -11,7 +11,8 @@ namespace Iris.Stores.ServiceConnectionStore
         /// Получить подключения пользователя
         /// </summary>
         /// <param name="userId">Id пользователя</param>
-        IEnumerable<ServerConnection> GetUserConnections(int userId);
+        /// <param name="accIds">Id учетных записей</param>
+        IEnumerable<ServerConnection> GetUserConnections(int userId, IEnumerable<int> accIds = null);
 
         /// <summary>
         /// Добавить подключения пользователя

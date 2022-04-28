@@ -23,6 +23,9 @@ namespace Iris.Services.LettersService.Contracts
         [XmlAttribute("Name")]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Массив байт
+        /// </summary>
         [JsonProperty("Blob")]
         [XmlAttribute("Blob")]
         public byte[] Blob { get; set; }

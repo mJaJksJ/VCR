@@ -29,9 +29,11 @@ namespace Iris.Stores.ServiceConnectionStore
         }
 
         /// <inheritdoc/>
-        public IEnumerable<ServerConnection> GetUserConnections(int userId)
+        public IEnumerable<ServerConnection> GetUserConnections(int userId, IEnumerable<int> accIds)
         {
-            return _connectionsStorage.EnsureUserHaveConnections(userId);
+            var connections = _connectionsStorage.EnsureUserHaveConnections(userId);
+
+            return accIds != null ? connections.Where(_ => accIds.Contains(_.Account.Id)) : connections;
         }
 
         /// <inheritdoc/>
@@ -51,7 +53,11 @@ namespace Iris.Stores.ServiceConnectionStore
                 connection.Connect(account.MailServer.Host, account.MailServer.Port, account.UseSsl);
                 connection.Authenticate(account.Name, account.Password);
 
-                var serverConnection = new ServerConnection(connection);
+                var serverConnection = new ServerConnection(connection)
+                {
+                    Account = account,
+                };
+
                 AddUserConnection(account.UserId, serverConnection);
 
                 return serverConnection.Id;

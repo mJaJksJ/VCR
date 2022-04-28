@@ -1,119 +1,51 @@
-﻿namespace Iris.Api.Controllers.LettersControllers
+﻿using Newtonsoft.Json;
+
+namespace Iris.Api.Controllers.LettersControllers
 {
     /// <summary>
-    /// Параметры для фильтрации и сортировки при получении писем
+    /// Параметры для фильтрации, сортировки и пагинации при получении писем
     /// </summary>
     public class LettersRequest
     {
+        /// <summary>
+        /// Настройки получения писем для отдельных учетных записей
+        /// </summary>
+        [JsonProperty("accounts_setting")]
         public Dictionary<int, Settings> AccountsSettings { get; set; }
 
+        /// <summary>
+        /// Глобальные настройки получения писем
+        /// </summary>
+        [JsonProperty("global_setting")] 
         public Settings GlobalSettings { get; set; }
 
+        /// <summary>
+        /// Сохранять ли письма в локальную базу данных
+        /// </summary>
+        [JsonProperty("save_to_db")]
         public bool SaveLettersToLocalBd { get; set; }
 
+        /// <summary>
+        /// Фильтры писем
+        /// </summary>
+        [JsonProperty("filters")]
         public IEnumerable<FilterLetter> Filters { get; set; }
 
+        /// <summary>
+        /// Сортировка писема
+        /// </summary>
+        [JsonProperty("sorts")]
         public IEnumerable<SortLetter> Sorts { get; set; }
-    }
-
-    public class Settings
-    {
-        /// <summary>
-        /// Откуда получать письма
-        /// </summary>
-        public LettersFrom LettersStorage { get; set; }
 
         /// <summary>
-        /// Получать ли вложения
+        /// .ctor
         /// </summary>
-        public NeedAttachments NeedAttachments { get; set; }
-    }
-
-    public class FilterLetter
-    {
-        /// <summary>
-        /// Поля контракта письма
-        /// </summary>
-        public LetterField Field { get; set; }
-
-        /// <summary>
-        /// Шаблон. Кроме Text и Attacments!
-        /// </summary>
-        public string Template { get; set; }
-
-        /// <summary>
-        /// Шаблоны. Только для Text и Attacments!
-        /// </summary>
-        public IEnumerable<string> Templates { get; set; }
-
-        public bool isRegex { get; set; }
-    }
-
-    public class SortLetter
-    {
-        public LetterField Field { get; set;}
-        public SortBy SortBy { get; set; }
-
-    }
-
-    public enum SortBy
-    {
-        Asc,
-        Desc
-    }
-
-    /// <summary>
-    /// Поля контракта письма
-    /// </summary>
-    public enum LetterField
-    {
-        Sender,
-        Receivers,
-        Subject,
-        Date,
-        Text,
-        Attacments
-    }
-
-    /// <summary>
-    /// Откуда получать письма
-    /// </summary>
-    public enum LettersFrom
-    {
-        /// <summary>
-        /// С почтового сервера
-        /// </summary>
-        Server,
-
-        /// <summary>
-        /// Сохраненные в локальную базу
-        /// </summary>
-        LocalDb,        
-
-        /// <summary>
-        /// С локальной базы и удаленного сервера
-        /// </summary>
-        LocalAndRemote 
-    }
-
-    /// <summary>
-    /// Получать ли вложения
-    /// </summary>
-    public enum NeedAttachments
-    {
-        /// <summary>
-        /// Без вложений
-        /// </summary>
-        WithoutAttachments,
-
-        /// <summary>
-        /// только названия вложений
-        /// </summary>
-        OnlyName,
-
-        /// <summary>
-        /// С вложениями
-        /// </summary>
-        WithAttachmentsBlob
+        public LettersRequest()
+        {
+            AccountsSettings = new Dictionary<int, Settings>();
+            Filters = new List<FilterLetter>();
+            Sorts = new List<SortLetter>();
+            GlobalSettings = new Settings();
+        }
     }
 }
