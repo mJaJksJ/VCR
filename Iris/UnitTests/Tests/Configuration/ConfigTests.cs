@@ -11,7 +11,7 @@ namespace UnitTests.Tests.Configuration
     public class ConfigTests
     {
         [Test]
-        public void DefaultConfig_non_RightConfig()
+        public void DefaultConfig_Non_RightConfig()
         {
             var expected = JObject.FromObject(new Config
             {
@@ -38,7 +38,7 @@ namespace UnitTests.Tests.Configuration
         }
 
         [Test]
-        public void BuildConfig_non_RightConfig()
+        public void BuildConfig_Non_RightConfig()
         {
             var expected = JObject.FromObject(new Config
             {

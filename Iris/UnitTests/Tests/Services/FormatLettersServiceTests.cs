@@ -1,4 +1,5 @@
-﻿using Iris.Enums;
+﻿using System;
+using Iris.Enums;
 using Iris.Services.FormatLettersService;
 using Iris.Services.LettersService.Contracts;
 using NUnit.Framework;
@@ -84,6 +85,64 @@ namespace UnitTests.Tests.Services
             var actual = _formatLettersSevice.FormatLetter(_letterContracts.First(), ResponseFormat.XML);
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void FormatLetters_Json_JsonFormattedLetters()
+        {
+            var expected = File.ReadAllText("Files/JsonLetters.json");
+
+            var actual = _formatLettersSevice.FormatLetters(_letterContracts, ResponseFormat.Json);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void FormatLetters_Xml_XmlFormattedLetters()
+        {
+            var expected = File.ReadAllText("Files/XmlLetters.xml");
+
+            var actual = _formatLettersSevice.FormatLetters(_letterContracts, ResponseFormat.XML);
+
+            Assert.AreEqual(expected, actual);
+        }
+        
+        [TestCase("Json")]
+        [TestCase("JSON")]
+        [TestCase("json")]
+        [TestCase("JsOn")]
+        [TestCase("jsON")]
+        public void GetFormat_jsonFormatString_RightFormat(string format)
+        {
+            var expected = ResponseFormat.Json;
+
+            var actual = _formatLettersSevice.GetFormat(format);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestCase("Xml")]
+        [TestCase("XML")]
+        [TestCase("xml")]
+        [TestCase("XmL")]
+        [TestCase("xML")]
+        public void GetFormat_xmlFormatString_RightFormat(string format)
+        {
+            var expected = ResponseFormat.XML;
+
+            var actual = _formatLettersSevice.GetFormat(format);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestCase("null")]
+        [TestCase("")]
+        [TestCase(" ")]
+        [TestCase("j son ")]
+        [TestCase("x m  l ")]
+        public void GetFormat_badString_Exception(string format)
+        {
+            Assert.Throws<Exception>(() => _formatLettersSevice.GetFormat(format));
         }
     }
 }

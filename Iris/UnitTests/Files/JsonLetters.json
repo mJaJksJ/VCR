@@ -1,0 +1,39 @@
+{
+  "letters": [
+    {
+      "Id": 1,
+      "Sender": {
+        "Id": 1,
+        "Name": "testSender",
+        "Email": "testSender@iris.ru"
+      },
+      "Receivers": [
+        {
+          "Id": 2,
+          "Name": "testReceiver1",
+          "Email": "testReceiver1@iris.ru"
+        },
+        {
+          "Id": 3,
+          "Name": "testReceiver2",
+          "Email": "testReceiver2@iris.ru"
+        }
+      ],
+      "Subject": "TestFormatting",
+      "Date": "2022-04-17T17:05:30",
+      "Text": "Test letter for FormatLettersServiceTests",
+      "Attachmetns": [
+        {
+          "Id": 1,
+          "Name": "attach_1.txt",
+          "Blob": null
+        },
+        {
+          "Id": 2,
+          "Name": "attach_2.7z",
+          "Blob": null
+        }
+      ]
+    }
+  ]
+}

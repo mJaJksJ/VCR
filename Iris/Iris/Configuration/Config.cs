@@ -96,12 +96,6 @@ namespace Iris.Configuration
 
             var config = JsonSerializer.Deserialize<Config>(File.ReadAllText(path));
 
-            if (config == null)
-            {
-                Log.Warning($"Config {path} load badly");
-                return this;
-            }
-
             Log.Information($"Config {path} load succesfully");
             var newConfig = AddConfig(config);
             return newConfig;

@@ -64,10 +64,7 @@ namespace Iris.Services.FormatLettersService
 
         private static string FormatToXml(LetterContract letterContract)
         {
-            //var xDoc = new XDocument(letterContract);
-            //return xDoc.ToString();
             var xmlSerializer = new XmlSerializer(typeof(LetterContract));
-
             var xDoc = new XDocument();
             using (var writer = xDoc.CreateWriter())
             {
@@ -79,14 +76,20 @@ namespace Iris.Services.FormatLettersService
 
         private static string FormatToJson(IEnumerable<LetterContract> letterContracts)
         {
-            var jObject = new JObject(letterContracts);
+            var jObject = new JObject(new JProperty("letters", JArray.FromObject(letterContracts)));
 
             return jObject.ToString();
         }
 
         private static string FormatToXml(IEnumerable<LetterContract> letterContracts)
         {
-            var xDoc = new XDocument(letterContracts);
+            var xmlSerializer = new XmlSerializer(typeof(List<LetterContract>));
+            var xDoc = new XDocument();
+            using (var writer = xDoc.CreateWriter())
+            {
+                xmlSerializer.Serialize(writer, letterContracts);
+            }
+
             return xDoc.ToString();
         }
     }
