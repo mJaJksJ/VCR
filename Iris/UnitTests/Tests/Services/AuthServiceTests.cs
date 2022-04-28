@@ -35,7 +35,7 @@ namespace UnitTests.Tests.Services
                 }
             };
 
-            _authService = new AuthService(null, _config, _userService.Object);
+            _authService = new AuthService(null, _config);
         }
 
         [TearDown]

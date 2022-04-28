@@ -26,7 +26,7 @@ namespace Iris.Imap
                 letters.Add(new LetterContract
                 {
                     Sender = new PersonContract(letter.From[0]),
-                    Receivers = letter.To.Select(_ => new PersonContract(_)),
+                    Receivers = letter.To.Select(_ => new PersonContract(_)).ToList(),
                     Subject = letter.Subject,
                     Date = letter.Date.UtcDateTime,
                     Text = letter.HtmlBody

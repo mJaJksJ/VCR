@@ -23,11 +23,13 @@
   "Attachmetns": [
     {
       "Id": 1,
-      "Name": "attach_1.txt"
+      "Name": "attach_1.txt",
+      "Blob": null
     },
     {
       "Id": 2,
-      "Name": "attach_2.7z"
+      "Name": "attach_2.7z",
+      "Blob": null
     }
   ]
 }
