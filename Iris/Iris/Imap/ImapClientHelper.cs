@@ -88,7 +88,7 @@ namespace Iris.Imap
                             {
                                 Name = (_ as MimePart).FileName,
                                 Blob = new BinaryReader((_ as MimePart).Content.Stream).ReadBytes((int)(_ as MimePart).Content.Stream.Length)
-                            })) ;
+                            }));
                         }
                         break;
 

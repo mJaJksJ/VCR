@@ -2,8 +2,14 @@
 
 namespace Iris.Api.Controllers.RegistrationControllers
 {
+    /// <summary>
+    /// Контракт ответа регистрации
+    /// </summary>
     public class RegistrationResponseContract : ResponseContract
     {
-        public bool IsSucces { get; set; } 
+        /// <summary>
+        /// Успешно ли проведена регистрация
+        /// </summary>
+        public bool IsSucces { get; set; }
     }
 }

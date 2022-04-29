@@ -1,5 +1,8 @@
 ﻿namespace Iris.Api.Controllers.RegistrationControllers
 {
+    /// <summary>
+    /// Контракт создания пользователя
+    /// </summary>
     public class RegistrationRequestContract
     {
         /// <summary>
@@ -21,5 +24,10 @@
         /// Кем создан
         /// </summary>
         public int CreatedBy { get; set; }
+
+        /// <summary>
+        /// Токен
+        /// </summary>
+        public string Token { get; set; }
     }
 }

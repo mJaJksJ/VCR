@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
-
+#pragma warning disable 1591
 namespace Iris.Migrations
 {
     public partial class AddCreatedByToUSer : Migration

@@ -14,6 +14,7 @@ namespace Iris.Migrations
     [Migration("20220429085819_AddCreatedByToUSer")]
     partial class AddCreatedByToUSer
     {
+#pragma warning disable 1591
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
