@@ -1,19 +1,18 @@
-﻿using Iris.Database;
-using Iris.Exceptions.UserExceptions;
-using Iris.Helpers.DatabaseExtensions;
+﻿using System;
+using System.Reflection;
+using Iris.Attributes;
+using Iris.Database;
 using Iris.Services.UserService;
 using Moq;
 using NUnit.Framework;
+using UnitTests.Helpers;
 
 namespace UnitTests.Tests.Services
 {
     [TestFixture]
     public class UserServiceTests
     {
-        private const int ExistedUserId = 1;
-        private const int NotExistedUserId = 2;
-        private const string ExistedUserLogin = "admin";
-        private const string NotExistedUserLogin = "notUser";
+        private static readonly Type ClassType = typeof(UserService);
 
         private Mock<DatabaseContext> _databaseContext;
         private IUserService _userService;
@@ -22,36 +21,40 @@ namespace UnitTests.Tests.Services
         public void SetUp()
         {
             _databaseContext = new Mock<DatabaseContext>();
-            _databaseContext.Setup(_ => _.GetUserById(ExistedUserId)).Returns(new User {Id = ExistedUserId });
-            _databaseContext.Setup(_ => _.GetUserById(NotExistedUserId)).Returns((User)null);
-            _databaseContext.Setup(_ => _.GetUserByLogin(ExistedUserLogin)).Returns(new User { Name = ExistedUserLogin });
-            _databaseContext.Setup(_ => _.GetUserByLogin(NotExistedUserLogin)).Returns((User)null);
-
             _userService = new UserService(_databaseContext.Object);
         }
-
-        [TestCase(ExistedUserId)]
-        public void EnsureUserExist_ExistedId_NotException(int id)
+        [Test]
+        public void EnsureUserExist_Non_Succes()
         {
-            Assert.DoesNotThrow(() => _userService.EnsureUserExist(id));
+            try
+            {
+                _userService.EnsureUserExist(new int());
+            }
+            finally
+            {
+                if (CheckDbMethods.HasDbGetterDataAttribute(ClassType, "EnsureUserExist"))
+                {
+                    Assert.Pass();
+                }
+                Assert.Fail();
+            }
         }
 
-        [TestCase(NotExistedUserId)]
-        public void EnsureUserExist_NotExistedId_Exception(int id)
+        [Test]
+        public void GetUserByLogin_Non_Succes()
         {
-            Assert.Throws<UserNotExistException>(() => _userService.EnsureUserExist(id));
-        }
-
-        [TestCase(ExistedUserLogin)]
-        public void GetUserByLogin_Existedlogin_NotException(string login)
-        {
-            Assert.DoesNotThrow(() => _userService.GetUserByLogin(login));
-        }
-
-        [TestCase(NotExistedUserLogin)]
-        public void GetUserByLogin_NotExistedLogin_Exception(string login)
-        {
-            Assert.Throws<UserNotExistException>(() => _userService.GetUserByLogin(login));
+            try
+            {
+                _userService.GetUserByLogin(string.Empty);
+            }
+            finally
+            {
+                if (CheckDbMethods.HasDbGetterDataAttribute(ClassType, "GetUserByLogin"))
+                {
+                    Assert.Pass();
+                }
+                Assert.Fail();
+            }
         }
     }
 }

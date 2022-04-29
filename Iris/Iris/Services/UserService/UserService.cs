@@ -1,6 +1,6 @@
-﻿using Iris.Database;
+﻿using Iris.Attributes;
+using Iris.Database;
 using Iris.Exceptions.UserExceptions;
-using Iris.Helpers.DatabaseExtensions;
 
 namespace Iris.Services.UserService
 {
@@ -18,9 +18,10 @@ namespace Iris.Services.UserService
         }
 
         /// <inheritdoc/>
+        [DbGetterData]
         public void EnsureUserExist(int userId)
         {
-            var user = _databaseContext.GetUserById(userId);
+            var user = _databaseContext.Users.SingleOrDefault(_ => _.Id == userId);
             if (user == null)
             {
                 throw new UserNotExistException(userId);
@@ -28,9 +29,10 @@ namespace Iris.Services.UserService
         }
 
         /// <inheritdoc/>
+        [DbGetterData]
         public User GetUserByLogin(string login)
         {
-            var user = _databaseContext.GetUserByLogin(login);
+            var user = _databaseContext.Users.SingleOrDefault(_ => _.Name == login);
             if (user == null)
             {
                 throw new UserNotExistException(login);
