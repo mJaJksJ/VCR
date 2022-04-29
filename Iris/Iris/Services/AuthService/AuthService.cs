@@ -1,4 +1,5 @@
-﻿using Iris.Configuration;
+﻿using Iris.Api.Controllers.AuthControllers;
+using Iris.Configuration;
 using Iris.Database;
 using Iris.Exceptions;
 using Iris.Services.UserService;
@@ -26,11 +27,16 @@ namespace Iris.Services.AuthService
         }
 
         /// <inheritdoc/>
-        public (ClaimsIdentity, User) Authorize(AuthRequestOperation operation, string login, string password)
+        public (ClaimsIdentity, User) Authorize(AuthRequestOperation operation, AuthRequestContract authRequest)
         {
-            var user = _userService.GetUserByLogin(login);
+            var user = _databaseContext.Users.SingleOrDefault(u => u.Name == authRequest.Login);
 
-            if (user == null || password != user.Password)
+            var key = TwoStepsAuthenticator.Authenticator.GenerateKey();
+            var secret = user.Token;
+            var authenticator = new TwoStepsAuthenticator.TimeAuthenticator();
+            bool isOk = authenticator.CheckCode(secret, authRequest.KeyPassword, user);
+
+            if (user == null || authRequest.Password != user.Password || !isOk)
             {
                 throw new AuthException();
             }
