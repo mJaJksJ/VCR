@@ -11,7 +11,7 @@ namespace Iris.Services.UserService
         /// Убедиться что пользователь существует
         /// </summary>
         /// <param name="userId">Id пользователя</param>
-        void EnsureUserExist(int userId);
+        User EnsureUserExist(int userId);
 
         /// <summary>
         /// Получить юзера по его логину

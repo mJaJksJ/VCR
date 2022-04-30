@@ -43,6 +43,12 @@ namespace Iris.Stores.ServiceConnectionStore
         }
 
         /// <inheritdoc/>
+        public ServerConnection GetUserConnection(int userId, int accountId)
+        {
+            return _connectionsStorage.EnsureUserHaveConnection(userId, accountId);
+        }
+
+        /// <inheritdoc/>
         public Guid AddConnection(Account account)
         {
             lock (_locker)
@@ -77,6 +83,17 @@ namespace Iris.Stores.ServiceConnectionStore
                 {
                     AddConnection(account);
                 }
+            }
+        }
+
+        /// <inheritdoc/>
+        public void RemoveConnection(int userId, int accountId)
+        {
+            lock (_locker)
+            {
+                _connectionsStorage.EnsureUserHaveConnections(userId);
+                var connection = GetUserConnection(userId, accountId);
+                _connectionsStorage[userId].Remove(connection);
             }
         }
     }

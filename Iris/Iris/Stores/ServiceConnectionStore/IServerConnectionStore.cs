@@ -34,5 +34,12 @@ namespace Iris.Stores.ServiceConnectionStore
         /// <param name="account">Аккаунт</param>
         /// <returns>Id подключения</returns>
         Guid AddConnection(Account account);
+
+        /// <summary>
+        /// Удалить подключение пользователя
+        /// </summary>
+        /// <param name="userId">Id пользователя</param>
+        /// <param name="accountId">Id учетной записи</param>
+        public void RemoveConnection(int userId, int accountId);
     }
 }

@@ -34,13 +34,24 @@ namespace Iris.Services.MailServersService
         }
 
         /// <inheritdoc/>
-        public MailServerAccountContract NewMailServer(MailServerContract mailServerContract)
+        public void NewMailServer(MailServerContract mailServerContract)
         {
             if (_databaseContext.MailServers.Any(_ => _.Host == mailServerContract.Host && _.Port == mailServerContract.Port))
             {
                 throw new Exception();
             }
-            throw new Exception();
+
+            var mailServer = _databaseContext.MailServers.Add(new MailServer
+            {
+                Host = mailServerContract.Host,
+                Port = mailServerContract.Port,
+                Name = mailServerContract.Name,
+                IsPrivate = mailServerContract.IsPrivate
+            });
+
+            _databaseContext.SaveChanges();
+
+
         }
     }
 }

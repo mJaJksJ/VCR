@@ -39,5 +39,20 @@ namespace Iris.Helpers
 
             return connections.FirstOrDefault(_ => _.Id == connectionId) ?? throw new UserHasNoConnectionsException($"Пользователь не имеет подключение с id = {connectionId}");
         }
+
+        /// <summary>
+        /// Есть ли у пользователя подключение
+        /// </summary>
+        /// <param name="storage">Хранилище подключений</param>
+        /// <param name="userId">Id пользователя</param>
+        /// <param name="accountId">Id учетной записи</param>
+        /// <returns>Подключение</returns>
+        /// <exception cref="UserHasNoConnectionsException"></exception>
+        public static ServerConnection EnsureUserHaveConnection(this Dictionary<int, List<ServerConnection>> storage, int userId, int accountId)
+        {
+            var connections = storage.EnsureUserHaveConnections(userId);
+
+            return connections.FirstOrDefault(_ => _.Account.Id == accountId) ?? throw new UserHasNoConnectionsException($"Пользователь не имеет подключение учетной записи с id = {accountId}");
+        }
     }
 }

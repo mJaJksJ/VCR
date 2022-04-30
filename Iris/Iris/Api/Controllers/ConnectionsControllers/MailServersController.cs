@@ -38,11 +38,11 @@ namespace Iris.Api.Controllers.ConnectionsControllers
         /// </summary>
         /// <param name="mailServerContract">Контракт добавления сервера</param>
         [HttpPost("~/api/connections/mailservers"), AllowAnonymous]
-        [ProducesResponseType(typeof(IEnumerable<MailServerAccountContract>), 200)]
+        [ProducesResponseType(typeof(void), 200)]
         public IActionResult AddUserMailService([FromBody] MailServerContract mailServerContract)
         {
-            var serverAccounts = _mailServersService.NewMailServer(mailServerContract);
-            return Ok(serverAccounts);
+            _mailServersService.NewMailServer(mailServerContract);
+            return Ok();
         }
     }
 }

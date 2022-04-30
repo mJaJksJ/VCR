@@ -2,7 +2,6 @@
 using Iris.Configuration;
 using Iris.Database;
 using Iris.Exceptions;
-using Iris.Services.UserService;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,16 +13,14 @@ namespace Iris.Services.AuthService
     {
         private readonly DatabaseContext _databaseContext;
         private readonly Config _config;
-        private readonly IUserService _userService;
 
         /// <summary>
         /// .ctor
         /// </summary>
-        public AuthService(DatabaseContext context, Config config, IUserService userService)
+        public AuthService(DatabaseContext context, Config config)
         {
             _databaseContext = context;
             _config = config;
-            _userService = userService;
         }
 
         /// <inheritdoc/>
