@@ -2,7 +2,6 @@
 using Iris.Exceptions.UserExceptions;
 using Iris.Services.UserService;
 using NUnit.Framework;
-using System;
 using UnitTests.Database;
 
 namespace UnitTests.Tests.Services

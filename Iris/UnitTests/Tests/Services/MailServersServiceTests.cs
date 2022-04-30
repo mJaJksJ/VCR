@@ -1,14 +1,9 @@
-﻿using System;
-using System.Linq;
-using Iris.Api.Controllers.ConnectionsControllers;
+﻿using Iris.Api.Controllers.ConnectionsControllers;
 using Iris.Database;
 using Iris.Exceptions;
-using Iris.Services.AccountsService;
 using Iris.Services.MailServersService;
-using Iris.Services.UserService;
-using Iris.Stores.ServiceConnectionStore;
-using Moq;
 using NUnit.Framework;
+using System.Linq;
 using UnitTests.Database;
 
 namespace UnitTests.Tests.Services
@@ -78,7 +73,7 @@ namespace UnitTests.Tests.Services
 
         [TestCase(Host + "1", Port + 1)]
         [TestCase(Host + "1", Port)]
-        [TestCase(Host, Port+1)]
+        [TestCase(Host, Port + 1)]
         public void NewMailServer_NotExist_AddServer(string host, int port)
         {
             _mailServersService.NewMailServer(new MailServerContract
