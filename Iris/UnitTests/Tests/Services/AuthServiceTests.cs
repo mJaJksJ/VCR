@@ -15,7 +15,7 @@ namespace UnitTests.Tests.Services
     {
         private const string UserName = "User1";
         private const string Password = "Password";
-        private const string Token = "QJD51dd4c1W12WEN";
+        private const string Token = "123456";
 
         private Config _config;
         private Mock<IUserService> _userService;
@@ -37,7 +37,7 @@ namespace UnitTests.Tests.Services
                 }
             };
 
-            _authService = new AuthService(null, _config, _userService.Object);
+            _authService = new AuthService(_userService.Object, _config);
         }
 
         [TearDown]

@@ -5,29 +5,30 @@ using Iris.Exceptions;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Iris.Services.UserService;
 
 namespace Iris.Services.AuthService
 {
     /// <inheritdoc cref="IAuthService"/>
     public class AuthService : IAuthService
     {
-        private readonly DatabaseContext _databaseContext;
+        private readonly IUserService _userService;
         private readonly Config _config;
 
         /// <summary>
         /// .ctor
         /// </summary>
-        public AuthService(DatabaseContext context, Config config)
+        public AuthService(IUserService userService, Config config)
         {
-            _databaseContext = context;
+            _userService = userService;
             _config = config;
         }
 
         /// <inheritdoc/>
         public (ClaimsIdentity, User) Authorize(AuthRequestOperation operation, AuthRequestContract authRequest)
         {
-            var user = _databaseContext.Users.SingleOrDefault(u => u.Name == authRequest.Login);
-
+            var user = _userService.GetUserByLogin(authRequest.Login);
+                
             var key = TwoStepsAuthenticator.Authenticator.GenerateKey();
             var secret = user.Token;
             var authenticator = new TwoStepsAuthenticator.TimeAuthenticator();

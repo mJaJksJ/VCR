@@ -23,7 +23,7 @@ namespace Iris.Services.AccountsService
         /// <inheritdoc/>
         public void AddNewAccount(int userId, AccountRequestContract contract)
         {
-            var user = _databaseContext.Users.GetUserWithAccounts(userId) ?? throw new Exception();
+            var user = _databaseContext.GetUserWithAccounts(userId) ?? throw new Exception();
 
             if (!user.HasAccount(contract.Name))
             {

@@ -23,6 +23,7 @@ namespace UnitTests.Tests.Services
             _databaseContext = new Mock<DatabaseContext>();
             _userService = new UserService(_databaseContext.Object);
         }
+
         [Test]
         public void EnsureUserExist_Non_Succes()
         {
@@ -36,7 +37,6 @@ namespace UnitTests.Tests.Services
                 {
                     Assert.Pass();
                 }
-                Assert.Fail();
             }
         }
 
@@ -53,7 +53,6 @@ namespace UnitTests.Tests.Services
                 {
                     Assert.Pass();
                 }
-                Assert.Fail();
             }
         }
     }

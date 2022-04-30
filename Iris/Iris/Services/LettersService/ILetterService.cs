@@ -9,12 +9,6 @@ namespace Iris.Services.LettersService
     public interface ILetterService
     {
         /// <summary>
-        /// Получить все письма
-        /// </summary>
-        /// <param name="userId">Id пользователя</param>
-        IEnumerable<LetterContract> GetAllLetters(int userId);
-
-        /// <summary>
         /// Получить письма по запросу
         /// </summary>
         /// <param name="userId">Id пользователя</param>

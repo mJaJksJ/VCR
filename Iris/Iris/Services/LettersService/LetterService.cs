@@ -25,32 +25,6 @@ namespace Iris.Services.LettersService
             _context = context;
         }
 
-        /// <inheritdoc/>
-        public IEnumerable<LetterContract> GetAllLetters(int userId)
-        {
-            var connections = _serverConnectionStore.GetUserConnections(userId);
-
-            var letters = new List<LetterContract>();
-
-            foreach (var connection in connections)
-            {
-                switch (connection.MailService)
-                {
-                    case ImapClient imapClient:
-                        letters.AddRange(imapClient.GetAllLetters());
-                        break;
-
-                    case Pop3Client pop3Client:
-                        break;
-
-                    default:
-                        throw new Exception();
-                }
-            }
-
-            return letters.OrderBy(_ => _.Date);
-        }
-
         /// <summary>
         /// Получить письма
         /// </summary>
@@ -66,7 +40,6 @@ namespace Iris.Services.LettersService
                 : _serverConnectionStore.GetUserConnections(userId);
 
             var letters = new List<LetterContract>();
-            var errors = new List<string>();
 
             foreach (var connection in connections)
             {
@@ -127,8 +100,8 @@ namespace Iris.Services.LettersService
         {
             var letters = _context.Accounts
                 .FirstOrDefault(_ => _.Id == accId)
-                .Letters
-                .Select(_ => new LetterContract
+                ?.Letters
+                ?.Select(_ => new LetterContract
                 {
                     Id = _.Id,
                     Sender = new PersonContract
