@@ -20,6 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Database\TestDatabase.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Files\JsonLetters.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

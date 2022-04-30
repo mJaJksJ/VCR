@@ -30,7 +30,7 @@ namespace UnitTests.Tests.Configuration
                     JwtAudience = "iris",
                     JwtIssuer = "iris"
                 }
-            });       
+            });
 
             var actual = JObject.FromObject(Config.DefaultConfig());
 

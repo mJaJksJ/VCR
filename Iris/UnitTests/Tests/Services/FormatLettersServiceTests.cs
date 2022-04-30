@@ -1,8 +1,8 @@
-﻿using System;
-using Iris.Enums;
+﻿using Iris.Enums;
 using Iris.Services.FormatLettersService;
 using Iris.Services.LettersService.Contracts;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -106,7 +106,7 @@ namespace UnitTests.Tests.Services
 
             Assert.AreEqual(expected, actual);
         }
-        
+
         [TestCase("Json")]
         [TestCase("JSON")]
         [TestCase("json")]

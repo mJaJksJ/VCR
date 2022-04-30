@@ -17,5 +17,17 @@ namespace Iris.Helpers
         {
             return user.Accounts.SingleOrDefault(_ => _.Name == name) != null;
         }
+
+        /// <summary>
+        /// Получить пользователя с учетными записями
+        /// </summary>
+        /// <param name="users">Пользователи</param>
+        /// <param name="userId">Id пользователя</param>
+        public static User GetUserWithAccounts(this DbSet<User> users, int userId)
+        {
+            return users
+                .Include(_ => _.Accounts)
+                .SingleOrDefault(_ => _.Id == userId);
+        }
     }
 }

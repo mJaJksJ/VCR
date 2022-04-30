@@ -1,5 +1,6 @@
 ﻿using Iris.Api.Controllers.ConnectionsControllers;
 using Iris.Database;
+using Iris.Exceptions;
 
 namespace Iris.Services.MailServersService
 {
@@ -38,7 +39,7 @@ namespace Iris.Services.MailServersService
         {
             if (_databaseContext.MailServers.Any(_ => _.Host == mailServerContract.Host && _.Port == mailServerContract.Port))
             {
-                throw new Exception();
+                throw new ServerAlreadyExistException(mailServerContract.Host, mailServerContract.Port);
             }
 
             var mailServer = _databaseContext.MailServers.Add(new MailServer

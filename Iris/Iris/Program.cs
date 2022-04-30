@@ -136,7 +136,7 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
-var dbContext = new DatabaseContext();
+var dbContext = new DatabaseContext("Data Source=Database\\Database.db");
 
 builder.Services.AddSingleton(config);
 builder.Services.AddSingleton(dbContext);

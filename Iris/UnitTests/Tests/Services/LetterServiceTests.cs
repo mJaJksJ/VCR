@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Iris.Api.Controllers.LettersControllers;
+﻿using Iris.Api.Controllers.LettersControllers;
 using Iris.Services.LettersService;
 using Iris.Stores.ServiceConnectionStore;
 using Moq;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace UnitTests.Tests.Services
 {

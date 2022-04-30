@@ -1,5 +1,6 @@
 ﻿using Iris.Api.Controllers.AccountsControllers;
 using Iris.Database;
+using Iris.Exceptions;
 using Iris.Helpers;
 using Iris.Stores.ServiceConnectionStore;
 
@@ -23,7 +24,7 @@ namespace Iris.Services.AccountsService
         /// <inheritdoc/>
         public void AddNewAccount(int userId, AccountRequestContract contract)
         {
-            var user = _databaseContext.GetUserWithAccounts(userId) ?? throw new Exception();
+            var user = _databaseContext.Users.GetUserWithAccounts(userId) ?? throw new Exception();
 
             if (!user.HasAccount(contract.Name))
             {
@@ -43,7 +44,7 @@ namespace Iris.Services.AccountsService
             }
             else
             {
-                throw new Exception();
+                throw new AccountAlreadyExistException(contract.Name);
             }
         }
 
