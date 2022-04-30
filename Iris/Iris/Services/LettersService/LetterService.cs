@@ -14,8 +14,6 @@ namespace Iris.Services.LettersService
         private readonly IServerConnectionStore _serverConnectionStore;
         private readonly DatabaseContext _context;
 
-        private static readonly Serilog.ILogger Log = Serilog.Log.ForContext<LetterService>();
-
         /// <summary>
         /// .ctor
         /// </summary>
@@ -132,17 +130,12 @@ namespace Iris.Services.LettersService
 
         private IEnumerable<LetterContract> GetLettersFromServer(ServerConnection connection, NeedAttachments needAttachments)
         {
-            switch (connection.MailService)
+            return connection.MailService switch
             {
-                case ImapClient imapClient:
-                    return imapClient.GetLetters(needAttachments);
-
-                case Pop3Client pop3Client:
-                    throw new Exception();
-
-                default:
-                    throw new Exception();
-            }
+                ImapClient imapClient => imapClient.GetLetters(needAttachments),
+                Pop3Client pop3Client => throw new Exception(),
+                _ => throw new Exception(),
+            };
         }
     }
 }

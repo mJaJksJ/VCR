@@ -1,4 +1,5 @@
-﻿using Iris.Services.MailServersService;
+﻿using Iris.Helpers;
+using Iris.Services.MailServersService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,12 +25,24 @@ namespace Iris.Api.Controllers.ConnectionsControllers
         /// <summary>
         /// Получить список аккаунтов к почтовым серверам пользователя
         /// </summary>
-        /// <param name="userId">Id пользователя</param>
-        [HttpGet("~/api/connections/mailservers/accounts/{userId}"), AllowAnonymous]
+        [HttpGet("~/api/connections/mailservers/accounts/users")]
         [ProducesResponseType(typeof(IEnumerable<MailServerAccountContract>), 200)]
-        public IActionResult GetMailServersAccounts(int userId)
+        public IActionResult GetMailServersAccounts()
         {
+            var userId = User.GetUserId();
             var serverAccounts = _mailServersService.GetMailServerAccounts(userId);
+            return Ok(serverAccounts);
+        }
+
+        /// <summary>
+        /// Получить список доступных почтовых серверов
+        /// </summary>
+        [HttpGet("~/api/connections/mailservers/accounts/availables")]
+        [ProducesResponseType(typeof(IEnumerable<MailServerAccountContract>), 200)]
+        public IActionResult GetAvailableMailServers()
+        {
+            var userId = User.GetUserId();
+            var serverAccounts = _mailServersService.GetAvailableMailServers(userId);
             return Ok(serverAccounts);
         }
 
@@ -37,7 +50,7 @@ namespace Iris.Api.Controllers.ConnectionsControllers
         /// Добавить новый почтовый сервер
         /// </summary>
         /// <param name="mailServerContract">Контракт добавления сервера</param>
-        [HttpPost("~/api/connections/mailservers"), AllowAnonymous]
+        [HttpPost("~/api/connections/mailservers")]
         [ProducesResponseType(typeof(void), 200)]
         public IActionResult AddUserMailService([FromBody] MailServerContract mailServerContract)
         {

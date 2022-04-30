@@ -1,4 +1,5 @@
 ﻿using Iris.Api.Controllers.ConnectionsControllers;
+using Iris.Database;
 
 namespace Iris.Services.MailServersService
 {
@@ -18,5 +19,11 @@ namespace Iris.Services.MailServersService
         /// </summary>
         /// <param name="mailServerContract">Контракт добавления сервера</param>
         void NewMailServer(MailServerContract mailServerContract);
+
+        /// <summary>
+        /// Получить список доступных почтовых серверов
+        /// </summary>
+        /// <param name="userId">Id пользователя</param>
+        IEnumerable<MailServer> GetAvailableMailServers(int userId);
     }
 }

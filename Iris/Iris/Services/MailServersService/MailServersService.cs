@@ -1,5 +1,6 @@
 ﻿using Iris.Api.Controllers.ConnectionsControllers;
 using Iris.Database;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Iris.Services.MailServersService
 {
@@ -31,6 +32,27 @@ namespace Iris.Services.MailServersService
                 .ToArray();
 
             return serverAccounts;
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<MailServer> GetAvailableMailServers(int userId)
+        {
+            var userServerAccounts = _databaseContext.Accounts
+                .Where(_ => _.UserId == userId)
+                .Select(_ => _.MailServer)
+                .ToArray();
+
+            var userServersIds = userServerAccounts.Select(_ => _.Id);
+
+            var publicServerAccounts = _databaseContext.MailServers
+                .Where(_ => !_.IsPrivate && !userServersIds.Contains(_.Id))
+                .ToArray();
+
+            var serverAccounts = new List<MailServer>();
+            serverAccounts.AddRange(userServerAccounts);
+            serverAccounts.AddRange(publicServerAccounts);
+
+            return serverAccounts.AsEnumerable();
         }
 
         /// <inheritdoc/>
