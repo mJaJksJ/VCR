@@ -1,21 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Iris.Database
+﻿namespace Iris.Api.Controllers.RegistrationControllers
 {
     /// <summary>
-    /// Пользователь
+    /// Контракт создания пользователя
     /// </summary>
-    public class User
+    public class RegistrationRequestContract
     {
-        /// <summary>
-        /// Id
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Имя
         /// </summary>
-        [Required]
         public string Name { get; set; }
 
         /// <summary>
@@ -29,18 +21,13 @@ namespace Iris.Database
         public bool IsAdmin { get; set; }
 
         /// <summary>
-        /// Токен
-        /// </summary>
-        public string Token { get; set; }
-
-        /// <summary>
-        /// Аккаунты
-        /// </summary>
-        public IEnumerable<Account> Accounts { get; set; }
-
-        /// <summary>
         /// Кем создан
         /// </summary>
         public int CreatedBy { get; set; }
+
+        /// <summary>
+        /// Токен
+        /// </summary>
+        public string Token { get; set; }
     }
 }

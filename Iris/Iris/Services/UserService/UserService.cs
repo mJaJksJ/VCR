@@ -20,12 +20,11 @@ namespace Iris.Services.UserService
         /// <inheritdoc/>
         [DbGetterData]
         public void EnsureUserExist(int userId)
+        public User EnsureUserExist(int userId)
         {
             var user = _databaseContext.Users.SingleOrDefault(_ => _.Id == userId);
-            if (user == null)
-            {
-                throw new UserNotExistException(userId);
-            }
+            return user ?? throw new UserNotExistException(userId);
+
         }
 
         /// <inheritdoc/>

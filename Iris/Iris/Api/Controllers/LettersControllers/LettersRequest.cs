@@ -16,7 +16,7 @@ namespace Iris.Api.Controllers.LettersControllers
         /// <summary>
         /// Глобальные настройки получения писем
         /// </summary>
-        [JsonProperty("global_setting")] 
+        [JsonProperty("global_setting")]
         public Settings GlobalSettings { get; set; }
 
         /// <summary>

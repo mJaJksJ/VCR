@@ -17,6 +17,6 @@ namespace Iris.Services.MailServersService
         /// Добавить новый почтовый сервер
         /// </summary>
         /// <param name="mailServerContract">Контракт добавления сервера</param>
-        MailServerAccountContract NewMailServer(MailServerContract mailServerContract);
+        void NewMailServer(MailServerContract mailServerContract);
     }
 }

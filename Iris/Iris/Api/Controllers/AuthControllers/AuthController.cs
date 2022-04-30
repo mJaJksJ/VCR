@@ -71,7 +71,7 @@ namespace Iris.Api.Controllers.AuthControllers
 
             try
             {
-                (identity, user) = _authService.Authorize(operationRequest, authRequest.Login, authRequest.Password);
+                (identity, user) = _authService.Authorize(operationRequest, authRequest);
             }
             catch
             {
