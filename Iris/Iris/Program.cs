@@ -15,6 +15,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 using System.Reflection;
+using Iris.Api.Controllers.ConnectionsControllers;
 
 
 // Logger Configuration
@@ -149,8 +150,69 @@ builder.Services.AddScoped<IMailServersService, MailServersService>();
 builder.Services.AddScoped<ILetterService, LetterService>();
 builder.Services.AddScoped<IFormatLettersSevice, FormatLettersSevice>();
 
-
 var app = builder.Build();
+
+#region AddRequiredServers
+
+var mailServersService = app.Services.GetRequiredService<IMailServersService>();
+mailServersService.NewMailServer(new MailServerContract
+{
+    Host = "imap.mail.ru",
+    Port = 993,
+    Name = "VK",
+    IsPrivate = false
+});
+mailServersService.NewMailServer(new MailServerContract
+{
+    Host = "pop.mail.ru",
+    Port = 995,
+    Name = "VK",
+    IsPrivate = false
+});
+mailServersService.NewMailServer(new MailServerContract
+{
+    Host = "imap.yandex.ru",
+    Port = 993,
+    Name = "˜˜˜˜˜˜",
+    IsPrivate = false
+});
+mailServersService.NewMailServer(new MailServerContract
+{
+    Host = "pop.yandex.ru",
+    Port = 995,
+    Name = "˜˜˜˜˜˜",
+    IsPrivate = false
+});
+mailServersService.NewMailServer(new MailServerContract
+{
+    Host = "imap.gmail.com",
+    Port = 993,
+    Name = "Google",
+    IsPrivate = false
+});
+mailServersService.NewMailServer(new MailServerContract
+{
+    Host = "pop.gmail.com",
+    Port = 995,
+    Name = "Google",
+    IsPrivate = false
+});
+mailServersService.NewMailServer(new MailServerContract
+{
+    Host = "outlook.office365.com",
+    Port = 993,
+    Name = "Outlook",
+    IsPrivate = false
+});
+mailServersService.NewMailServer(new MailServerContract
+{
+    Host = "outlook.office365.com",
+    Port = 995,
+    Name = "Outlook",
+    IsPrivate = false
+});
+
+#endregion
 
 app.UseSerilogRequestLogging();
 
