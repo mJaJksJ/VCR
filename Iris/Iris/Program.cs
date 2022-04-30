@@ -1,3 +1,4 @@
+using Iris.Api.Controllers.ConnectionsControllers;
 using Iris.Configuration;
 using Iris.Database;
 using Iris.Services.AuthService;
@@ -15,7 +16,6 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 using System.Reflection;
-using Iris.Api.Controllers.ConnectionsControllers;
 
 
 // Logger Configuration
@@ -137,7 +137,7 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
-var dbContext = new DatabaseContext();
+var dbContext = new DatabaseContext("Data Source=Database\\Database.db");
 
 builder.Services.AddSingleton(config);
 builder.Services.AddSingleton(dbContext);

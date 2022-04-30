@@ -2,10 +2,10 @@
 using Iris.Configuration;
 using Iris.Database;
 using Iris.Exceptions;
+using Iris.Services.UserService;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Iris.Services.UserService;
 
 namespace Iris.Services.AuthService
 {
@@ -28,7 +28,7 @@ namespace Iris.Services.AuthService
         public (ClaimsIdentity, User) Authorize(AuthRequestOperation operation, AuthRequestContract authRequest)
         {
             var user = _userService.GetUserByLogin(authRequest.Login);
-                
+
             var key = TwoStepsAuthenticator.Authenticator.GenerateKey();
             var secret = user.Token;
             var authenticator = new TwoStepsAuthenticator.TimeAuthenticator();

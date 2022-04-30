@@ -15,14 +15,16 @@ namespace Iris.Database
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<Person> Persons { get; set; }
 
-        public DatabaseContext()
-        {
+        private readonly string _connectionString = "Data Source=Database\\Database.db";
 
+        public DatabaseContext(string connectionString)
+        {
+            _connectionString = connectionString;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=Database\\Database.db");
+            optionsBuilder.UseSqlite(_connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
