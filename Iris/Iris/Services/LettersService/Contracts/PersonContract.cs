@@ -32,6 +32,12 @@ namespace Iris.Services.LettersService.Contracts
         [XmlAttribute("Email")]
         public string Email { get; set; }
 
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{Name} <{Email}>";
+        }
+
         /// <summary>
         /// .ctor
         /// </summary>

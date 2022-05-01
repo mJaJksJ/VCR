@@ -34,8 +34,8 @@ namespace Iris.Api.Controllers.LettersControllers
         /// <summary>
         /// Сортировка писема
         /// </summary>
-        [JsonProperty("sorts")]
-        public IEnumerable<SortLetter> Sorts { get; set; }
+        [JsonProperty("sort")]
+        public SortLetter Sort { get; set; }
 
         /// <summary>
         /// .ctor
@@ -44,7 +44,6 @@ namespace Iris.Api.Controllers.LettersControllers
         {
             AccountsSettings = new Dictionary<int, Settings>();
             Filters = new List<FilterLetter>();
-            Sorts = new List<SortLetter>();
             GlobalSettings = new Settings();
         }
     }

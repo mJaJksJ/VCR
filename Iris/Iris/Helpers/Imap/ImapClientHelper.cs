@@ -43,8 +43,8 @@ namespace Iris.Helpers.Imap
         /// </summary>
         /// <param name="imapClient"></param>
         /// <param name="needAttachments">Получать ли вложения</param>
-        /// <exception cref="Exception"></exception>
-        public static IEnumerable<LetterContract> GetLetters(this ImapClient imapClient, NeedAttachments needAttachments)
+        /// <param name="accId">Id учетной записи</param>
+        public static IEnumerable<LetterContract> GetLetters(this ImapClient imapClient, NeedAttachments needAttachments, int accId)
         {
             var inboxFolder = imapClient.Inbox;
             inboxFolder.Open(FolderAccess.ReadOnly);
@@ -60,7 +60,8 @@ namespace Iris.Helpers.Imap
                     Subject = letter.Subject,
                     Date = letter.Date.UtcDateTime,
                     Text = letter.HtmlBody,
-                    Attacments = new List<AttachmentContract>()
+                    Attacments = new List<AttachmentContract>(),
+                    AccoundId = accId
                 };
 
                 switch (needAttachments)

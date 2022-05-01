@@ -1,5 +1,8 @@
 ﻿namespace Iris.Exceptions
 {
+    /// <summary>
+    /// Сервер уже существует
+    /// </summary>
     public class ServerAlreadyExistException : IrisException
     {
         /// <summary>

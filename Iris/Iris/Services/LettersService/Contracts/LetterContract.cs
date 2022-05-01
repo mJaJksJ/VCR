@@ -59,5 +59,10 @@ namespace Iris.Services.LettersService.Contracts
         [JsonProperty("Attachmetns")]
         [XmlElement("Attachmetns")]
         public List<AttachmentContract> Attacments { get; set; }
+
+        /// <summary>
+        /// Id учетной записи
+        /// </summary>
+        public int AccoundId { get; set; }
     }
 }
