@@ -21,11 +21,6 @@ namespace Iris.Configuration
         public LoggerConfig Logger { get; set; }
 
         /// <summary>
-        /// Конфигурация почтовых серверов
-        /// </summary>
-        public IEnumerable<MailServerConfig> MailServers { get; set; }
-
-        /// <summary>
         /// Конфигурация авторизации
         /// </summary>
         public AuthConfig AuthConfig { get; set; }
@@ -60,7 +55,6 @@ namespace Iris.Configuration
                     LimitFileSize = 1024 * 1024 * 32,
                     FilePath = "../logs"
                 },
-                MailServers = Array.Empty<MailServerConfig>(),
                 AuthConfig = new AuthConfig
                 {
                     JwtSecurityKey = Encoding.ASCII.GetBytes("8u5j4WXfR74kDGE38k32zIBrLuDELjSTGzTx97OWwVY01-0uaayMdBlBWfZ55Fy8"),

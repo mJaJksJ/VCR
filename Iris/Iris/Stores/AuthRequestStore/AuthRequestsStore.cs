@@ -5,15 +5,12 @@ using System.Text;
 namespace Iris.Stores.AuthRequestStore;
 
 /// <inheritdoc cref="IAuthRequestsStore"/>
-public class AuthRequestsStore : IAuthRequestsStore, IDisposable
+public class AuthRequestsStore : IAuthRequestsStore
 {
     private const int Lifetime = 1 * 60;
     private const int CleanUpPeriod = 5 * 60 * 1000;
 
     private readonly IServiceScopeFactory _serviceScopeFactory;
-    private readonly Timer _timer;
-
-    private static readonly Serilog.ILogger Log = Serilog.Log.ForContext<AuthRequestsStore>();
 
     /// <summary>
     /// .ctor
@@ -22,16 +19,9 @@ public class AuthRequestsStore : IAuthRequestsStore, IDisposable
     {
         _serviceScopeFactory = serviceScopeFactory;
 
-        try
-        {
-            RunCleanup();
-        }
-        catch (Exception e)
-        {
-            Log.Error(e, "AuthorizationRequestStore cleanup error");
-        }
+        RunCleanup();
 
-        _timer = new Timer(_ => RunCleanup(), null, CleanUpPeriod, CleanUpPeriod);
+        _ = new Timer(_ => RunCleanup(), null, CleanUpPeriod, CleanUpPeriod);
     }
 
     /// <inheritdoc/>
@@ -63,27 +53,15 @@ public class AuthRequestsStore : IAuthRequestsStore, IDisposable
             .FirstOrDefault(_ => _.Id == id && _.IssuedDateTime.AddSeconds(Lifetime) > DateTime.Now);
     }
 
-    /// <inheritdoc/>
-    public void Dispose()
-    {
-        _timer.Dispose();
-    }
-
     private void RunCleanup()
     {
-        try
-        {
-            using var scope = _serviceScopeFactory.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+        using var scope = _serviceScopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
-            var requests = context.AuthRequests.Where(_ => _.IssuedDateTime.AddSeconds(Lifetime) < DateTime.Now);
+        var requests = context.AuthRequests.Where(_ => _.IssuedDateTime.AddSeconds(Lifetime) < DateTime.Now);
 
-            context.AuthRequests.RemoveRange(requests);
-            context.SaveChanges();
-        }
-        catch (Exception e)
-        {
-            Log.Error(e, "Error clean up auth requests");
-        }
+        context.AuthRequests.RemoveRange(requests);
+        context.SaveChanges();
+
     }
 }

@@ -4,7 +4,7 @@ using MailKit;
 using MailKit.Net.Imap;
 using MimeKit;
 
-namespace Iris.Imap
+namespace Iris.Helpers.Imap
 {
     /// <summary>
     /// Хелпер для ImapClient

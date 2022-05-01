@@ -2,7 +2,6 @@
 using Iris.Configuration;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using System;
 using System.Text;
 
 namespace UnitTests.Tests.Configuration
@@ -22,7 +21,6 @@ namespace UnitTests.Tests.Configuration
                     LimitFileSize = 1024 * 1024 * 32,
                     FilePath = "../logs"
                 },
-                MailServers = Array.Empty<MailServerConfig>(),
                 AuthConfig = new AuthConfig
                 {
                     JwtSecurityKey = Encoding.ASCII.GetBytes("8u5j4WXfR74kDGE38k32zIBrLuDELjSTGzTx97OWwVY01-0uaayMdBlBWfZ55Fy8"),
@@ -49,7 +47,6 @@ namespace UnitTests.Tests.Configuration
                     LimitFileSize = 1024 * 1024 * 32,
                     FilePath = "../logs"
                 },
-                MailServers = Array.Empty<MailServerConfig>(),
                 AuthConfig = new AuthConfig
                 {
                     JwtSecurityKey = Encoding.ASCII.GetBytes("8u5j4WXfR74kDGE38k32zIBrLuDELjSTGzTx97OWwVY01-0uaayMdBlBWfZ55Fy8"),

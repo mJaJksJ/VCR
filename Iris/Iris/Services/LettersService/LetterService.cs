@@ -1,6 +1,6 @@
 ﻿using Iris.Api.Controllers.LettersControllers;
 using Iris.Database;
-using Iris.Imap;
+using Iris.Helpers.Imap;
 using Iris.Services.LettersService.Contracts;
 using Iris.Stores.ServiceConnectionStore;
 using MailKit.Net.Imap;

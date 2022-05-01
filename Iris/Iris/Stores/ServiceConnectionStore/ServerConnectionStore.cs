@@ -1,5 +1,6 @@
 ﻿using Iris.Database;
 using Iris.Helpers;
+using Iris.Services.ConnectionProtocolHelperService;
 using Microsoft.EntityFrameworkCore;
 
 namespace Iris.Stores.ServiceConnectionStore
@@ -10,13 +11,15 @@ namespace Iris.Stores.ServiceConnectionStore
         private readonly object _locker = new();
         private readonly Dictionary<int, List<ServerConnection>> _connectionsStorage;
         private readonly DatabaseContext _databaseContext;
+        private readonly IConnectionProtocolHelperService _connectionProtocolHelperService;
 
         /// <summary>
         /// .ctor
         /// </summary>
-        public ServerConnectionStore(DatabaseContext databaseContext)
+        public ServerConnectionStore(DatabaseContext databaseContext, IConnectionProtocolHelperService connectionProtocolHelper)
         {
             _databaseContext = databaseContext;
+            _connectionProtocolHelperService = connectionProtocolHelper;
             _connectionsStorage = new Dictionary<int, List<ServerConnection>>();
             FillStorageFromDb();
         }
@@ -37,12 +40,6 @@ namespace Iris.Stores.ServiceConnectionStore
         }
 
         /// <inheritdoc/>
-        public ServerConnection GetUserConnection(int userId, Guid connectionId)
-        {
-            return _connectionsStorage.EnsureUserHaveConnection(userId, connectionId);
-        }
-
-        /// <inheritdoc/>
         public ServerConnection GetUserConnection(int userId, int accountId)
         {
             return _connectionsStorage.EnsureUserHaveConnection(userId, accountId);
@@ -53,8 +50,8 @@ namespace Iris.Stores.ServiceConnectionStore
         {
             lock (_locker)
             {
-                var connectionProtocol = ConnectionProtocolHelper.ByString(account.ConnectionProtocol);
-                var connection = connectionProtocol.GetConnection();
+                var connectionProtocol = _connectionProtocolHelperService.ByString(account.ConnectionProtocol);
+                var connection = _connectionProtocolHelperService.GetConnection(connectionProtocol);
 
                 connection.Connect(account.MailServer.Host, account.MailServer.Port, account.UseSsl);
                 connection.Authenticate(account.Name, account.Password);

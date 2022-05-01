@@ -1,4 +1,4 @@
-﻿using Iris.Helpers;
+﻿using Iris.Services.ClaimsPrincipalHelperService;
 using Iris.Services.MailServersService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,13 +13,15 @@ namespace Iris.Api.Controllers.ConnectionsControllers
     public class MailServersController : Controller
     {
         private readonly IMailServersService _mailServersService;
+        private readonly IClaimsPrincipalHelperService _claimsPrincipalHelperService;
 
         /// <summary>
         /// .ctor
         /// </summary>
-        public MailServersController(IMailServersService mailServersService)
+        public MailServersController(IMailServersService mailServersService, IClaimsPrincipalHelperService claimsPrincipalHelperService)
         {
             _mailServersService = mailServersService;
+            _claimsPrincipalHelperService = claimsPrincipalHelperService;
         }
 
         /// <summary>
@@ -29,7 +31,7 @@ namespace Iris.Api.Controllers.ConnectionsControllers
         [ProducesResponseType(typeof(IEnumerable<MailServerAccountContract>), 200)]
         public IActionResult GetMailServersAccounts()
         {
-            var userId = User.GetUserId();
+            var userId = _claimsPrincipalHelperService.GetUserId(User);
             var serverAccounts = _mailServersService.GetMailServerAccounts(userId);
             return Ok(serverAccounts);
         }
@@ -41,7 +43,7 @@ namespace Iris.Api.Controllers.ConnectionsControllers
         [ProducesResponseType(typeof(IEnumerable<MailServerAccountContract>), 200)]
         public IActionResult GetAvailableMailServers()
         {
-            var userId = User.GetUserId();
+            var userId = _claimsPrincipalHelperService.GetUserId(User);
             var serverAccounts = _mailServersService.GetAvailableMailServers(userId);
             return Ok(serverAccounts);
         }

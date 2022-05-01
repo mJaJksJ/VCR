@@ -16,7 +16,6 @@ namespace UnitTests.Tests.Services
         private readonly DatabaseContext _dbContext = TestDatabase.Instance;
         private IRegistrationService _registrationService;
         private Mock<IUserService> _userService;
-        private readonly int _userId;
 
         [SetUp]
         public void SetUp()

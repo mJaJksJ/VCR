@@ -1,7 +1,7 @@
 ﻿using Iris.Api.Results;
 using Iris.Database;
-using Iris.Helpers;
 using Iris.Services.AuthService;
+using Iris.Services.ClaimsPrincipalHelperService;
 using Iris.Stores;
 using Iris.Stores.AuthRequestStore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,17 +21,21 @@ namespace Iris.Api.Controllers.AuthControllers
         private readonly IAuthRequestsStore _authRequestsStore;
         private readonly IAuthService _authService;
         private readonly TokensStore _tokensStore;
+        private readonly IClaimsPrincipalHelperService _claimsPrincipalHelperService;
 
         private static readonly Serilog.ILogger Log = Serilog.Log.ForContext<AuthController>();
 
         /// <summary>
         /// .ctor
         /// </summary>
-        public AuthController(IAuthRequestsStore authRequestsStore, IAuthService authService, TokensStore tokensStore)
+        public AuthController(IAuthRequestsStore authRequestsStore,
+            IAuthService authService, TokensStore tokensStore,
+            IClaimsPrincipalHelperService claimsPrincipalHelperService)
         {
             _authRequestsStore = authRequestsStore;
             _authService = authService;
             _tokensStore = tokensStore;
+            _claimsPrincipalHelperService = claimsPrincipalHelperService;
         }
 
         /// <summary>
@@ -114,7 +118,7 @@ namespace Iris.Api.Controllers.AuthControllers
         [ProducesResponseType(typeof(OkResult), 200)]
         public IActionResult DeAuth()
         {
-            var userId = User.GetUserId();
+            var userId = _claimsPrincipalHelperService.GetUserId(User);
 
             _tokensStore.Remove(userId.ToString());
             Log.Information($"User {userId} is de-auth");

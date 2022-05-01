@@ -2,7 +2,6 @@
 using Iris.Stores.AuthRequestStore;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System;
 using UnitTests.Database;
@@ -21,7 +20,7 @@ namespace UnitTests.Tests.Stores
             _scopeFactory = new Mock<IServiceScopeFactory>();
 
             var serviceProvider = new Mock<IServiceProvider>();
-            serviceProvider.Setup(_ => _.GetRequiredService<DatabaseContext>()).Returns(TestDatabase.Instance);
+            serviceProvider.Setup(_ => _.GetService(typeof(DatabaseContext))).Returns(TestDatabase.Instance);
 
             var serviceScope = new Mock<IServiceScope>();
             serviceScope.Setup(_ => _.ServiceProvider).Returns(serviceProvider.Object);
@@ -46,8 +45,8 @@ namespace UnitTests.Tests.Stores
 
             var foundRequest = _authRequestsStore.FindRequest(request.Id);
 
-            var expected = JObject.FromObject(request).ToString();
-            var actual = JObject.FromObject(foundRequest).ToString();
+            var expected = request.Id;
+            var actual = foundRequest.Id;
 
             Assert.AreEqual(expected, actual);
         }

@@ -8,12 +8,9 @@
         {
             var rightConfig = config as Config;
             var leftConfig = joiningConfig as Config;
-            rightConfig.JoinWith(rightConfig.Database, leftConfig.Database, new DatabaseConfigJoiner());
-            rightConfig.JoinWith(rightConfig.Logger, leftConfig.Logger, new LoggerConfigJoiner());
-
-            // TODO: проработать варианты дозаписи существующих, добавления новых, пропуска тех что не обновляются
-            //rightConfig.JoinWith(rightConfig.MailServers, leftConfig.MailServers, new MailServerConfigJoiner());
-
+            rightConfig.JoinWith(rightConfig.Database, leftConfig.Database, null);
+            rightConfig.JoinWith(rightConfig.Logger, leftConfig.Logger, null);
+            rightConfig.JoinWith(rightConfig.AuthConfig, leftConfig.AuthConfig, new AuthConfigJoiner());
             return rightConfig;
         }
     }

@@ -2,9 +2,12 @@ using Iris.Api.Controllers.ConnectionsControllers;
 using Iris.Configuration;
 using Iris.Database;
 using Iris.Services.AuthService;
+using Iris.Services.ClaimsPrincipalHelperService;
+using Iris.Services.ConnectionProtocolHelperService;
 using Iris.Services.FormatLettersService;
 using Iris.Services.LettersService;
 using Iris.Services.MailServersService;
+using Iris.Services.RegistrationService.cs;
 using Iris.Services.UserService;
 using Iris.Stores;
 using Iris.Stores.AuthRequestStore;
@@ -16,8 +19,6 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 using System.Reflection;
-using Iris.Api.Controllers.RegistrationControllers;
-using Iris.Services.RegistrationService.cs;
 
 
 // Logger Configuration
@@ -160,6 +161,8 @@ builder.Services.AddSingleton<IAuthRequestsStore, AuthRequestsStore>();
 builder.Services.AddSingleton<TokensStore>();
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
+builder.Services.AddScoped<IConnectionProtocolHelperService, ConnectionProtocolHelperService>();
+builder.Services.AddScoped<IClaimsPrincipalHelperService, ClaimsPrincipalHelperService>();
 builder.Services.AddScoped<IMailServersService, MailServersService>();
 builder.Services.AddScoped<ILetterService, LetterService>();
 builder.Services.AddScoped<IFormatLettersSevice, FormatLettersSevice>();

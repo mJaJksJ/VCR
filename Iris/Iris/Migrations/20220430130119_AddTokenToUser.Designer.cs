@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
-
+#pragma warning disable 1591
 namespace Iris.Migrations
 {
     [DbContext(typeof(DatabaseContext))]

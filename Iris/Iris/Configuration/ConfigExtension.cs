@@ -34,8 +34,16 @@ namespace Iris.Configuration
                 }
                 else
                 {
-                    //TODO: времменное решение, если так ине получится полностью автоматизировать
-                    notBasicTypesJoiner.Join(config, joiningConfig);
+                    switch (notBasicTypesJoiner)
+                    {
+                        case AuthConfigJoiner authConfigJoiner:
+                            authConfigJoiner.Join(config, joiningConfig);
+                            break;
+
+                        default:
+                            notBasicTypesJoiner.Join(config, joiningConfig);
+                            break;
+                    }
                 }
 
             }

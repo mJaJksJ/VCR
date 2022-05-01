@@ -1,5 +1,5 @@
-﻿using Iris.Helpers;
-using Iris.Services.AccountsService;
+﻿using Iris.Services.AccountsService;
+using Iris.Services.ClaimsPrincipalHelperService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,14 +12,15 @@ namespace Iris.Api.Controllers.AccountsControllers
     public class AccountsController : Controller
     {
         private readonly IAccountsService _accountsService;
+        private readonly IClaimsPrincipalHelperService _claimsPrincipalHelperService;
 
         /// <summary>
         /// .ctor
         /// </summary>
-        /// <param name="accountsService"></param>
-        public AccountsController(IAccountsService accountsService)
+        public AccountsController(IAccountsService accountsService, IClaimsPrincipalHelperService claimsPrincipalHelperService)
         {
             _accountsService = accountsService;
+            _claimsPrincipalHelperService = claimsPrincipalHelperService;
         }
 
         /// <summary>
@@ -30,7 +31,7 @@ namespace Iris.Api.Controllers.AccountsControllers
         [ProducesResponseType(typeof(void), 200)]
         public IActionResult AddNewAccount([FromBody] AccountRequestContract contract)
         {
-            var userId = User.GetUserId();
+            var userId = _claimsPrincipalHelperService.GetUserId(User);
             _accountsService.AddNewAccount(userId, contract);
             return Ok();
         }
@@ -43,7 +44,7 @@ namespace Iris.Api.Controllers.AccountsControllers
         [ProducesResponseType(typeof(void), 200)]
         public IActionResult RemoveAccount(int accId)
         {
-            var userId = User.GetUserId();
+            var userId = _claimsPrincipalHelperService.GetUserId(User);
             _accountsService.RemoveAccount(userId, accId);
             return Ok();
         }

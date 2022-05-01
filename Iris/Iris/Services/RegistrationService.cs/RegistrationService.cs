@@ -47,7 +47,7 @@ namespace Iris.Services.RegistrationService.cs
 
             _databaseContext.SaveChanges();
 
-            return new RegistrationResponseContract { IsSucces = true, Token = user.Entity.Token};
+            return new RegistrationResponseContract { IsSucces = true, Token = user.Entity.Token };
         }
     }
 }

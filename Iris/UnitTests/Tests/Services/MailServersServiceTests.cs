@@ -17,8 +17,6 @@ namespace UnitTests.Tests.Services
 
         private readonly DatabaseContext _dbContext = TestDatabase.Instance;
         private int _userId;
-        private int _mailServerId;
-        private int _accountId;
 
         private IMailServersService _mailServersService;
 
@@ -38,9 +36,8 @@ namespace UnitTests.Tests.Services
                 Port = Port,
             });
             _dbContext.SaveChanges();
-            _mailServerId = server.Entity.Id;
 
-            var acc = _dbContext.Accounts.Add(new Account
+            _dbContext.Accounts.Add(new Account
             {
                 Name = ExsistAccountName,
                 UserId = _userId,
@@ -48,7 +45,6 @@ namespace UnitTests.Tests.Services
                 MailServerId = server.Entity.Id
             });
             _dbContext.SaveChanges();
-            _accountId = acc.Entity.Id;
 
             _mailServersService = new MailServersService(_dbContext);
         }
@@ -67,6 +63,14 @@ namespace UnitTests.Tests.Services
         public void GetMailServerAccounts_UserId_Accounts()
         {
             var servers = _mailServersService.GetMailServerAccounts(_userId);
+
+            Assert.IsTrue(servers.Count() == 1);
+        }
+
+        [Test]
+        public void GetAvailableMailServers_UserId_Accounts()
+        {
+            var servers = _mailServersService.GetAvailableMailServers(_userId);
 
             Assert.IsTrue(servers.Count() == 1);
         }

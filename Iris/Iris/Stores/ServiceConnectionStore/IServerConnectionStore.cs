@@ -25,8 +25,8 @@ namespace Iris.Stores.ServiceConnectionStore
         /// Получить подключение пользователя
         /// </summary>
         /// <param name="userId">Id пользователя</param>
-        /// <param name="connectionId">Id подключения</param>
-        ServerConnection GetUserConnection(int userId, Guid connectionId);
+        /// <param name="accountId">Id учетной записи</param>
+        public ServerConnection GetUserConnection(int userId, int accountId);
 
         /// <summary>
         /// Добавить подключение
