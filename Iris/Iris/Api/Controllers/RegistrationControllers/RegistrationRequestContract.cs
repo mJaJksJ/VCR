@@ -24,10 +24,5 @@
         /// Кем создан
         /// </summary>
         public int CreatedBy { get; set; }
-
-        /// <summary>
-        /// Токен
-        /// </summary>
-        public string Token { get; set; }
     }
 }

@@ -36,18 +36,18 @@ namespace Iris.Services.RegistrationService.cs
                 };
             }
 
-            _databaseContext.Users.Add(new User
+            var user = _databaseContext.Users.Add(new User
             {
                 Name = contract.Name,
                 Password = contract.Password,
                 IsAdmin = contract.IsAdmin,
                 CreatedBy = contract.CreatedBy,
-                Token = contract.Token
+                Token = TwoStepsAuthenticator.Authenticator.GenerateKey()
             });
 
             _databaseContext.SaveChanges();
 
-            return new RegistrationResponseContract { IsSucces = true };
+            return new RegistrationResponseContract { IsSucces = true, Token = user.Entity.Token};
         }
     }
 }

@@ -27,14 +27,13 @@ namespace Iris.Services.AuthService
         /// <inheritdoc/>
         public (ClaimsIdentity, User) Authorize(AuthRequestOperation operation, AuthRequestContract authRequest)
         {
-            var user = _userService.GetUserByLogin(authRequest.Login);
+            var user = _userService.GetUserByLogin(authRequest.Login) ?? throw new AuthException(); ;
 
-            var key = TwoStepsAuthenticator.Authenticator.GenerateKey();
             var secret = user.Token;
             var authenticator = new TwoStepsAuthenticator.TimeAuthenticator();
             bool isOk = authenticator.CheckCode(secret, authRequest.KeyPassword, user);
 
-            if (user == null || authRequest.Password != user.Password || !isOk)
+            if (authRequest.Password != user.Password || !isOk)
             {
                 throw new AuthException();
             }

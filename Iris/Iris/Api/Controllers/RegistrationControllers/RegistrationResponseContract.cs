@@ -11,5 +11,10 @@ namespace Iris.Api.Controllers.RegistrationControllers
         /// Успешно ли проведена регистрация
         /// </summary>
         public bool IsSucces { get; set; }
+
+        /// <summary>
+        /// Секретный ключ
+        /// </summary>
+        public string Token { get; set; }
     }
 }

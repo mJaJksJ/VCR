@@ -15,7 +15,7 @@ namespace UnitTests.Tests.Services
     {
         private const string UserName = "User1";
         private const string Password = "Password";
-        private const string Token = "123456";
+        private const string Token = "GCAC4UPWTN6MS552";
 
         private Config _config;
         private Mock<IUserService> _userService;
@@ -46,21 +46,34 @@ namespace UnitTests.Tests.Services
             // nothing
         }
 
-        [TestCase(UserName, Password, Token)]
-        public void Authorize_RightData_GetClaims(string login, string password, string token)
+        [TestCase(UserName, Password)]
+        public void Authorize_RightData_GetClaims(string login, string password)
         {
-            var (claims, _) = _authService.Authorize(new AuthRequestOperation(), new AuthRequestContract { Password = password, KeyPassword = token, Login = login });
+            var authenticator = new TwoStepsAuthenticator.TimeAuthenticator();
+            var code = authenticator.GetCode(Token);
+            var (claims, _) = _authService.Authorize(new AuthRequestOperation(), new AuthRequestContract { Password = password, KeyPassword = code, Login = login });
 
             Assert.IsNotNull(claims);
         }
 
-        [TestCase(UserName + "1", Password, Token)]
-        [TestCase(UserName, Password + "1", Token)]
-        [TestCase(UserName + "1", "Password1", Token)]
-        [TestCase(UserName, Password, Token + "1")]
-        public void Authorize_BadData_GetAuthException(string login, string password, string token)
+        [TestCase(UserName, Password + "1")]
+        [TestCase(UserName + "1", Password)]
+        [TestCase(UserName + "1", Password + "1")]
+        public void Authorize_BadPasswordOrUsername_GetAuthException(string login, string password)
         {
-            void TestDelegate() => _authService.Authorize(new AuthRequestOperation(), new AuthRequestContract { Password = password, KeyPassword = token, Login = login });
+            var authenticator = new TwoStepsAuthenticator.TimeAuthenticator();
+            var code = authenticator.GetCode(Token);
+            void TestDelegate() => _authService.Authorize(new AuthRequestOperation(), new AuthRequestContract { Password = password, KeyPassword = code, Login = login });
+
+            Assert.Throws<AuthException>(TestDelegate);
+        }
+
+        [TestCase(UserName, Password)]
+        public void Authorize_BadCode_GetAuthException(string login, string password)
+        {
+            var authenticator = new TwoStepsAuthenticator.TimeAuthenticator();
+            var code = "000000";
+            void TestDelegate() => _authService.Authorize(new AuthRequestOperation(), new AuthRequestContract { Password = password, KeyPassword = code, Login = login });
 
             Assert.Throws<AuthException>(TestDelegate);
         }
@@ -68,7 +81,9 @@ namespace UnitTests.Tests.Services
         [Test]
         public void GenerateToken_Data_TokenNotNull()
         {
-            var (claims, user) = _authService.Authorize(new AuthRequestOperation(), new AuthRequestContract { Password = Password, KeyPassword = Token, Login = UserName });
+            var authenticator = new TwoStepsAuthenticator.TimeAuthenticator();
+            var code = authenticator.GetCode(Token);
+            var (claims, user) = _authService.Authorize(new AuthRequestOperation(), new AuthRequestContract { Password = Password, KeyPassword = code, Login = UserName });
 
             var (encodedJwt, _) = _authService.GenerateToken(claims.Claims, user);
 

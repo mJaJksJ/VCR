@@ -16,6 +16,8 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 using System.Reflection;
+using Iris.Api.Controllers.RegistrationControllers;
+using Iris.Services.RegistrationService.cs;
 
 
 // Logger Configuration
@@ -139,6 +141,18 @@ builder.Services.AddSwaggerGen(c =>
 
 var dbContext = new DatabaseContext("Data Source=Database\\Database.db");
 
+if (!dbContext.Users.Any(_ => _.Name == "admin"))
+{
+    dbContext.Users.Add(new User
+    {
+        Name = "admin",
+        Password = "admin",
+        IsAdmin = true,
+        Token = "GCAC4UPWTN6MS552"
+    });
+    dbContext.SaveChanges();
+}
+
 builder.Services.AddSingleton(config);
 builder.Services.AddSingleton(dbContext);
 builder.Services.AddSingleton<IServerConnectionStore, ServerConnectionStore>();
@@ -149,6 +163,7 @@ builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddScoped<IMailServersService, MailServersService>();
 builder.Services.AddScoped<ILetterService, LetterService>();
 builder.Services.AddScoped<IFormatLettersSevice, FormatLettersSevice>();
+builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 
 var app = builder.Build();
 
