@@ -58,11 +58,13 @@ namespace Iris.Services.LettersService.Contracts
         /// </summary>
         [JsonProperty("Attachmetns")]
         [XmlElement("Attachmetns")]
-        public List<AttachmentContract> Attacments { get; set; }
+        public List<AttachmentContract> Attachments { get; set; }
 
         /// <summary>
         /// Id учетной записи
         /// </summary>
-        public int AccoundId { get; set; }
+        [JsonProperty("Account")]
+        [XmlElement("Account")]
+        public int AccountId { get; set; }
     }
 }

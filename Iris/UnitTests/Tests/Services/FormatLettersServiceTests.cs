@@ -48,7 +48,7 @@ namespace UnitTests.Tests.Services
                     Subject = "TestFormatting",
                     Date = new System.DateTime(2022, 04, 17, 17, 5, 30),
                     Text = "Test letter for FormatLettersServiceTests",
-                    Attacments = new List<AttachmentContract>
+                    Attachments = new List<AttachmentContract>
                     {
                         new AttachmentContract
                         {

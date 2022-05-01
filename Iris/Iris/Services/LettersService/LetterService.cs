@@ -1,13 +1,13 @@
-﻿using System.Globalization;
-using System.Text.RegularExpressions;
-using Iris.Api.Controllers.LettersControllers;
+﻿using Iris.Api.Controllers.LettersControllers;
 using Iris.Database;
 using Iris.Exceptions;
-using Iris.Helpers.Imap;
+using Iris.Services.ImapClientService;
 using Iris.Services.LettersService.Contracts;
 using Iris.Stores.ServiceConnectionStore;
 using MailKit.Net.Imap;
 using MailKit.Net.Pop3;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace Iris.Services.LettersService
 {
@@ -16,14 +16,16 @@ namespace Iris.Services.LettersService
     {
         private readonly IServerConnectionStore _serverConnectionStore;
         private readonly DatabaseContext _context;
+        private readonly IImapClientService _imapClientService;
 
         /// <summary>
         /// .ctor
         /// </summary>
-        public LetterService(IServerConnectionStore serverConnectionStore, DatabaseContext context)
+        public LetterService(IServerConnectionStore serverConnectionStore, DatabaseContext context, IImapClientService imapClientService)
         {
             _serverConnectionStore = serverConnectionStore;
             _context = context;
+            _imapClientService = imapClientService;
         }
 
         /// <summary>
@@ -84,32 +86,50 @@ namespace Iris.Services.LettersService
                 letters = Filter(filter, letters).ToList();
             }
 
-            letters = Sort(lettersRequest.Sort, letters).ToList();
+            if (lettersRequest.Sort != null)
+            {
+                letters = Sort(lettersRequest.Sort, letters).ToList();
+            }
 
             if (lettersRequest.SaveLettersToLocalBd)
             {
-                _context.Letters.AddRange(letters.Select(_ => new Letter()
+                foreach (var _ in letters)
                 {
-                    Sender = new Person
+                    var sender = _context.Persons.Add(new Person
                     {
                         Name = _.Sender.Name,
-                        Email = _.Sender.Email,
-                    },
-                    AccoundId = _.AccoundId,
-                    Attacments = _.Attacments.Select(a => new Attachment
+                        Email = _.Sender.Email
+                    });
+                    _context.SaveChanges();
+
+                    var receivers = new List<Person>();
+                    foreach (var r in _.Receivers)
                     {
-                        Blob = a.Blob,
-                        Name = a.Name
-                    }).ToList(),
-                    Date = _.Date,
-                    Receivers = _.Receivers.Select(r => new Person
+                        var receiver = _context.Persons.Add(new Person
+                        {
+                            Name = r.Name,
+                            Email = r.Email,
+                        });
+                        receivers.Add(receiver.Entity);
+                    }
+
+                    _context.Letters.Add(new Letter()
                     {
-                        Name = r.Name,
-                        Email = r.Email,
-                    }).ToList(),
-                    Subject = _.Subject,
-                    Text = _.Text
-                }));
+                        SenderId = sender.Entity.Id,
+                        AccountId = _.AccountId,
+                        Attachments = _.Attachments.Select(a => new Attachment
+                        {
+                            Blob = a.Blob,
+                            Name = a.Name
+                        }).ToList(),
+                        Date = _.Date,
+                        Receivers = receivers,
+                        Subject = _.Subject,
+                        Text = _.Text
+                    });
+                }
+
+                _context.SaveChanges();
             }
 
             return letters;
@@ -119,8 +139,13 @@ namespace Iris.Services.LettersService
         {
             var letters = _context.Accounts
                 .FirstOrDefault(_ => _.Id == accId)
-                ?.Letters
-                ?.Select(_ => new LetterContract
+                ?.Letters;
+
+            var letterContracts = new List<LetterContract>();
+
+            foreach (var _ in letters)
+            {
+                var letter = new LetterContract
                 {
                     Id = _.Id,
                     Sender = new PersonContract
@@ -138,23 +163,54 @@ namespace Iris.Services.LettersService
                     Subject = _.Subject,
                     Date = _.Date,
                     Text = _.Text,
-                    Attacments = _.Attacments.Select(a => new AttachmentContract
-                    {
-                        Id = a.Id,
-                        Blob = a.Blob,
-                        Name = a.Name
-                    }).ToList(),
-                    AccoundId = accId
-                });
+                    Attachments = new List<AttachmentContract>(),
+                    AccountId = accId
+                };
 
-            return letters;
+                switch (needAttachments)
+                {
+                    case NeedAttachments.OnlyName:
+                        if (_.Attachments.Any())
+                        {
+                            var attachs = _.Attachments.ToArray();
+                            letter.Attachments.AddRange(attachs.Select(a => new AttachmentContract
+                            {
+                                Name = a.Name
+                            }));
+                        }
+                        break;
+
+                    case NeedAttachments.WithoutAttachments:
+                        // nothing
+                        break;
+
+                    case NeedAttachments.WithAttachmentsBlob:
+                        if (_.Attachments.Any())
+                        {
+                            var attachs = _.Attachments.ToArray();
+                            letter.Attachments.AddRange(attachs.Select(a => new AttachmentContract
+                            {
+                                Name = a.Name,
+                                Blob = a.Blob
+                            }));
+                        }
+                        break;
+
+                    default:
+                        throw new Exception();
+                }
+
+                letterContracts.Add(letter);
+            }
+
+            return letterContracts;
         }
 
         private IEnumerable<LetterContract> GetLettersFromServer(ServerConnection connection, NeedAttachments needAttachments, int accId)
         {
             return connection.MailService switch
             {
-                ImapClient imapClient => imapClient.GetLetters(needAttachments, accId),
+                ImapClient imapClient => _imapClientService.GetLetters(imapClient, needAttachments, accId),
                 Pop3Client pop3Client => throw new Exception(),
                 _ => throw new Exception(),
             };
@@ -164,8 +220,8 @@ namespace Iris.Services.LettersService
         {
             return filter.Field switch
             {
-                LetterField.Attacments => letters.Where(_ => filter.Templates.All(t => _.Attacments.Any(a => filter.IsRegex
-                        ? Regex.IsMatch(a.Name, filter.Template)
+                LetterField.Attacments => letters.Where(_ => filter.Templates.All(t => _.Attachments.Any(a => filter.IsRegex
+                        ? Regex.IsMatch(a.Name, t)
                         : a.Name.Contains(filter.Template))
                     )
                 ),
@@ -178,7 +234,7 @@ namespace Iris.Services.LettersService
                     : _.Date.ToString(CultureInfo.InvariantCulture).Contains(filter.Template)
                 ),
                 LetterField.Receivers => letters.Where(_ => filter.Templates.All(t => _.Receivers.Any(a => filter.IsRegex
-                        ? Regex.IsMatch(a.ToString(), filter.Template)
+                        ? Regex.IsMatch(a.ToString(), t)
                         : a.ToString().Contains(filter.Template))
                     )
                 ),

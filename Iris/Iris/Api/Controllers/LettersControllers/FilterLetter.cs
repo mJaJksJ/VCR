@@ -14,13 +14,13 @@ namespace Iris.Api.Controllers.LettersControllers
         public LetterField Field { get; set; }
 
         /// <summary>
-        /// Шаблон. Кроме Text и Attacments!
+        /// Шаблон. Кроме Text и Attachments!
         /// </summary>
         [JsonProperty("template")]
         public string Template { get; set; }
 
         /// <summary>
-        /// Шаблоны. Только для Text и Attacments!
+        /// Шаблоны. Только для Text и Attachments!
         /// </summary>
         [JsonProperty("templates")]
         public IEnumerable<string> Templates { get; set; }

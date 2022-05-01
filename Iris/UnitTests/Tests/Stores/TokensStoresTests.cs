@@ -1,4 +1,4 @@
-﻿using Iris.Stores;
+﻿using Iris.Stores.TokensStore;
 using NUnit.Framework;
 
 namespace UnitTests.Tests.Stores
@@ -6,7 +6,7 @@ namespace UnitTests.Tests.Stores
     [TestFixture]
     public class TokensStoresTests
     {
-        private TokensStore _store;
+        private ITokensStore _store;
 
         [SetUp]
         public void SetUp()

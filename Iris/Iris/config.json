@@ -11,7 +11,6 @@
     "LimitFileSize": 33554432,
     "FilePath": "../logs"
   },
-  "MailServers": [],
   "AuthConfig": {
     "JwtSecurityKey": "OHU1ajRXWGZSNzRrREdFMzhrMzJ6SUJyTHVERUxqU1RHelR4OTdPV3dWWTAxLTB1YWF5TWRCbEJXZlo1NUZ5OA==",
     "JwtLifetime": 86400,

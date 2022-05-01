@@ -1,5 +1,8 @@
 ﻿namespace Iris.Exceptions
 {
+    /// <summary>
+    /// Учетная запись уже существует
+    /// </summary>
     public class AccountAlreadyExistException : IrisException
     {
         /// <summary>

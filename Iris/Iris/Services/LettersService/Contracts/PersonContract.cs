@@ -45,9 +45,9 @@ namespace Iris.Services.LettersService.Contracts
         /// <exception cref="ParsePersonInternetAddressException">Ошибка парсинга имени и email персоны</exception>
         public PersonContract(InternetAddress internetAddress)
         {
-            var person = internetAddress.ToString().Split(new[] { '\"', '<', '>' }, StringSplitOptions.RemoveEmptyEntries);
+            var person = internetAddress?.ToString()?.Split(new[] { '\"', '<', '>' }, StringSplitOptions.RemoveEmptyEntries);
 
-            switch (person.Length)
+            switch (person?.Length)
             {
                 case 1:
                     Email = person[0];
@@ -59,7 +59,7 @@ namespace Iris.Services.LettersService.Contracts
                     break;
 
                 default:
-                    throw new ParsePersonInternetAddressException(person.ToString());
+                    throw new ParsePersonInternetAddressException(person?.ToString());
             }
         }
 

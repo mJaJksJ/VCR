@@ -44,12 +44,12 @@
         /// Вложения
         /// </summary>
 
-        public IEnumerable<Attachment> Attacments { get; set; }
+        public IEnumerable<Attachment> Attachments { get; set; }
 
         /// <summary>
         /// Id учетной записи
         /// </summary>
-        public int AccoundId { get; set; }
+        public int AccountId { get; set; }
 
         /// <summary>
         /// Учетная запись

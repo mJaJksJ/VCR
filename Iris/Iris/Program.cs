@@ -5,13 +5,14 @@ using Iris.Services.AuthService;
 using Iris.Services.ClaimsPrincipalHelperService;
 using Iris.Services.ConnectionProtocolHelperService;
 using Iris.Services.FormatLettersService;
+using Iris.Services.ImapClientService;
 using Iris.Services.LettersService;
 using Iris.Services.MailServersService;
 using Iris.Services.RegistrationService.cs;
 using Iris.Services.UserService;
-using Iris.Stores;
 using Iris.Stores.AuthRequestStore;
 using Iris.Stores.ServiceConnectionStore;
+using Iris.Stores.TokensStore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
@@ -142,6 +143,8 @@ builder.Services.AddSwaggerGen(c =>
 
 var dbContext = new DatabaseContext("Data Source=Database\\Database.db");
 
+#region AdminUser
+
 if (!dbContext.Users.Any(_ => _.Name == "admin"))
 {
     dbContext.Users.Add(new User
@@ -154,81 +157,91 @@ if (!dbContext.Users.Any(_ => _.Name == "admin"))
     dbContext.SaveChanges();
 }
 
+#endregion
+
 builder.Services.AddSingleton(config);
 builder.Services.AddSingleton(dbContext);
 builder.Services.AddSingleton<IServerConnectionStore, ServerConnectionStore>();
 builder.Services.AddSingleton<IAuthRequestsStore, AuthRequestsStore>();
-builder.Services.AddSingleton<TokensStore>();
+builder.Services.AddSingleton<ITokensStore, TokensStore>();
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
-builder.Services.AddScoped<IConnectionProtocolHelperService, ConnectionProtocolHelperService>();
+builder.Services.AddSingleton<IConnectionProtocolHelperService, ConnectionProtocolHelperService>();
 builder.Services.AddScoped<IClaimsPrincipalHelperService, ClaimsPrincipalHelperService>();
-builder.Services.AddScoped<IMailServersService, MailServersService>();
+builder.Services.AddSingleton<IMailServersService, MailServersService>();
 builder.Services.AddScoped<ILetterService, LetterService>();
 builder.Services.AddScoped<IFormatLettersSevice, FormatLettersSevice>();
 builder.Services.AddScoped<IRegistrationService, RegistrationService>();
+builder.Services.AddScoped<IImapClientService, ImapClientService>();
 
 var app = builder.Build();
 
 #region AddRequiredServers
 
 var mailServersService = app.Services.GetRequiredService<IMailServersService>();
-mailServersService.NewMailServer(new MailServerContract
+try
 {
-    Host = "imap.mail.ru",
-    Port = 993,
-    Name = "VK",
-    IsPrivate = false
-});
-mailServersService.NewMailServer(new MailServerContract
+    mailServersService.NewMailServer(new MailServerContract
+    {
+        Host = "imap.mail.ru",
+        Port = 993,
+        Name = "VK",
+        IsPrivate = false
+    });
+    mailServersService.NewMailServer(new MailServerContract
+    {
+        Host = "pop.mail.ru",
+        Port = 995,
+        Name = "VK",
+        IsPrivate = false
+    });
+    mailServersService.NewMailServer(new MailServerContract
+    {
+        Host = "imap.yandex.ru",
+        Port = 993,
+        Name = "˜˜˜˜˜˜",
+        IsPrivate = false
+    });
+    mailServersService.NewMailServer(new MailServerContract
+    {
+        Host = "pop.yandex.ru",
+        Port = 995,
+        Name = "˜˜˜˜˜˜",
+        IsPrivate = false
+    });
+    mailServersService.NewMailServer(new MailServerContract
+    {
+        Host = "imap.gmail.com",
+        Port = 993,
+        Name = "Google",
+        IsPrivate = false
+    });
+    mailServersService.NewMailServer(new MailServerContract
+    {
+        Host = "pop.gmail.com",
+        Port = 995,
+        Name = "Google",
+        IsPrivate = false
+    });
+    mailServersService.NewMailServer(new MailServerContract
+    {
+        Host = "outlook.office365.com",
+        Port = 993,
+        Name = "Outlook",
+        IsPrivate = false
+    });
+    mailServersService.NewMailServer(new MailServerContract
+    {
+        Host = "outlook.office365.com",
+        Port = 995,
+        Name = "Outlook",
+        IsPrivate = false
+    });
+}
+catch
 {
-    Host = "pop.mail.ru",
-    Port = 995,
-    Name = "VK",
-    IsPrivate = false
-});
-mailServersService.NewMailServer(new MailServerContract
-{
-    Host = "imap.yandex.ru",
-    Port = 993,
-    Name = "˜˜˜˜˜˜",
-    IsPrivate = false
-});
-mailServersService.NewMailServer(new MailServerContract
-{
-    Host = "pop.yandex.ru",
-    Port = 995,
-    Name = "˜˜˜˜˜˜",
-    IsPrivate = false
-});
-mailServersService.NewMailServer(new MailServerContract
-{
-    Host = "imap.gmail.com",
-    Port = 993,
-    Name = "Google",
-    IsPrivate = false
-});
-mailServersService.NewMailServer(new MailServerContract
-{
-    Host = "pop.gmail.com",
-    Port = 995,
-    Name = "Google",
-    IsPrivate = false
-});
-mailServersService.NewMailServer(new MailServerContract
-{
-    Host = "outlook.office365.com",
-    Port = 993,
-    Name = "Outlook",
-    IsPrivate = false
-});
-mailServersService.NewMailServer(new MailServerContract
-{
-    Host = "outlook.office365.com",
-    Port = 995,
-    Name = "Outlook",
-    IsPrivate = false
-});
+    // ignored
+}
 
 #endregion
 

@@ -93,7 +93,7 @@ namespace Iris.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AccoundId")
+                    b.Property<int>("AccountId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("AccountId")
@@ -216,7 +216,7 @@ namespace Iris.Migrations
             modelBuilder.Entity("Iris.Database.Attachment", b =>
                 {
                     b.HasOne("Iris.Database.Letter", "Letter")
-                        .WithMany("Attacments")
+                        .WithMany("Attachments")
                         .HasForeignKey("LetterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -258,7 +258,7 @@ namespace Iris.Migrations
 
             modelBuilder.Entity("Iris.Database.Letter", b =>
                 {
-                    b.Navigation("Attacments");
+                    b.Navigation("Attachments");
                 });
 
             modelBuilder.Entity("Iris.Database.MailServer", b =>

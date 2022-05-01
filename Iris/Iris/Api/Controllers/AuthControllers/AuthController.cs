@@ -2,8 +2,8 @@
 using Iris.Database;
 using Iris.Services.AuthService;
 using Iris.Services.ClaimsPrincipalHelperService;
-using Iris.Stores;
 using Iris.Stores.AuthRequestStore;
+using Iris.Stores.TokensStore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,7 @@ namespace Iris.Api.Controllers.AuthControllers
     {
         private readonly IAuthRequestsStore _authRequestsStore;
         private readonly IAuthService _authService;
-        private readonly TokensStore _tokensStore;
+        private readonly ITokensStore _tokensStore;
         private readonly IClaimsPrincipalHelperService _claimsPrincipalHelperService;
 
         private static readonly Serilog.ILogger Log = Serilog.Log.ForContext<AuthController>();
@@ -29,7 +29,7 @@ namespace Iris.Api.Controllers.AuthControllers
         /// .ctor
         /// </summary>
         public AuthController(IAuthRequestsStore authRequestsStore,
-            IAuthService authService, TokensStore tokensStore,
+            IAuthService authService, ITokensStore tokensStore,
             IClaimsPrincipalHelperService claimsPrincipalHelperService)
         {
             _authRequestsStore = authRequestsStore;
@@ -123,7 +123,7 @@ namespace Iris.Api.Controllers.AuthControllers
             _tokensStore.Remove(userId.ToString());
             Log.Information($"User {userId} is de-auth");
 
-            Response.Headers.Add("Clear-Site-Data", "\"cache\", \"cookies\", \"storage\"");
+            Response?.Headers?.Add("Clear-Site-Data", "\"cache\", \"cookies\", \"storage\"");
 
             return Ok();
         }
@@ -136,7 +136,7 @@ namespace Iris.Api.Controllers.AuthControllers
         [ProducesResponseType(typeof(bool), 200)]
         public IActionResult IsAuth()
         {
-            return Ok(User.Identity.IsAuthenticated);
+            return Ok(User?.Identity?.IsAuthenticated ?? false);
         }
     }
 }
