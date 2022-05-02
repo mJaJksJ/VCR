@@ -1,7 +1,7 @@
 {
   "letters": [
     {
-      "Id": 1,
+      "Id": "1",
       "Sender": {
         "Id": 1,
         "Name": "testSender",

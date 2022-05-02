@@ -23,8 +23,8 @@ namespace UnitTests.Tests.Api
         private Mock<ITokensStore> _tokensStore;
         private Mock<IClaimsPrincipalHelperService> _claimsPrincipalHelperService;
         private const string _requestId = "1";
-        private readonly AuthRequestOperation _authRequestOperation = new AuthRequestOperation { Id = _requestId };
-        private readonly AuthRequestContract _authRequestContract = new AuthRequestContract();
+        private readonly AuthRequestOperation _authRequestOperation = new() { Id = _requestId };
+        private readonly AuthRequestContract _authRequestContract = new();
         private const string Token = "JNJAMK";
         private const string UserId = "1";
 

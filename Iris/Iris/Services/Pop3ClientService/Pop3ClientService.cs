@@ -1,8 +1,6 @@
 ﻿using Iris.Api.Controllers.LettersControllers;
 using Iris.Exceptions;
 using Iris.Services.LettersService.Contracts;
-using MailKit;
-using MailKit.Net.Imap;
 using MailKit.Net.Pop3;
 using MimeKit;
 

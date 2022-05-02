@@ -153,6 +153,12 @@ namespace UnitTests.Tests.Services
                     Id = _guid2
                 },
             });
+            _connectionStore.Setup(_ => _.GetUserConnection(_userId, _accountId)).Returns(
+        new ServerConnection(imapMailServer)
+        {
+            Account = acc.Entity,
+            Id = _guid1
+        });
 
             _connectionStore.Setup(_ => _.GetUserConnections(_userId, null)).Returns(new List<ServerConnection>()
             {

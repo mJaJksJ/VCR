@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-using Iris.Api.Controllers.LettersControllers;
+﻿using Iris.Api.Controllers.LettersControllers;
 using Iris.Services.ClaimsPrincipalHelperService;
 using Iris.Services.LettersService;
 using Microsoft.AspNetCore.Mvc;

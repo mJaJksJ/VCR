@@ -1,5 +1,4 @@
 ﻿using Iris.Services.ClaimsPrincipalHelperService;
-using Iris.Services.FormatLettersService;
 using Iris.Services.LettersService;
 using Microsoft.AspNetCore.Mvc;
 

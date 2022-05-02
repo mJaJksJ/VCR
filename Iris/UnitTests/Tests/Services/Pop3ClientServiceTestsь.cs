@@ -1,30 +1,24 @@
 ﻿using Iris.Api.Controllers.LettersControllers;
-using Iris.Services.ImapClientService;
-using MailKit;
-using MailKit.Net.Imap;
+using Iris.Services.Pop3ClientService;
+using MailKit.Net.Pop3;
 using MimeKit;
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using Iris.Services.Pop3ClientService;
-using MailKit.Net.Pop3;
 
 namespace UnitTests.Tests.Services
 {
     [TestFixture]
     public class Pop3ClientServiceTests
     {
-        private Mock<IMailFolder> _mailFolder;
         private IPop3ClientService _pop3ClientService;
         private Mock<Pop3Client> _mailStore;
-
 
         [SetUp]
         public void SetUp()
         {
-            var letters = new List<MimeMessage>() {new MimeMessage()};
+            var letters = new List<MimeMessage>() { new MimeMessage() };
 
             _mailStore = new Mock<Pop3Client>();
             _mailStore.Setup(_ => _.Count).Returns(letters.Count);

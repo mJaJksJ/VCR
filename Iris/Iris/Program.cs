@@ -8,6 +8,7 @@ using Iris.Services.FormatLettersService;
 using Iris.Services.ImapClientService;
 using Iris.Services.LettersService;
 using Iris.Services.MailServersService;
+using Iris.Services.Pop3ClientService;
 using Iris.Services.RegistrationService.cs;
 using Iris.Services.UserService;
 using Iris.Stores.AuthRequestStore;
@@ -20,7 +21,6 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 using System.Reflection;
-using Iris.Services.Pop3ClientService;
 
 
 // Logger Configuration

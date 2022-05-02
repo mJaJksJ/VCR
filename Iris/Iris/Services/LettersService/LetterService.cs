@@ -3,12 +3,12 @@ using Iris.Database;
 using Iris.Exceptions;
 using Iris.Services.ImapClientService;
 using Iris.Services.LettersService.Contracts;
+using Iris.Services.Pop3ClientService;
 using Iris.Stores.ServiceConnectionStore;
 using MailKit.Net.Imap;
 using MailKit.Net.Pop3;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using Iris.Services.Pop3ClientService;
 
 namespace Iris.Services.LettersService
 {
