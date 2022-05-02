@@ -16,7 +16,7 @@ namespace Iris.Services.LettersService.Contracts
         /// </summary>
         [JsonProperty("Id")]
         [XmlElement("Id")]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// Отправитель

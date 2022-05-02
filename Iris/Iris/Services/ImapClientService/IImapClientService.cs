@@ -16,5 +16,20 @@ namespace Iris.Services.ImapClientService
         /// <param name="needAttachments">Получать ли вложения</param>
         /// <param name="accId">Id учетной записи</param>
         IEnumerable<LetterContract> GetLetters(ImapClient imapClient, NeedAttachments needAttachments, int accId);
+
+        /// <summary>
+        /// Изменить флаг
+        /// </summary>
+        /// <param name="imapClient"></param>
+        /// <param name="letterId">Id письма</param>
+        /// <param name="flag">Флаг</param>
+        void ChangeFlag(ImapClient imapClient, int letterId, int flag);
+
+        /// <summary>
+        /// Удалить письмо
+        /// </summary>
+        /// <param name="imapClient"></param>
+        /// <param name="letterId">Id письма</param>
+        void RemoveLetter(ImapClient imapClient, int letterId);
     }
 }

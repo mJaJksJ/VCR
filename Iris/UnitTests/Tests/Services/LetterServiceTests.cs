@@ -4,14 +4,14 @@ using Iris.Exceptions;
 using Iris.Services.ImapClientService;
 using Iris.Services.LettersService;
 using Iris.Services.LettersService.Contracts;
+using Iris.Services.Pop3ClientService;
 using Iris.Stores.ServiceConnectionStore;
 using MailKit.Net.Imap;
+using MailKit.Net.Pop3;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using Iris.Services.Pop3ClientService;
-using MailKit.Net.Pop3;
 using UnitTests.Database;
 
 namespace UnitTests.Tests.Services
@@ -24,9 +24,11 @@ namespace UnitTests.Tests.Services
         private readonly DatabaseContext _dbContext = TestDatabase.Instance;
         private int _userId;
         private int _accountId;
+        private Mock<IImapClientService> _imapClientService;
+        private const int LetterId = 1;
+        private const int Flag = 1;
         private readonly Guid _guid1 = Guid.NewGuid();
         private readonly Guid _guid2 = Guid.NewGuid();
-        private Mock<IImapClientService> _imapClientService;
         private Mock<IPop3ClientService> _pop3ClientService;
 
         [SetUp]
@@ -60,7 +62,7 @@ namespace UnitTests.Tests.Services
             var pop3MailServer = new Pop3Client();
             var letterContract = new LetterContract
             {
-                Id = 1,
+                Id = "1",
                 Sender = new PersonContract
                 {
                     Name = "testSender",
@@ -134,6 +136,8 @@ namespace UnitTests.Tests.Services
             {
                 letterContract
             });
+            _imapClientService.Setup(_ => _.ChangeFlag(imapMailServer, LetterId, Flag));
+            _imapClientService.Setup(_ => _.RemoveLetter(imapMailServer, LetterId));
 
             _connectionStore = new Mock<IServerConnectionStore>();
             _connectionStore.Setup(_ => _.GetUserConnections(_userId, new List<int>() { _accountId })).Returns(new List<ServerConnection>()
@@ -179,6 +183,18 @@ namespace UnitTests.Tests.Services
             _dbContext.Users.RemoveRange(_dbContext.Users);
 
             _dbContext.SaveChanges();
+        }
+
+        [Test]
+        public void ChangeFlag_Data_Changing()
+        {
+            Assert.DoesNotThrow(() => _letterService.ChangeFlag(_userId, _accountId, LetterId, Flag));
+        }
+
+        [Test]
+        public void RemoveLetter_Data_Changing()
+        {
+            Assert.DoesNotThrow(() => _letterService.ChangeFlag(_userId, _accountId, LetterId, Flag));
         }
 
         [Test]

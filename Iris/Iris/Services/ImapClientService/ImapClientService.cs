@@ -12,6 +12,21 @@ namespace Iris.Services.ImapClientService
     {
         private static readonly Serilog.ILogger Log = Serilog.Log.ForContext<ImapClientService>();
 
+        /// <inheritdoc/> 
+        public void ChangeFlag(ImapClient imapClient, int letterId, int flag)
+        {
+            var inboxFolder = imapClient.Inbox;
+            inboxFolder.Store(new UniqueId((uint)letterId), new StoreFlagsRequest(StoreAction.Add, (MessageFlags)flag) { Silent = true });
+        }
+
+        /// <inheritdoc/>
+        public void RemoveLetter(ImapClient imapClient, int letterId)
+        {
+            var inboxFolder = imapClient.Inbox;
+            inboxFolder.Store(new UniqueId((uint)letterId), new StoreFlagsRequest(StoreAction.Add, MessageFlags.Deleted) { Silent = true });
+            inboxFolder.Expunge();
+        }
+
         /// <inheritdoc/>
         public IEnumerable<LetterContract> GetLetters(ImapClient imapClient, NeedAttachments needAttachments, int accId)
         {
@@ -33,7 +48,8 @@ namespace Iris.Services.ImapClientService
                         Date = letter.Date.UtcDateTime,
                         Text = letter.HtmlBody,
                         Attachments = new List<AttachmentContract>(),
-                        AccountId = accId
+                        AccountId = accId,
+                        Id = letter.MessageId
                     };
                 }
                 catch (ParsePersonInternetAddressException e)
