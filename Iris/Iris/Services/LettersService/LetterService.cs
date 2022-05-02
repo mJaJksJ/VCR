@@ -28,12 +28,35 @@ namespace Iris.Services.LettersService
             _imapClientService = imapClientService;
         }
 
-        /// <summary>
-        /// Получить письма
-        /// </summary>
-        /// <param name="userId">Id пользователя</param>
-        /// <param name="lettersRequest">Параметры для фильтрации, сортировки и пагинации при получении писем</param>
-        /// <exception cref="Exception"></exception>
+        /// <inheritdoc/>
+        public void ChangeFlag(int userId, int accId, int letterId, int flag)
+        {
+            var connection = _serverConnectionStore.GetUserConnection(userId, accId);
+            if (connection.MailService is ImapClient imapClient)
+            {
+                _imapClientService.ChangeFlag(imapClient, letterId, flag);
+            }
+            else
+            {
+                throw new NotImapException();
+            }
+        }
+
+        /// <inheritdoc/>
+        public void RemoveLetter(int userId, int accId, int letterId)
+        {
+            var connection = _serverConnectionStore.GetUserConnection(userId, accId);
+            if (connection.MailService is ImapClient imapClient)
+            {
+                _imapClientService.RemoveLetter(imapClient, letterId);
+            }
+            else
+            {
+                throw new NotImapException();
+            }
+        }
+
+        /// <inheritdoc/>
         public IEnumerable<LetterContract> GetLetters(int userId, LettersRequest lettersRequest)
         {
             var accIds = lettersRequest.AccountsSettings.Select(_ => _.Key).AsEnumerable();
@@ -147,7 +170,7 @@ namespace Iris.Services.LettersService
             {
                 var letter = new LetterContract
                 {
-                    Id = _.Id,
+                    Id = _.Id.ToString(),
                     Sender = new PersonContract
                     {
                         Id = _.Sender.Id,

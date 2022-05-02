@@ -15,7 +15,7 @@ namespace UnitTests.Tests.Api
     {
         private const int UserId = 1;
         private const string Format = "json";
-        private LettersController _lettersController;
+        private GetLettersController _lettersController;
         private Mock<ILetterService> _letterService;
         private Mock<IFormatLettersSevice> _formatLettersSevice;
         private readonly LettersRequest _lettersRequest = new();
@@ -37,7 +37,7 @@ namespace UnitTests.Tests.Api
             _claimsPrincipalHelperService = new Mock<IClaimsPrincipalHelperService>();
             _claimsPrincipalHelperService.Setup(_ => _.GetUserId(null)).Returns(UserId);
 
-            _lettersController = new LettersController(_letterService.Object, _formatLettersSevice.Object, _claimsPrincipalHelperService.Object);
+            _lettersController = new GetLettersController(_letterService.Object, _formatLettersSevice.Object, _claimsPrincipalHelperService.Object);
         }
 
         [Test]

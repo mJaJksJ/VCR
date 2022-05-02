@@ -23,7 +23,7 @@ namespace UnitTests.Tests.Services
             {
                 new LetterContract
                 {
-                    Id = 1,
+                    Id = "1",
                     Sender = new PersonContract
                     {
                         Name = "testSender",

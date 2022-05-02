@@ -14,5 +14,22 @@ namespace Iris.Services.LettersService
         /// <param name="userId">Id пользователя</param>
         /// <param name="lettersRequest">Параметры для фильтрации, сортировки и пагинации при получении писем</param>
         IEnumerable<LetterContract> GetLetters(int userId, LettersRequest lettersRequest);
+
+        /// <summary>
+        ///  Установить флаг
+        /// </summary>
+        /// <param name="userId">Id пользователя</param>
+        /// <param name="accId">Id учетной записи</param>
+        /// <param name="letterId">Id письма</param>
+        /// <param name="flag">Флаг</param>
+        void ChangeFlag(int userId, int accId, int letterId, int flag);
+
+        /// <summary>
+        ///  Удалить письио
+        /// </summary>
+        /// <param name="userId">Id пользователя</param>
+        /// <param name="accId">Id учетной записи</param>
+        /// <param name="letterId">Id письма</param>
+        void RemoveLetter(int userId, int accId, int letterId);
     }
 }

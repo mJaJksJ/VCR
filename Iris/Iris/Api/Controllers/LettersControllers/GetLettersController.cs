@@ -11,7 +11,7 @@ namespace Iris.Api.Controllers.LettersControllers
     /// Контроллер получения писем
     /// </summary>
     [Authorize]
-    public class LettersController : Controller
+    public class GetLettersController : Controller
     {
         private readonly ILetterService _letterService;
         private readonly IFormatLettersSevice _formatLettersSevice;
@@ -20,7 +20,7 @@ namespace Iris.Api.Controllers.LettersControllers
         /// <summary>
         /// .ctor
         /// </summary>
-        public LettersController(ILetterService letterService, IFormatLettersSevice formatLettersSevice, IClaimsPrincipalHelperService claimsPrincipalHelperService)
+        public GetLettersController(ILetterService letterService, IFormatLettersSevice formatLettersSevice, IClaimsPrincipalHelperService claimsPrincipalHelperService)
         {
             _letterService = letterService;
             _formatLettersSevice = formatLettersSevice;

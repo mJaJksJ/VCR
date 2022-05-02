@@ -23,7 +23,9 @@ namespace UnitTests.Tests.Services
         private int _userId;
         private int _accountId;
         private readonly Guid _guid = Guid.NewGuid();
-        private Mock<IImapClientService> _imapClientService;
+        private Mock<IImapClientService> _imapClientService; 
+        private const int LetterId = 1;
+        private const int Flag = 1;
 
         [SetUp]
         public void SetUp()
@@ -52,10 +54,10 @@ namespace UnitTests.Tests.Services
             _dbContext.SaveChanges();
             _accountId = acc.Entity.Id;
 
-            var mailServer = new ImapClient();
+            var imapMailServer = new ImapClient();
             var letterContract = new LetterContract
             {
-                Id = 1,
+                Id = "1",
                 Sender = new PersonContract
                 {
                     Name = "testSender",
@@ -117,23 +119,25 @@ namespace UnitTests.Tests.Services
             _dbContext.SaveChanges();
 
             _imapClientService = new Mock<IImapClientService>();
-            _imapClientService.Setup(_ => _.GetLetters(mailServer, NeedAttachments.WithoutAttachments, _accountId)).Returns(new List<LetterContract>()
+            _imapClientService.Setup(_ => _.GetLetters(imapMailServer, NeedAttachments.WithoutAttachments, _accountId)).Returns(new List<LetterContract>()
             {
                 letterContract
             });
-            _imapClientService.Setup(_ => _.GetLetters(mailServer, NeedAttachments.OnlyName, _accountId)).Returns(new List<LetterContract>()
+            _imapClientService.Setup(_ => _.GetLetters(imapMailServer, NeedAttachments.OnlyName, _accountId)).Returns(new List<LetterContract>()
             {
                 letterContract
             });
-            _imapClientService.Setup(_ => _.GetLetters(mailServer, NeedAttachments.WithAttachmentsBlob, _accountId)).Returns(new List<LetterContract>()
+            _imapClientService.Setup(_ => _.GetLetters(imapMailServer, NeedAttachments.WithAttachmentsBlob, _accountId)).Returns(new List<LetterContract>()
             {
                 letterContract
             });
+            _imapClientService.Setup(_ => _.ChangeFlag(imapMailServer, LetterId, Flag));
+            _imapClientService.Setup(_ => _.RemoveLetter(imapMailServer, LetterId));
 
             _connectionStore = new Mock<IServerConnectionStore>();
             _connectionStore.Setup(_ => _.GetUserConnections(_userId, new List<int>() { _accountId })).Returns(new List<ServerConnection>()
             {
-                new ServerConnection(mailServer)
+                new ServerConnection(imapMailServer)
                 {
                     Account = acc.Entity,
                     Id = _guid
@@ -142,7 +146,7 @@ namespace UnitTests.Tests.Services
 
             _connectionStore.Setup(_ => _.GetUserConnections(_userId, null)).Returns(new List<ServerConnection>()
             {
-                new ServerConnection(mailServer)
+                new ServerConnection(imapMailServer)
                 {
                     Account = acc.Entity,
                     Id = _guid
@@ -163,6 +167,18 @@ namespace UnitTests.Tests.Services
             _dbContext.Users.RemoveRange(_dbContext.Users);
 
             _dbContext.SaveChanges();
+        }
+
+        [Test]
+        public void ChangeFlag_Data_Changing()
+        {
+           Assert.DoesNotThrow(() => _letterService.ChangeFlag(_userId, _accountId, LetterId, Flag));  
+        }
+
+        [Test]
+        public void RemoveLetter_Data_Changing()
+        {
+            Assert.DoesNotThrow(() => _letterService.ChangeFlag(_userId, _accountId, LetterId, Flag));
         }
 
         [Test]
