@@ -3,25 +3,24 @@ using Iris.Exceptions;
 using Iris.Services.LettersService.Contracts;
 using MailKit;
 using MailKit.Net.Imap;
+using MailKit.Net.Pop3;
 using MimeKit;
 
-namespace Iris.Services.ImapClientService
+namespace Iris.Services.Pop3ClientService
 {
     /// <inheritdoc cref="Pop3ClientService"/>
-    public class ImapClientService : IImapClientService
+    public class Pop3ClientService : IPop3ClientService
     {
-        private static readonly Serilog.ILogger Log = Serilog.Log.ForContext<ImapClientService>();
+        private static readonly Serilog.ILogger Log = Serilog.Log.ForContext<Pop3ClientService>();
 
         /// <inheritdoc/>
-        public IEnumerable<LetterContract> GetLetters(ImapClient imapClient, NeedAttachments needAttachments, int accId)
+        public IEnumerable<LetterContract> GetLetters(Pop3Client pop3Client, NeedAttachments needAttachments, int accId)
         {
-            var inboxFolder = imapClient.Inbox;
-            inboxFolder.Open(FolderAccess.ReadOnly);
-
             var letters = new List<LetterContract>();
 
-            foreach (var letter in inboxFolder)
+            for (int i = 0; i < pop3Client.Count; i++)
             {
+                var letter = pop3Client.GetMessage(i);
                 LetterContract letterContract;
                 try
                 {

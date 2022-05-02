@@ -10,6 +10,8 @@ using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using Iris.Services.Pop3ClientService;
+using MailKit.Net.Pop3;
 using UnitTests.Database;
 
 namespace UnitTests.Tests.Services
@@ -22,8 +24,10 @@ namespace UnitTests.Tests.Services
         private readonly DatabaseContext _dbContext = TestDatabase.Instance;
         private int _userId;
         private int _accountId;
-        private readonly Guid _guid = Guid.NewGuid();
+        private readonly Guid _guid1 = Guid.NewGuid();
+        private readonly Guid _guid2 = Guid.NewGuid();
         private Mock<IImapClientService> _imapClientService;
+        private Mock<IPop3ClientService> _pop3ClientService;
 
         [SetUp]
         public void SetUp()
@@ -52,7 +56,8 @@ namespace UnitTests.Tests.Services
             _dbContext.SaveChanges();
             _accountId = acc.Entity.Id;
 
-            var mailServer = new ImapClient();
+            var imapMailServer = new ImapClient();
+            var pop3MailServer = new Pop3Client();
             var letterContract = new LetterContract
             {
                 Id = 1,
@@ -117,15 +122,15 @@ namespace UnitTests.Tests.Services
             _dbContext.SaveChanges();
 
             _imapClientService = new Mock<IImapClientService>();
-            _imapClientService.Setup(_ => _.GetLetters(mailServer, NeedAttachments.WithoutAttachments, _accountId)).Returns(new List<LetterContract>()
+            _imapClientService.Setup(_ => _.GetLetters(imapMailServer, NeedAttachments.WithoutAttachments, _accountId)).Returns(new List<LetterContract>()
             {
                 letterContract
             });
-            _imapClientService.Setup(_ => _.GetLetters(mailServer, NeedAttachments.OnlyName, _accountId)).Returns(new List<LetterContract>()
+            _imapClientService.Setup(_ => _.GetLetters(imapMailServer, NeedAttachments.OnlyName, _accountId)).Returns(new List<LetterContract>()
             {
                 letterContract
             });
-            _imapClientService.Setup(_ => _.GetLetters(mailServer, NeedAttachments.WithAttachmentsBlob, _accountId)).Returns(new List<LetterContract>()
+            _imapClientService.Setup(_ => _.GetLetters(imapMailServer, NeedAttachments.WithAttachmentsBlob, _accountId)).Returns(new List<LetterContract>()
             {
                 letterContract
             });
@@ -133,23 +138,34 @@ namespace UnitTests.Tests.Services
             _connectionStore = new Mock<IServerConnectionStore>();
             _connectionStore.Setup(_ => _.GetUserConnections(_userId, new List<int>() { _accountId })).Returns(new List<ServerConnection>()
             {
-                new ServerConnection(mailServer)
+                new ServerConnection(imapMailServer)
                 {
                     Account = acc.Entity,
-                    Id = _guid
-                }
+                    Id = _guid1
+                },
+                new ServerConnection(pop3MailServer)
+                {
+                    Account = acc.Entity,
+                    Id = _guid2
+                },
             });
 
             _connectionStore.Setup(_ => _.GetUserConnections(_userId, null)).Returns(new List<ServerConnection>()
             {
-                new ServerConnection(mailServer)
+                new ServerConnection(imapMailServer)
                 {
                     Account = acc.Entity,
-                    Id = _guid
+                    Id = _guid1
                 }
             });
 
-            _letterService = new LetterService(_connectionStore.Object, _dbContext, _imapClientService.Object);
+            _pop3ClientService = new Mock<IPop3ClientService>();
+            _pop3ClientService.Setup(_ => _.GetLetters(pop3MailServer, NeedAttachments.WithAttachmentsBlob, _accountId)).Returns(new List<LetterContract>()
+            {
+                letterContract
+            });
+
+            _letterService = new LetterService(_connectionStore.Object, _dbContext, _imapClientService.Object, _pop3ClientService.Object);
         }
 
         [TearDown]

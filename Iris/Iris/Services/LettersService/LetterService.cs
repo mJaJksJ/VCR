@@ -8,6 +8,7 @@ using MailKit.Net.Imap;
 using MailKit.Net.Pop3;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using Iris.Services.Pop3ClientService;
 
 namespace Iris.Services.LettersService
 {
@@ -17,15 +18,19 @@ namespace Iris.Services.LettersService
         private readonly IServerConnectionStore _serverConnectionStore;
         private readonly DatabaseContext _context;
         private readonly IImapClientService _imapClientService;
+        private readonly IPop3ClientService _pop3ClientService;
 
         /// <summary>
         /// .ctor
         /// </summary>
-        public LetterService(IServerConnectionStore serverConnectionStore, DatabaseContext context, IImapClientService imapClientService)
+        public LetterService(IServerConnectionStore serverConnectionStore,
+            DatabaseContext context, IImapClientService imapClientService,
+            IPop3ClientService pop3ClientService)
         {
             _serverConnectionStore = serverConnectionStore;
             _context = context;
             _imapClientService = imapClientService;
+            _pop3ClientService = pop3ClientService;
         }
 
         /// <summary>
@@ -211,7 +216,7 @@ namespace Iris.Services.LettersService
             return connection.MailService switch
             {
                 ImapClient imapClient => _imapClientService.GetLetters(imapClient, needAttachments, accId),
-                Pop3Client pop3Client => throw new Exception(),
+                Pop3Client pop3Client => _pop3ClientService.GetLetters(pop3Client, needAttachments, accId),
                 _ => throw new Exception(),
             };
         }

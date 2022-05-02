@@ -20,6 +20,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 using System.Reflection;
+using Iris.Services.Pop3ClientService;
 
 
 // Logger Configuration
@@ -172,6 +173,7 @@ builder.Services.AddSingleton<IMailServersService, MailServersService>();
 builder.Services.AddScoped<ILetterService, LetterService>();
 builder.Services.AddScoped<IFormatLettersSevice, FormatLettersSevice>();
 builder.Services.AddScoped<IRegistrationService, RegistrationService>();
+builder.Services.AddScoped<IPop3ClientService, Pop3ClientService>();
 builder.Services.AddScoped<IImapClientService, ImapClientService>();
 
 var app = builder.Build();
