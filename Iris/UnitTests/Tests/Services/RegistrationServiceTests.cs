@@ -21,8 +21,8 @@ namespace UnitTests.Tests.Services
         public void SetUp()
         {
             _userService = new Mock<IUserService>();
-            _userService.Setup(_ => _.GetUserByLogin(UserName)).Returns((User)null);
-            _userService.Setup(_ => _.GetUserByLogin(NotUserName)).Returns(new User { Name = NotUserName });
+            _userService.Setup(_ => _.GetUserByLogin(NotUserName)).Returns((User)null);
+            _userService.Setup(_ => _.GetUserByLogin(UserName)).Returns(new User { Name = UserName });
 
             _registrationService = new RegistrationService(_userService.Object, _dbContext);
         }
