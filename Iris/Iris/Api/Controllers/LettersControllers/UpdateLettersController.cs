@@ -1,5 +1,6 @@
 ﻿using Iris.Services.ClaimsPrincipalHelperService;
 using Iris.Services.LettersService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Iris.Api.Controllers.LettersControllers
@@ -7,6 +8,7 @@ namespace Iris.Api.Controllers.LettersControllers
     /// <summary>
     /// Контроллер изменения писем
     /// </summary>
+    [Authorize]
     public class UpdateLettersController : Controller
     {
         private readonly ILetterService _letterService;
@@ -27,9 +29,9 @@ namespace Iris.Api.Controllers.LettersControllers
         /// <param name="accId">Id учетной записи</param>
         /// <param name="letterId">Id письма</param>
         /// <param name="flag">Флаг</param>
-        [HttpPost("~/api/letters/accaunt/{accId}/letter/{letterId}/flag{flag}")]
+        [HttpPost("~/api/letters/accaunt/{accId}/letter/{letterId}/flag/{flag}")]
         [ProducesResponseType(typeof(OkResult), 200)]
-        public IActionResult ChangeFlag(int accId, int letterId, int flag)
+        public IActionResult ChangeFlag(int accId, string letterId, int flag)
         {
             var userId = _claimsPrincipalHelperService.GetUserId(User);
             _letterService.ChangeFlag(userId, accId, letterId, flag);
@@ -44,7 +46,7 @@ namespace Iris.Api.Controllers.LettersControllers
         /// <param name="letterId">Id письма</param>
         [HttpDelete("~/api/letters/accaunt/{accId}/letter/{letterId}")]
         [ProducesResponseType(typeof(OkResult), 200)]
-        public IActionResult RemoveLetter(int accId, int letterId)
+        public IActionResult RemoveLetter(int accId, string letterId)
         {
             var userId = _claimsPrincipalHelperService.GetUserId(User);
             _letterService.RemoveLetter(userId, accId, letterId);

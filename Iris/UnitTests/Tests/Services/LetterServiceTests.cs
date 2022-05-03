@@ -25,7 +25,7 @@ namespace UnitTests.Tests.Services
         private int _userId;
         private int _accountId;
         private Mock<IImapClientService> _imapClientService;
-        private const int LetterId = 1;
+        private const string LetterId = "1";
         private const int Flag = 1;
         private readonly Guid _guid1 = Guid.NewGuid();
         private readonly Guid _guid2 = Guid.NewGuid();

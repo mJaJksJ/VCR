@@ -1,4 +1,5 @@
-﻿using Iris.Services.ClaimsPrincipalHelperService;
+﻿using Iris.Database;
+using Iris.Services.ClaimsPrincipalHelperService;
 using Iris.Services.MailServersService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +41,7 @@ namespace Iris.Api.Controllers.ConnectionsControllers
         /// Получить список доступных почтовых серверов
         /// </summary>
         [HttpGet("~/api/connections/mailservers/accounts/availables")]
-        [ProducesResponseType(typeof(IEnumerable<MailServerAccountContract>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<MailServer>), 200)]
         public IActionResult GetAvailableMailServers()
         {
             var userId = _claimsPrincipalHelperService.GetUserId(User);

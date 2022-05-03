@@ -26,7 +26,7 @@ namespace Iris.Services.RegistrationService.cs
         {
             bool isUserExist = _userService.GetUserByLogin(contract.Name) != null;
 
-            if (!isUserExist)
+            if (isUserExist)
             {
                 Log.Error($"User { contract.Name} is already exist");
                 return new RegistrationResponseContract

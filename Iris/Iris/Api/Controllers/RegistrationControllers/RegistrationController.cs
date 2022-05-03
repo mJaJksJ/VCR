@@ -27,7 +27,7 @@ namespace Iris.Api.Controllers.RegistrationController
         /// <param name="contract">Контракт создания пользователя</param>
         [HttpPost("~/api/registration"), AllowAnonymous]
         [ProducesResponseType(typeof(RegistrationResponseContract), 200)]
-        public IActionResult RegisterUser(RegistrationRequestContract contract)
+        public IActionResult RegisterUser([FromBody] RegistrationRequestContract contract)
         {
             return Ok(_registrationService.RegisterUser(contract));
         }

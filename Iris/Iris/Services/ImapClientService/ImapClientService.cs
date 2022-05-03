@@ -13,17 +13,17 @@ namespace Iris.Services.ImapClientService
         private static readonly Serilog.ILogger Log = Serilog.Log.ForContext<ImapClientService>();
 
         /// <inheritdoc/> 
-        public void ChangeFlag(ImapClient imapClient, int letterId, int flag)
+        public void ChangeFlag(ImapClient imapClient, string letterId, int flag)
         {
             var inboxFolder = imapClient.Inbox;
-            inboxFolder.Store(new UniqueId((uint)letterId), new StoreFlagsRequest(StoreAction.Add, (MessageFlags)flag) { Silent = true });
+            inboxFolder.Store(new UniqueId(uint.Parse(letterId)), new StoreFlagsRequest(StoreAction.Add, (MessageFlags)flag) { Silent = true });
         }
 
         /// <inheritdoc/>
-        public void RemoveLetter(ImapClient imapClient, int letterId)
+        public void RemoveLetter(ImapClient imapClient, string letterId)
         {
             var inboxFolder = imapClient.Inbox;
-            inboxFolder.Store(new UniqueId((uint)letterId), new StoreFlagsRequest(StoreAction.Add, MessageFlags.Deleted) { Silent = true });
+            inboxFolder.Store(new UniqueId(uint.Parse(letterId)), new StoreFlagsRequest(StoreAction.Add, MessageFlags.Deleted) { Silent = true });
             inboxFolder.Expunge();
         }
 

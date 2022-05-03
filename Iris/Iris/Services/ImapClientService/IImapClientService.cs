@@ -23,13 +23,13 @@ namespace Iris.Services.ImapClientService
         /// <param name="imapClient"></param>
         /// <param name="letterId">Id письма</param>
         /// <param name="flag">Флаг</param>
-        void ChangeFlag(ImapClient imapClient, int letterId, int flag);
+        void ChangeFlag(ImapClient imapClient, string letterId, int flag);
 
         /// <summary>
         /// Удалить письмо
         /// </summary>
         /// <param name="imapClient"></param>
         /// <param name="letterId">Id письма</param>
-        void RemoveLetter(ImapClient imapClient, int letterId);
+        void RemoveLetter(ImapClient imapClient, string letterId);
     }
 }

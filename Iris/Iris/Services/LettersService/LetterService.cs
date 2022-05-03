@@ -34,7 +34,7 @@ namespace Iris.Services.LettersService
         }
 
         /// <inheritdoc/>
-        public void ChangeFlag(int userId, int accId, int letterId, int flag)
+        public void ChangeFlag(int userId, int accId, string letterId, int flag)
         {
             var connection = _serverConnectionStore.GetUserConnection(userId, accId);
             if (connection.MailService is ImapClient imapClient)
@@ -48,7 +48,7 @@ namespace Iris.Services.LettersService
         }
 
         /// <inheritdoc/>
-        public void RemoveLetter(int userId, int accId, int letterId)
+        public void RemoveLetter(int userId, int accId, string letterId)
         {
             var connection = _serverConnectionStore.GetUserConnection(userId, accId);
             if (connection.MailService is ImapClient imapClient)

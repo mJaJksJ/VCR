@@ -21,6 +21,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 using System.Reflection;
+using Iris.Services.AccountsService;
 
 
 // Logger Configuration
@@ -175,6 +176,7 @@ builder.Services.AddScoped<IFormatLettersSevice, FormatLettersSevice>();
 builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 builder.Services.AddScoped<IPop3ClientService, Pop3ClientService>();
 builder.Services.AddScoped<IImapClientService, ImapClientService>();
+builder.Services.AddScoped<IAccountsService, AccountsService>();
 
 var app = builder.Build();
 
@@ -190,6 +192,14 @@ try
         Name = "VK",
         IsPrivate = false
     });
+}
+catch
+{
+    // ignored
+}
+
+try
+{
     mailServersService.NewMailServer(new MailServerContract
     {
         Host = "pop.mail.ru",
@@ -197,20 +207,44 @@ try
         Name = "VK",
         IsPrivate = false
     });
+}
+catch
+{
+    // ignored
+}
+
+try
+{
     mailServersService.NewMailServer(new MailServerContract
     {
         Host = "imap.yandex.ru",
         Port = 993,
-        Name = "òòòòòò",
+        Name = "–Ø–Ω–¥–µ–∫—Å",
         IsPrivate = false
     });
+}
+catch
+{
+    // ignored
+}
+
+try
+{
     mailServersService.NewMailServer(new MailServerContract
     {
         Host = "pop.yandex.ru",
         Port = 995,
-        Name = "òòòòòò",
+        Name = "–Ø–Ω–¥–µ–∫—Å",
         IsPrivate = false
     });
+}
+catch
+{
+    // ignored
+}
+
+try
+{
     mailServersService.NewMailServer(new MailServerContract
     {
         Host = "imap.gmail.com",
@@ -218,6 +252,14 @@ try
         Name = "Google",
         IsPrivate = false
     });
+}
+catch
+{
+    // ignored
+}
+
+try
+{
     mailServersService.NewMailServer(new MailServerContract
     {
         Host = "pop.gmail.com",
@@ -225,6 +267,14 @@ try
         Name = "Google",
         IsPrivate = false
     });
+}
+catch
+{
+    // ignored
+}
+
+try
+{
     mailServersService.NewMailServer(new MailServerContract
     {
         Host = "outlook.office365.com",
@@ -232,6 +282,14 @@ try
         Name = "Outlook",
         IsPrivate = false
     });
+}
+catch
+{
+    // ignored
+}
+
+try
+{
     mailServersService.NewMailServer(new MailServerContract
     {
         Host = "outlook.office365.com",

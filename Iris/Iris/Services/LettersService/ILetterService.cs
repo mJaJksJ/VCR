@@ -22,7 +22,7 @@ namespace Iris.Services.LettersService
         /// <param name="accId">Id учетной записи</param>
         /// <param name="letterId">Id письма</param>
         /// <param name="flag">Флаг</param>
-        void ChangeFlag(int userId, int accId, int letterId, int flag);
+        void ChangeFlag(int userId, int accId, string letterId, int flag);
 
         /// <summary>
         ///  Удалить письио
@@ -30,6 +30,6 @@ namespace Iris.Services.LettersService
         /// <param name="userId">Id пользователя</param>
         /// <param name="accId">Id учетной записи</param>
         /// <param name="letterId">Id письма</param>
-        void RemoveLetter(int userId, int accId, int letterId);
+        void RemoveLetter(int userId, int accId, string letterId);
     }
 }

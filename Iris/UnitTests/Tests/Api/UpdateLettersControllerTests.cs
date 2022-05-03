@@ -17,7 +17,7 @@ namespace UnitTests.Tests.Api
 
         private const int UserId = 1;
         private const int AccId = 1;
-        private const int LetterId = 1;
+        private const string LetterId = "1";
         private const int Flag = 1;
 
         [SetUp]
