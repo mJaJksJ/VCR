@@ -22,7 +22,7 @@ public class RegistrationController : Controller
     }
 
     /// <summary>
-    ///     Зарегисрировать пользователя
+    ///     Зарегистрировать пользователя
     /// </summary>
     /// <param name="contract">Контракт создания пользователя</param>
     [HttpPost("~/api/registration")]

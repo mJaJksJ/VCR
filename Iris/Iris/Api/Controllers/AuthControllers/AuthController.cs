@@ -128,7 +128,7 @@ public class AuthController : Controller
     }
 
     /// <summary>
-    ///     Проверка авторизированности
+    ///     Проверка авторизии
     /// </summary>
     /// <returns></returns>
     [HttpGet("~/api/authorize/isauth")]
